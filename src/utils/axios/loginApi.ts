@@ -115,7 +115,7 @@ loginApi.interceptors.response.use(
           color: "#fff",
         },
       });
-      toast.error("Network Error: No response from the server.");
+      // toast.error("Network Error: No response from the server.");
     } else {
       // An error occurred in setting up the request
       toast.error(`Request Error: ${error.message}`);
