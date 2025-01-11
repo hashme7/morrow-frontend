@@ -181,7 +181,7 @@ const Login: React.FC = () => {
           </form>
         </div>
 
-        <div className="animation-section hidden md:block w-full md:w-1/2 h-full flex justify-center items-center">
+        <div className="animation-section md:block w-full md:w-1/2 h-full flex justify-center items-center">
           <div
             ref={animationRef}
             className="project-management-animation w-full h-full flex-co justify-end relative"
