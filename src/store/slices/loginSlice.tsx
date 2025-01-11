@@ -123,10 +123,9 @@ const loginSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(loginUser.fulfilled, (state, action) => {
+    builder.addCase(loginUser.fulfilled, (state) => {
       state.isLoggedIn = true;
       state.errorMessage = null;
-      localStorage.setItem("userId",action.payload.userId);
     });
     builder.addCase(checkTokenValidity.fulfilled, (state, action) => {
       if (action.payload.valid) {
