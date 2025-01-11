@@ -30,7 +30,7 @@ loginApi.interceptors.response.use(
 
 
 
-            
+
             `);
           
           toast("Please check the input data", {
@@ -107,6 +107,14 @@ loginApi.interceptors.response.use(
     } else if (error.request) {
       console.log(error.request);
       // The request was made but no response was received (network error, CORS, etc.)
+      toast("Unauthorized: Please log in.", {
+        icon: "👏",
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
       toast.error("Network Error: No response from the server.");
     } else {
       // An error occurred in setting up the request
