@@ -8,7 +8,6 @@ const ProtectedRoute: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector((state) => state.login.isLoggedIn);
-  const errorMessage = useAppSelector((state) => state.login.errorMessage);
  
   useEffect(() => {
     const validateToken = async () => {
@@ -30,10 +29,6 @@ const ProtectedRoute: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
 
   if (isLoading) {
     return <div>Loadi</div>;
-  }
-
-  if (errorMessage) {
-    return <div>Error: {errorMessage}</div>; 
   }
 
   if (!isLoggedIn) {

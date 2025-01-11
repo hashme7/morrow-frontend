@@ -33,6 +33,8 @@ const AuthRoute: React.FC<AuthRouteProps> = ({ children }) => {
   }
 
   if (errorMessage) {
+    console.log("error on protectedRoute");
+    
     return <div>Error: {errorMessage}</div>;
   }
 
