@@ -21,21 +21,30 @@ loginApi.interceptors.response.use(
       switch (statusCode) {
         case 400:
           // Bad Request - Likely invalid parameters
-          toast.error("Bad Request: Please check the input data.");
+          // toast.error("Bad Request: Please check the input data.");
+          toast("Please check the input data", {
+            icon: "👏",
+            style: {
+              borderRadius: "10px",
+              background: "#333",
+              color: "#fff",
+            },
+          });
+          // window.location.href = '/login'
           break;
 
         case 401:
           // Unauthorized - Session expired or user not logged in
           toast.error("Unauthorized: Please log in.");
           // Optionally, you can redirect to the login page here if needed:
-          // window.location.href = '/login';
+          window.location.href = '/login';
           break;
 
         case 403:
           // Forbidden - User does not have the necessary permissions
-          toast.error(
-            "Forbidden: You do not have permission to perform this action."
-          );
+          // toast.error(
+          //   "Forbidden: You do not have permission to perform this action."
+          // );
           break;
 
         case 404:
@@ -78,6 +87,7 @@ loginApi.interceptors.response.use(
           );
       }
     } else if (error.request) {
+      console.log(error.request);
       // The request was made but no response was received (network error, CORS, etc.)
       toast.error("Network Error: No response from the server.");
     } else {

@@ -128,34 +128,23 @@ const loginSlice = createSlice({
       state.errorMessage = null;
       localStorage.setItem("userId",action.payload.userId);
     });
-
-    builder.addCase(loginUser.rejected, (state, action) => {
-      state.errorMessage = action.payload as string;
-      state.isLoggedIn = false;
-    });
-
     builder.addCase(checkTokenValidity.fulfilled, (state, action) => {
       if (action.payload.valid) {
         state.isLoggedIn = true;
-        localStorage.setItem('userId',action.payload.userId)
       } else {
         state.isLoggedIn = false;
-        localStorage.removeItem('userId')
       }
     });
     builder.addCase(logout.fulfilled, (state) => {
       state.isLoggedIn = false;
-      localStorage.removeItem('userId')
     });
     builder.addCase(googleLogin.fulfilled, (state, action) => {
       console.log(action.payload);
       state.isLoggedIn = true;
-      localStorage.setItem("userId",action.payload.userId);
     });
     builder.addCase(gitHubLogin.fulfilled, (state,action)=>{
       if(action.payload.accessToken && action.payload.refreshToken){
         state.isLoggedIn =true;
-        localStorage.setItem("userId",action.payload.userId);
       }
     })
   },
