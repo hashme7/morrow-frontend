@@ -4,6 +4,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { store, persistor } from "./store/store";
 import AppRoutes from "./routes/AppRoutes";
+import { Toaster } from "react-hot-toast";
 
 const App: React.FC = () => {
   return (
@@ -12,6 +13,7 @@ const App: React.FC = () => {
         <Router>
           <AppRoutes />
         </Router>
+        <Toaster />
       </PersistGate>
     </Provider>
   );
