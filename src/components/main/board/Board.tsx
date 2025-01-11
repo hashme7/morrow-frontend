@@ -50,13 +50,13 @@ const KanbanBoard: React.FC = () => {
 
 
   const columnsIds = useMemo(
-    () => columns.map((column) => column._id.toString()),
+    () => columns.map((column:any) => column._id.toString()),
     [columns]
   );
   const dispatch = useAppDispatch();
 
   const updateTaskIds = useCallback(
-    () => setTaskIds(tasks.map((task) => task._id.toString())),
+    () => setTaskIds(tasks.map((task:ITask) => task._id.toString())),
     [tasks]
   );
 
@@ -160,9 +160,12 @@ const KanbanBoard: React.FC = () => {
     console.log(event.active)
     for (let tsk of tasks) {
       if (event.active.id == tsk._id.toString()) {
-        if(!tsk.assignee.includes(extractIdFromToken())){
-          setShowModal(true);
-          return;
+        const userId = extractIdFromToken();
+        if (userId) {
+          if(!tsk.assignee.includes(userId)){
+            setShowModal(true);
+            return;
+          }
         }
       }
     }
@@ -176,8 +179,11 @@ const KanbanBoard: React.FC = () => {
     if (!over) return;
     for (let tsk of tasks) {
       if (event.active.id == tsk._id.toString()) {
-        if (!tsk.assignee.includes(extractIdFromToken())) {
-          return;
+        const userId = extractIdFromToken();
+        if (userId) {
+          if (!tsk.assignee.includes(userId)) {
+            return;
+          }
         }
       }
     }

@@ -74,7 +74,6 @@ const Diagram: React.FC = () => {
     isOpen: isEditOpen,
     onOpen: onEditOpen,
     onOpenChange: onEditOpenChange,
-    onClose: onEditClose,
   } = useDisclosure();
 
   const handleAddTable = (table: tableState) => {
@@ -146,6 +145,7 @@ const Diagram: React.FC = () => {
     debouncedSave();
   };
   const onNodeClick = (event: React.MouseEvent, node: customNode) => {
+    console.log(event);
     setSelectedNode(node);
     onEditOpen();
   };
@@ -179,7 +179,10 @@ const Diagram: React.FC = () => {
               className="rounded-2xl bg-zinc-900"
               onInit={handleInit}
               onConnect={onConnect}
-              onEdgeClick={(event, edge) => handleDeleteEdge(edge.id)}
+              onEdgeClick={(event, edge) => {
+                console.log(event);
+                handleDeleteEdge(edge.id);
+              } }
               edges={edges}
               fitView
               onEdgesChange={onEdgesChange}
@@ -203,7 +206,6 @@ const Diagram: React.FC = () => {
             <TableModal
               isOpen={isOpen}
               onOpenChange={onOpenChange}
-              onClose={onClose}
               handleAddTable={handleAddTable}
             />
           )}
@@ -212,7 +214,6 @@ const Diagram: React.FC = () => {
               isEditOpen
               onEditOpenChange={onEditOpenChange}
               node={selectedNode}
-              onClose={onEditClose}
               handleEdit={handleEditNode}
               handleDelete={() => handleDeleteNode(selectedNode.id)}
             />

@@ -64,7 +64,7 @@ const ZegoMeet: React.FC = () => {
     // Dispatch fetchUser only if needed
     if (!email) {
       dispatch(
-        fetchUser({ userId: new mongoose.Types.ObjectId(extractIdFromToken()) })
+        fetchUser({ userId: new mongoose.Types.ObjectId(extractIdFromToken()?.toString()) })
       );
     }
 

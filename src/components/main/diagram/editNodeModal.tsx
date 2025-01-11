@@ -18,7 +18,6 @@ import { Node } from "@xyflow/react";
 type EditNodeModalProps = {
   node: Node<{ data: tableState }>;
   isEditOpen: boolean;
-  onClose: () => void;
   onEditOpenChange: (isOpen: boolean) => void; 
   handleEdit: (updatedNode: Node<{ data: tableState }>) => void;
   handleDelete: () => void;
@@ -27,7 +26,6 @@ type EditNodeModalProps = {
 const EditNodeModal: React.FC<EditNodeModalProps> = ({
   node,
   isEditOpen,
-  onClose,
   onEditOpenChange,
   handleEdit,
   handleDelete,

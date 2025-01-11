@@ -56,24 +56,12 @@ const ApiTests: React.FC = () => {
     setJson(value || "");
   };
 
-  const handleResponseEditor = (value: string | undefined) => {
-    setResponse(value || "");
-  }
-
   const handleSelectMethod = (selectedValue: any) => {
     const selectedOption = httpMethods.find(
       (method) => method.value === selectedValue
     );
     setSelectMethod(selectedOption || { label: "GET", value: "GET" });
   };
-  interface targetDetails {
-    projectId?: number;
-    url: string;
-    method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "OPTIONS" | "HEAD";
-    body?: Record<string, any>;
-    queryParams?: Record<string, string>;
-    headers?: Record<string, string>;
-  }
   const handleSendRequest = async () => {
     try {
       if (selectProject) {

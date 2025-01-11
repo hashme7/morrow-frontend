@@ -12,7 +12,6 @@ import {
 } from "../../../store/slices/ChatSlice";
 import { Spinner } from "@nextui-org/react";
 import extractIdFromToken from "../../../utils/decodeToken";
-// import { IMessage } from "../../../types/Chat";
 import { getTeamMembers } from "../../../store/slices/memberSlice";
 
 const Chat: React.FC = () => {
@@ -21,7 +20,7 @@ const Chat: React.FC = () => {
   const { members } = useAppSelector((state) => state.members);
   const [socket, setSocket] = useState<Socket | null>(null);
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1);
+  // const [page, setPage] = useState(1);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useAppDispatch();
@@ -55,7 +54,7 @@ const Chat: React.FC = () => {
           dispatch(
             getTeamMembers({ projectId: selectProject.id.toString(), page: 1 })
           );
-          dispatch(getMessage({ receiverId: selectProject.teamId, page }));
+          dispatch(getMessage({ receiverId: selectProject.teamId, page:1 }));
         }
       } catch (error) {
         console.error("Error fetching messages:", error);
@@ -64,7 +63,7 @@ const Chat: React.FC = () => {
       }
     };
     fetchMessages();
-  }, [page, selectProject?.id]);
+  }, [ selectProject?.id]);
 
  
 

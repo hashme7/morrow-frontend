@@ -17,9 +17,8 @@ import { tableState } from "../../../types/diagram";
 const TableModal: React.FC<{
   isOpen: boolean;
   onOpenChange: () => void;
-  onClose: () => void;
   handleAddTable: (table: tableState) => void;
-}> = ({ isOpen, onOpenChange, onClose, handleAddTable }) => {
+}> = ({ isOpen, onOpenChange,handleAddTable }) => {
   const [tableName, setTableName] = useState("");
   const [columns, setColumns] = useState([{ data: "", type: "" }]);
 
