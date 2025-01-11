@@ -22,6 +22,17 @@ loginApi.interceptors.response.use(
         case 400:
           // Bad Request - Likely invalid parameters
           // toast.error("Bad Request: Please check the input data.");
+          console.log(`
+            
+            
+            ldldldl
+
+
+
+
+            
+            `);
+          
           toast("Please check the input data", {
             icon: "👏",
             style: {
@@ -35,7 +46,14 @@ loginApi.interceptors.response.use(
 
         case 401:
           // Unauthorized - Session expired or user not logged in
-          toast.error("Unauthorized: Please log in.");
+          toast("Unauthorized: Please log in.", {
+            icon: "👏",
+            style: {
+              borderRadius: "10px",
+              background: "#333",
+              color: "#fff",
+            }
+          });
           // Optionally, you can redirect to the login page here if needed:
           window.location.href = '/login';
           break;
