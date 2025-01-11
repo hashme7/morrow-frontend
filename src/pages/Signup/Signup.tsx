@@ -31,8 +31,10 @@ const Signup: React.FC = () => {
     try {
       const validationErrors = validateFields({ email, password, userName });
       if (Object.keys(validationErrors).length === 0) {
-        await dispatch(signupUser({ username: userName, email, password }));
-        navigate("/otp");
+        const response = await dispatch(signupUser({ username: userName, email, password }));
+        if (signupUser.fulfilled.match(response)) {
+          navigate("/otp");
+        }
       } else {
         setErrors(validationErrors);
       }
@@ -166,7 +168,7 @@ const Signup: React.FC = () => {
             <Button
               radius="full"
               className="w-full bg-green-900 text-white shadow-lg font-semibold py-3 hover:bg-green-600"
-              onClick={handleSignup}
+              onPress={handleSignup}
             >
               Sign Up
             </Button>
@@ -175,7 +177,7 @@ const Signup: React.FC = () => {
                 <GoogleLogin onSuccess={handleGoogleSubmit} />
               </div>
               <Button
-                onClick={handleGitHubSubmit}
+                onPress={handleGitHubSubmit}
                 className="bg-gray-800 text-white hover:bg-gray-600 flex items-center justify-center py-2 px-4 rounded"
               >
                 <FaGithub className="mr-2" />
@@ -194,7 +196,7 @@ const Signup: React.FC = () => {
           </div>
         </div>
 
-        <div className="animation-section hidden md:block w-full md:w-1/2 h-full flex justify-center items-center">
+        <div className="animation-section md:hidden block w-full md:w-1/2 h-full justify-center items-center">
           <div
             ref={animationRef}
             className="project-management-animation w-full h-full flex-co justify-end  relative"

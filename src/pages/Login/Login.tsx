@@ -32,6 +32,7 @@ const Login: React.FC = () => {
     const validationErrors = validateFields({ email, password });
     if (Object.keys(validationErrors).length === 0) {
       const resultAction = await dispatch(loginUser({ email, password }));
+      console.log(resultAction)
       if (loginUser.fulfilled.match(resultAction)) {
         navigate("/dashboard");
       } else {
