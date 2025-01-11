@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Poppins:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.text-shadow {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+/* 
+
+html, body {
+  height: 100%;
+  background: linear-gradient(to right, #333, #111);
+} */
+
+
+.no-focus-input input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.react-flow__handle {
+  display: flex !important; /* Ensure visibility */
+  z-index: 1;
+}
