@@ -49,6 +49,9 @@ export const createProject = createAsyncThunk(
   async (values: projectInputs, { rejectWithValue }) => {
     try {
       const userId = extractIdFromToken();
+      if (!userId) {
+        return;
+      }
       const response = await apiClient.post(
         `/create?userId=${userId}`,
         values
