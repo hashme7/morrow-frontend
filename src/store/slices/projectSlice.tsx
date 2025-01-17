@@ -50,6 +50,7 @@ export const createProject = createAsyncThunk(
     try {
       const userId = extractIdFromToken();
       if (!userId) {
+        console.log("userid is not there");
         return;
       }
       const response = await apiClient.post(
