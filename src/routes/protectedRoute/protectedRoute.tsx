@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../store/hooks/hooks.ts';
-import { checkTokenValidity } from '../../store/slices/loginSlice';
+import { checkTokenValidity, setIsLoggedIn } from '../../store/slices/loginSlice';
 import Cookies from 'js-cookie'
 
 const ProtectedRoute: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
@@ -24,6 +24,7 @@ const ProtectedRoute: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
       setIsLoading(false)
     }else{
       setIsLoading(false);
+      dispatch(setIsLoggedIn());
     }
   }, [dispatch]);
 

@@ -1,4 +1,4 @@
-  import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   gitHubLoginResponse,
   LoginResponse,
@@ -8,6 +8,7 @@ import {
 } from "../../types/login/loginState";
 import loginApi from "../../utils/axios/loginApi";
 import { AxiosError } from "axios";
+import Cookies from 'js-cookie'
 
 const initialState: LoginState = {
   email: "",
@@ -23,14 +24,11 @@ export const loginUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await loginApi.post<LoginResponse>(
-        "/login",
-        loginData
-      );
+      const response = await loginApi.post<LoginResponse>("/login", loginData);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
-      
+
       if (axiosError.response) {
         if (axiosError.response.status === 401) {
           return rejectWithValue("Invalid email or password");
@@ -70,7 +68,7 @@ export const googleLogin = createAsyncThunk(
         message: string;
         refreshToken: string;
         accessToken: string;
-        userId:string;
+        userId: string;
       }>("http://localhost:8000/google-login", { token });
       return response.data;
     } catch (error) {
@@ -90,6 +88,8 @@ export const logout = createAsyncThunk(
       const response = await loginApi.post<LogoutResponse>(
         "http://localhost:8000/logout"
       );
+      Cookies.remove("accessToken");
+      Cookies.remove("refreshToken");
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
@@ -102,17 +102,21 @@ export const logout = createAsyncThunk(
 
 export const gitHubLogin = createAsyncThunk(
   "gitHublogin",
-  async(code:string,{rejectWithValue})=>{
+  async (code: string, { rejectWithValue }) => {
     try {
-      const response = await loginApi.post<gitHubLoginResponse>("http://localhost:8000/github-login",{code});
+      const response = await loginApi.post<gitHubLoginResponse>(
+        "http://localhost:8000/github-login",
+        { code }
+      );
       return response.data;
     } catch (error) {
-      const axiosError = error as AxiosError<{message:string}>
-      return rejectWithValue(axiosError.response?.data.message || "gitHub Login Failed"
-      )
+      const axiosError = error as AxiosError<{ message: string }>;
+      return rejectWithValue(
+        axiosError.response?.data.message || "gitHub Login Failed"
+      );
     }
   }
-)
+);
 
 const loginSlice = createSlice({
   name: "login",
@@ -121,6 +125,9 @@ const loginSlice = createSlice({
     clearError(state) {
       state.errorMessage = null;
     },
+    setIsLoggedIn(state) {
+      state.isLoggedIn = false;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(loginUser.fulfilled, (state) => {
@@ -141,14 +148,14 @@ const loginSlice = createSlice({
       console.log(action.payload);
       state.isLoggedIn = true;
     });
-    builder.addCase(gitHubLogin.fulfilled, (state,action)=>{
-      if(action.payload.accessToken && action.payload.refreshToken){
-        state.isLoggedIn =true;
+    builder.addCase(gitHubLogin.fulfilled, (state, action) => {
+      if (action.payload.accessToken && action.payload.refreshToken) {
+        state.isLoggedIn = true;
       }
-    })
+    });
   },
 });
 
-export const { clearError } = loginSlice.actions;
+export const { clearError ,setIsLoggedIn} = loginSlice.actions;
 
 export default loginSlice.reducer;
