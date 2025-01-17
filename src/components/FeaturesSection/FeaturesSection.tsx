@@ -1,5 +1,6 @@
 import { forwardRef, useRef, useEffect } from "react";
 import { gsap } from "gsap";
+import { Card, CardHeader, Image } from "@nextui-org/react";
 
 interface Feature {
   id: number;
@@ -23,7 +24,7 @@ const FeatureSection = forwardRef<HTMLDivElement, FeatureSectionProps>(
       gsap.fromTo(
         titleRef.current,
         { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.5, delay: feature.animationDelay || 0 }
+        { opacity: 1, y: 0, duration: 0.4, delay: feature.animationDelay || 0 }
       );
       gsap.fromTo(
         descriptionRef.current,
@@ -31,7 +32,7 @@ const FeatureSection = forwardRef<HTMLDivElement, FeatureSectionProps>(
         {
           opacity: 1,
           y: 0,
-          duration: 0.5,
+          duration: 0.4,
           delay: feature.animationDelay || 0.2,
         }
       );
@@ -47,18 +48,31 @@ const FeatureSection = forwardRef<HTMLDivElement, FeatureSectionProps>(
     return (
       <div
         ref={ref}
-        className={`flex ${layoutClass} items-center justify-between h-screen w-full px-5 `}
+        className={`flex ${layoutClass} items-center justify-between w-full min-h-[400px]`} // Ensuring a minimum height
         style={{
           backgroundColor: "transparent",
         }}
       >
         {feature.icon && (
           <div className="flex-1 flex justify-center items-center">
-            <img
-              src={feature.icon}
-              alt={feature.title}
-              className="w-96 h-auto object-contain rounded-3xl"
-            />
+            <Card
+              className="col-span-12 sm:col-span-4 h-[300px] shadow-lg shadow-current"
+            >
+              <CardHeader className="absolute z-10 top-1 flex-col !items-start">
+                <p className="text-tiny text-white/60 uppercase font-bold">
+                  {feature.title}
+                </p>
+                <h4 className="text-white font-medium text-large">
+                  Creates beauty like a beast
+                </h4>
+              </CardHeader>
+              <Image
+                removeWrapper
+                alt="Card background"
+                className="z-0 w-full h-full object-cover"
+                src="https://nextui.org/images/card-example-2.jpeg"
+              />
+            </Card>
           </div>
         )}
 
@@ -71,7 +85,7 @@ const FeatureSection = forwardRef<HTMLDivElement, FeatureSectionProps>(
           </h2>
           <p
             ref={descriptionRef}
-            className="text-lg lg:text-2xl text-gray-400 leading-relaxed"
+            className="text-lg lg:text-xl text-white leading-relaxed"
           >
             {feature.description}
           </p>

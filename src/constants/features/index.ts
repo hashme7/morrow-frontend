@@ -3,78 +3,67 @@ export const features = [
     id: 1,
     title: "Freelancing",
     description:
-      "Unlock a world of opportunities. Whether you're looking to hire top talent or offer your skills as a freelancer, our platform connects you with the best in the industry. Be a part of something bigger, take charge of your projects, and bring in expert freelancers when you need them. **This is where innovation meets talent.**",
+      "Tap into endless possibilities with our freelancing platform. Whether you’re seeking to collaborate with world-class professionals or offer your expertise, we connect innovators with trailblazers. Empower your projects, amplify your impact, and discover the synergy of innovation and talent.",
     icon: "/assets/images/homeBg.jpeg",
     animation: "slide-down",
     color: "#FFD700",
-    isFeatured: true,layout:"left",
-    backgroundImage:"/assets/images/backgroudImageFreelance"
+    isFeatured: true,
+    layout: "left",
+    backgroundImage: "/assets/images/backgroundImageFreelance",
   },
   {
     id: 2,
     title: "API Testing",
     description:
-      "Ensure your APIs are flawless with comprehensive, automated testing tools designed to catch bugs before they reach production.",
+      "Experience seamless API performance with powerful testing tools that leave no bug unchecked. Automate, debug, and deliver APIs with unwavering confidence. Let your APIs shine before they hit production.",
     icon: "/assets/images/homeBg.jpeg",
     animation: "fade-in",
     color: "#4A90E2",
-    layout:'right',
-    backgroundImage:"/assets/images/backgroudImageFreelance"
+    layout: "right",
+    backgroundImage: "/assets/images/backgroundImageFreelance",
   },
-  
   {
     id: 3,
     title: "Kanban Board",
     description:
-      "Effortlessly track and manage your projects. Organize tasks, set priorities, and meet deadlines with ease.",
+      "Revolutionize the way you manage projects. Stay organized, set clear priorities, and watch your team achieve goals effortlessly. With our intuitive Kanban boards, productivity has never looked so good.",
     icon: "/assets/images/homeBg.jpeg",
     animation: "zoom-in",
     color: "#7ED321",
-    layout:'center',
-    backgroundImage:"/assets/images/backgroudImageFreelance"
+    layout: "center",
+    backgroundImage: "/assets/images/backgroundImageFreelance",
   },
   {
     id: 4,
-    title: "Calendar",
-    description:
-      "Never miss a deadline again. Seamlessly integrate your tasks and events to stay on top of your schedule.",
-    icon: "/assets/images/homeBg.jpeg",
-    animation: "rotate",
-    color: "#9013FE",
-    layout:'right',
-    backgroundImage:"/assets/images/backgroudImageFreelance"
-  },
-  {
-    id: 5,
     title: "Video Chat",
     description:
-      "Host virtual meetings and collaborate with your team in high-definition video, bringing face-to-face interaction online.",
+      "Bridge the distance with seamless, high-definition video calls. Collaborate, brainstorm, and connect as if you’re in the same room. Face-to-face interaction, redefined for the digital era.",
     icon: "/assets/images/homeBg.jpeg",
     animation: "flip",
     color: "#F8E71C",
-    layout:'left',
-    backgroundImage:"/assets/images/backgroudImageFreelance"
+    layout: "left",
+    backgroundImage: "/assets/images/backgroundImageFreelance",
   },
   {
-    id: 6,
-    title: "Screen Sharing",
+    id: 5,
+    title: "Real-Time Chat",
     description:
-      "Collaborate effortlessly by sharing your screen. Whether presenting or troubleshooting, see everything in real time.",
+      "Communicate instantly, collaborate effortlessly. Our real-time chat feature ensures your team stays connected, no matter where they are. Conversations happen in the moment, and so does progress.",
     icon: "screen_share_icon.svg",
     animation: "fade-out",
     color: "#D0021B",
-    layout:'right',
-    backgroundImage:"/assets/images/backgroudImageFreelance"
+    layout: "right",
+    backgroundImage: "/assets/images/backgroundImageFreelance",
   },
   {
-    id: 7,
+    id: 6,
     title: "DB Diagram",
     description:
-      "Design your database with precision. Visualize relationships and optimize performance, all in one intuitive interface.",
+      "Transform your database design with our intuitive tools. Visualize complex relationships, optimize structures, and build with precision. Your blueprint for efficient data management starts here.",
     icon: "/assets/images/homeBg.jpeg",
     animation: "slide-up",
     color: "#F5A623",
-    layout:'center',
-    backgroundImage:"/assets/images/backgroudImageFreelance"
+    layout: "center",
+    backgroundImage: "/assets/images/backgroundImageFreelance",
   },
 ];
