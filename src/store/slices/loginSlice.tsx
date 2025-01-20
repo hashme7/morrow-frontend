@@ -142,7 +142,9 @@ const loginSlice = createSlice({
         state.isLoggedIn = false;
       }
     });
-    builder.addCase(checkTokenValidity.rejected, (state) => {
+    builder.addCase(checkTokenValidity.rejected, (state,action) => {
+      console.log(action,"action in rejection");
+
       state.isLoggedIn = false;
     })
     builder.addCase(logout.fulfilled, (state) => {
