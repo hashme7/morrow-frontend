@@ -69,7 +69,7 @@ export const googleLogin = createAsyncThunk(
         refreshToken: string;
         accessToken: string;
         userId: string;
-      }>("http://localhost:8000/google-login", { token });
+      }>("/google-login", { token });
       return response.data;
     } catch (error) {
       console.log(error);
@@ -86,7 +86,7 @@ export const logout = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await loginApi.post<LogoutResponse>(
-        "http://localhost:8000/logout"
+        "/logout"
       );
       Cookies.remove("accessToken");
       Cookies.remove("refreshToken");
@@ -105,7 +105,7 @@ export const gitHubLogin = createAsyncThunk(
   async (code: string, { rejectWithValue }) => {
     try {
       const response = await loginApi.post<gitHubLoginResponse>(
-        "http://localhost:8000/github-login",
+        "/github-login",
         { code }
       );
       return response.data;
@@ -141,6 +141,9 @@ const loginSlice = createSlice({
         state.isLoggedIn = false;
       }
     });
+    builder.addCase(checkTokenValidity.rejected, (state) => {
+      state.isLoggedIn = false;
+    })
     builder.addCase(logout.fulfilled, (state) => {
       state.isLoggedIn = false;
     });

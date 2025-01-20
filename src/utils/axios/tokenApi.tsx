@@ -2,9 +2,9 @@ import axios from 'axios';
 
 
 const tokenApi = axios.create({
-    baseURL:'http://localhost:8000',
-    withCredentials: true,
-})
+  baseURL: "https://morrow.hashim-dev007.online/",
+  withCredentials: true,
+});
 
 
 tokenApi.interceptors.request.use((config) => {

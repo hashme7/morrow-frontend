@@ -1,13 +1,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { IProjectResponse, projectInputs, IProject } from "../../types/project";
 import extractIdFromToken from "../../utils/decodeToken";
+import apiClient from "../../utils/axios/projectAxios";
 
-
-const apiClient = axios.create({
-  baseURL: "http://localhost:8000/project", 
-  withCredentials: true, 
-});
 
 interface IInitialState {
   projects: IProject[];
@@ -96,6 +92,7 @@ const projects = createSlice({
     builder.addCase(getProjects.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.payload || "Unable to fetch projects";
+      state.selectProject = null;
     });
     builder.addCase(createProject.pending,(state)=>{
       state.status = "loading"
