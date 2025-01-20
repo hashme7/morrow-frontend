@@ -130,7 +130,8 @@ const loginSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(loginUser.fulfilled, (state) => {
+    builder.addCase(loginUser.fulfilled, (state,action) => {
+      console.log(action,"actionsss")
       state.isLoggedIn = true;
       state.errorMessage = null;
     });
