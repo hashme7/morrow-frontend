@@ -33,6 +33,7 @@ const Signup: React.FC = () => {
       if (Object.keys(validationErrors).length === 0) {
         const response = await dispatch(signupUser({ username: userName, email, password }));
         if (signupUser.fulfilled.match(response)) {
+          console.log("navigating : /otp ");
           navigate("/otp");
         }
       } else {
@@ -49,6 +50,7 @@ const Signup: React.FC = () => {
       );
       console.log("handle google submit", _credentialResponse);
       if (googleLogin.fulfilled.match(response)) {
+        console.log("navigating from signup to :/dashboard");
         navigate("/dashboard");
       }
     }

@@ -32,8 +32,9 @@ const Login: React.FC = () => {
     const validationErrors = validateFields({ email, password });
     if (Object.keys(validationErrors).length === 0) {
       const resultAction = await dispatch(loginUser({ email, password }));
-      console.log(resultAction)
+      console.log(resultAction,'result')
       if (loginUser.fulfilled.match(resultAction)) {
+        console.log('navigating from the login to /dashboard');
         navigate("/dashboard");
       } else {
         setErrors({ ...errors, form: errorMessage || "Login failed" });
@@ -51,9 +52,10 @@ const Login: React.FC = () => {
 
   const handleGoogleSubmit = async (_credentialResponse:IGoogleResponse) => {
     if(_credentialResponse.credential){
-      console.log('afkdsjkfasjkdf',_credentialResponse.credential);
       const response = await dispatch(googleLogin(_credentialResponse.credential))
-      if(googleLogin.fulfilled.match(response)){
+      if (googleLogin.fulfilled.match(response)) {
+        console.log("navigating from login to /dashboard.");
+        
         navigate('/dashboard');
       }
     }
