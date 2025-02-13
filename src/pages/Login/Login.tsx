@@ -23,7 +23,7 @@ const Login: React.FC = () => {
   const [errors, setErrors] = useState<{
     email?: string;
     password?: string;
-    form?: string;
+    form?: string; 
   }>({});
 
   const handleSubmit = async (e: React.FormEvent) => {
