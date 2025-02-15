@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../store/hooks/hooks.ts';
-import { checkTokenValidity } from '../../store/slices/loginSlice';
+import { checkTokenValidity, setIsLoggedIn } from '../../store/slices/loginSlice';
 import Cookies from 'js-cookie'
 
 const ProtectedRoute: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
@@ -26,6 +26,7 @@ const ProtectedRoute: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
     } else {
       console.log("access token is Not there ", Cookies.get("accessToken"));
       setIsLoading(false);
+      setIsLoggedIn();
     }
   }, [dispatch]);
 

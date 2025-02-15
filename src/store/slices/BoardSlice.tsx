@@ -188,6 +188,5 @@ const BoardSlice = createSlice({
   },
 });
 
-// export const { clearError ,setError} = BoardSlice.actions;  
 export const { setTask } = BoardSlice.actions;
 export default BoardSlice.reducer;
