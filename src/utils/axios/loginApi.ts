@@ -8,6 +8,13 @@ const loginApi = axios.create({
 
 loginApi.interceptors.response.use(
   (response) => {
+    console.log(`
+      
+      `,
+      response,
+      `
+
+      `)
     return response;
   },
   (error) => {
