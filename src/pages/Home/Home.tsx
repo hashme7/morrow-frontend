@@ -7,29 +7,7 @@ import { features } from "../../constants/features";
 import { gsap } from "gsap";
 
 const Home: React.FC = () => {
-  // const marqueeRef = useRef<HTMLDivElement>(null);
-  // useEffect(() => {
-  //   const marqueeElement = marqueeRef.current;
-
-  //   if (!marqueeElement) return;
-
-  //   // Select all the child elements (company items)
-  //   const items = marqueeElement.querySelectorAll(".company-item");
-
-  //   items.forEach((item, index) => {
-  //     gsap.fromTo(
-  //       item,
-  //       { x: "100%" }, // Start position off-screen to the right
-  //       {
-  //         x: "-100%", // End position off-screen to the left
-  //         duration: 10 + index * 2, // Slight variation in duration
-  //         ease: "linear",
-  //         repeat: -1, // Infinite loop
-  //         delay: index * 0.5, // Stagger the start times
-  //       }
-  //     );
-  //   });
-  // }, []);
+  
 
   useEffect(() => {
     gsap.fromTo(

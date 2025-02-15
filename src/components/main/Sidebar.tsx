@@ -22,6 +22,7 @@ const SideBar: React.FC<SideBarProps> = ({ showNotification}) => {
 
   useEffect(() => {
     const userId = extractIdFromToken();
+    console.log("userId is not there......")
     if (userId) {
       dispatch(getProjects(userId));
     }

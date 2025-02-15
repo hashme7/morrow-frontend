@@ -20,9 +20,11 @@ const ProtectedRoute: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
       }
     };
     if(Cookies.get('accessToken')){
+      console.log("access token is there ",Cookies.get('accessToken'))
       validateToken();
       setIsLoading(false)
-    }else{
+    } else {
+      console.log("access token is Not there ", Cookies.get("accessToken"));
       setIsLoading(false);
     }
   }, [dispatch]);

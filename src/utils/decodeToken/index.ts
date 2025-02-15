@@ -3,6 +3,9 @@ import { jwtDecode } from "jwt-decode";
 
 const extractIdFromToken = () => {
   const token = Cookies.get("accessToken");
+  console.log(`
+        extractIdFromToken :- ${Cookies.get('accessToken')}
+    `)
   if (!token) {
     return null
   }
