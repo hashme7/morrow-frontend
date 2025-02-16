@@ -29,7 +29,7 @@ const ProtectedRoute: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
       setIsLoading(false);
       dispatch(setIsLoggedIn());
     }
-  }, [dispatch]);
+  }, []);
 
   if (isLoading) {
     return <div>Loadi</div>;
