@@ -15,7 +15,6 @@ const ProtectedRoute: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
         await dispatch(checkTokenValidity());
       } catch (error) {
         console.error('Token validation error:', error);
-
       } finally {
         setIsLoading(false);
       }
@@ -26,8 +25,8 @@ const ProtectedRoute: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
       setIsLoading(false)
     } else {
       console.log("access token is Not there ", Cookies.get("accessToken"));
-      setIsLoading(false);
       dispatch(setIsLoggedIn());
+      setIsLoading(false);
     }
   }, []);
 

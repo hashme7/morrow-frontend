@@ -25,10 +25,10 @@ const AuthRoute: React.FC<AuthRouteProps> = ({ children }) => {
       }
     };
     validateToken();
-  }, [dispatch]);
+  }, []);
 
   if (isLoading) {
-    return <div>Loading............</div>;
+    return <div>Loading............123</div>;
   }
 
   if (isLoggedIn) {
