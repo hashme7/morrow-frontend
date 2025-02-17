@@ -40,7 +40,7 @@ const PModal: React.FC<PModalProps> = ({
     await dispatch(createProject(values));
     showNotification("Project creation successfully completed.");
     onClose();
-    setTimeout(() => {
+    setTimeout(() => { 
       dispatch(getProjects());
     }, 600);
   };
