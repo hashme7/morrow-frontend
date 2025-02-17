@@ -30,7 +30,7 @@ export const createColumn = createAsyncThunk<
   try {
     console.log(statusData, "statusData");
     const response = await axios.post<createStatusResponse>(
-      "http://localhost:8000/task/create-status",
+      "https://morrow.hashim-dev007.online/task/create-status",
       statusData
     );
     return response.data;
@@ -49,7 +49,7 @@ export const getColumn = createAsyncThunk<
 >("tasks/getStatus", async ({ teamId }, { rejectWithValue }) => {
   try {
     const response = await axios.get<getStatusResponse>(
-      `http://localhost:8000/task/get-status/${teamId}`
+      `https://morrow.hashim-dev007.online/task/get-status/${teamId}`
     );
     return response.data;
   } catch (error) {
@@ -62,7 +62,7 @@ export const getColumn = createAsyncThunk<
 
 export const editColumnName = createAsyncThunk<updateStatusResponse,{name:string,id:string,team_id:string},{rejectValue:string}>('/updateColumn',async({name ,id,team_id},{rejectWithValue})=>{
   try {
-    const response = await axios.post<updateStatusResponse>(`http://localhost:8000/task/update-status/${team_id}`,{name,id});
+    const response = await axios.post<updateStatusResponse>(`https://morrow.hashim-dev007.online/task/update-status/${team_id}`,{name,id});
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError<{message:string}>
@@ -72,7 +72,7 @@ export const editColumnName = createAsyncThunk<updateStatusResponse,{name:string
 
 export const deleteColumn = createAsyncThunk<deleteStatusResponse,{id:string,team_id:string},{rejectValue:string}>('/deleteColumn',async({id,team_id},{rejectWithValue})=>{
   try {
-    const response = await axios.delete<deleteStatusResponse>(`http://localhost:8000/task/delete-task/${team_id}?id=${id}`);
+    const response = await axios.delete<deleteStatusResponse>(`https://morrow.hashim-dev007.online/task/delete-task/${team_id}?id=${id}`);
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError<{message:string}>
@@ -82,7 +82,7 @@ export const deleteColumn = createAsyncThunk<deleteStatusResponse,{id:string,tea
 
 export const createTask = createAsyncThunk<ITask,{name:string,id:string,status:string,priority:string,team_id:string,assignee:{_id:Types.ObjectId}[]},{rejectValue:string}>('/addTask',async({name,id,priority,status,team_id,assignee},{rejectWithValue})=>{
   try {
-    const response = await axios.post<ITask>(`http://localhost:8000/task/create-task/${team_id}?status=${status}&name=${name}&id=${id}&priority=${priority}`,{assignee});
+    const response = await axios.post<ITask>(`https://morrow.hashim-dev007.online/task/create-task/${team_id}?status=${status}&name=${name}&id=${id}&priority=${priority}`,{assignee});
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError<{message:string}>;
@@ -93,7 +93,7 @@ export const createTask = createAsyncThunk<ITask,{name:string,id:string,status:s
 export const getTasks = createAsyncThunk<getTaskResponse, { team_id: string}, { rejectValue: string }>('/getTask', async({team_id},{rejectWithValue}) => {
   try {
     const response = await axios.get<getTaskResponse>(
-      `http://localhost:8000/task/getTasks/${team_id}`
+      `https://morrow.hashim-dev007.online/task/getTasks/${team_id}`
     );
     return response.data;
   } catch (error) {
@@ -107,7 +107,7 @@ export const getTasks = createAsyncThunk<getTaskResponse, { team_id: string}, { 
 export const updateTaskStatus = createAsyncThunk<ITask , { team_id: string, id: string, status: string }, { rejectValue: string }>('/update-taskStatus', async ({ team_id, id, status },{rejectWithValue}) => {
   try {
     const response = await axios.put<ITask>(
-      `http://localhost:8000/task/update-taskStatus/${team_id}?id=${id}&status=${status}`
+      `https://morrow.hashim-dev007.online/task/update-taskStatus/${team_id}?id=${id}&status=${status}`
     );
     return response.data;
   } catch (error) {

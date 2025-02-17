@@ -24,10 +24,13 @@ export const verifyOtp = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axios.post("http://localhost:8000/verify-otp", {
-        otp,
-        userId,
-      });
+      const response = await axios.post(
+        "https://morrow.hashim-dev007.online/auth/verify-otp",
+        {
+          otp,
+          userId,
+        }
+      );
       return response.data;
     }  catch (error:unknown) {
       if (axios.isAxiosError(error)) {
@@ -43,7 +46,10 @@ export const resendOtp = createAsyncThunk(
   "resend-otp",
   async ({ userId }: { userId: ObjectId | null }, { rejectWithValue }) => {
     try {
-      const response = await axios.post("http://localhost:8000/resend-otp", {userId});
+      const response = await axios.post(
+        "https://morrow.hashim-dev007.online/auth/resend-otp",
+        { userId }
+      );
       return response.data;
     } catch (error:unknown) {
       if (axios.isAxiosError(error)) {
