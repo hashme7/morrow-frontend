@@ -14,7 +14,6 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { projectCreateSchema } from "../../../utils/validations/project";
 import { useAppDispatch } from "../../../store/hooks/hooks";
 import { createProject, getProjects } from "../../../store/slices/projectSlice";
-import extractIdFromToken from "../../../utils/decodeToken";
 
 interface PModalProps {
   isOpen: boolean;
