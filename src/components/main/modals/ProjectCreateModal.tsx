@@ -18,7 +18,7 @@ import { createProject, getProjects } from "../../../store/slices/projectSlice";
 interface PModalProps {
   isOpen: boolean;
   onClose: () => void;
-  showNotification: (message: string) => void; // New prop
+  showNotification: (message: string) => void; // New prop  
 }
 
 const PModal: React.FC<PModalProps> = ({
