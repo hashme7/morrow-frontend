@@ -23,12 +23,12 @@ const initialState: IInitialState = {
 
 export const getProjects = createAsyncThunk<
   IProjectResponse,
-  string,
+  void,
   { rejectValue: string }
->("/get-projects", async (userId, { rejectWithValue }) => {
+>("/get-projects", async ( _,{ rejectWithValue }) => {
   try {
     const response = await apiClient.get<IProjectResponse>(
-      `/getprojects/${userId}`
+      `/getprojects/`
     );
     console.log(response.data,"____________------________");
     

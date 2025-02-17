@@ -1,33 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import { useAppSelector, useAppDispatch } from '../../store/hooks/hooks.ts';
-import { checkTokenValidity, setIsLoggedIn } from '../../store/slices/loginSlice';
-import Cookies from 'js-cookie'
+import React, { useEffect, useState } from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import { useAppSelector, useAppDispatch } from "../../store/hooks/hooks.ts";
+import {
+  checkTokenValidity,
+} from "../../store/slices/loginSlice";
 
 const ProtectedRoute: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector((state) => state.login.isLoggedIn);
- 
+
   useEffect(() => {
     const validateToken = async () => {
       try {
         await dispatch(checkTokenValidity());
       } catch (error) {
-        console.error('Token validation error:', error);
+        console.error("Token validation error:", error);
       } finally {
         setIsLoading(false);
       }
     };
-    if(Cookies.get('accessToken')){
-      console.log("access token is there ",Cookies.get('accessToken'))
-      validateToken();
-      setIsLoading(false)
-    } else {
-      console.log("access token is Not there ", Cookies.get("accessToken"));
-      dispatch(setIsLoggedIn());
-      setIsLoading(false);
-    }
+    validateToken();
+    setIsLoading(false);
   }, []);
 
   if (isLoading) {

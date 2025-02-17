@@ -6,31 +6,28 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks";
 import { getProjects, selectProject } from "../../store/slices/projectSlice";
 import { IProject } from "../../types/project";
 import { useLocation, useNavigate } from "react-router-dom";
-import extractIdFromToken from "../../utils/decodeToken";
 
 interface SideBarProps {
   showNotification: (message: string) => void;
 }
 
-const SideBar: React.FC<SideBarProps> = ({ showNotification}) => {
+const SideBar: React.FC<SideBarProps> = ({ showNotification }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
-  const { projects, selectProjectId } = useAppSelector((state) => state.project);
+  const { projects, selectProjectId } = useAppSelector(
+    (state) => state.project
+  );
   const { requests } = useAppSelector((state) => state.request);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    const userId = extractIdFromToken();
-    console.log("userId is not there......")
-    if (userId) {
-      dispatch(getProjects(userId));
-    }
+    dispatch(getProjects());
   }, [requests]);
 
-  const handleSelectProject = (id:number)=>{
+  const handleSelectProject = (id: number) => {
     dispatch(selectProject(id));
-  }
+  };
 
   return (
     <>
