@@ -40,12 +40,9 @@ const PModal: React.FC<PModalProps> = ({
     await dispatch(createProject(values));
     showNotification("Project creation successfully completed.");
     onClose();
-    const userId = extractIdFromToken();
-    if (userId) {
-      setTimeout(() => {
-        dispatch(getProjects(userId));
-      }, 600);
-    }
+    setTimeout(() => {
+      dispatch(getProjects());
+    }, 600);
   };
 
   return (
