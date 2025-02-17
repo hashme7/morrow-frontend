@@ -38,7 +38,10 @@ interface SignupResponse {
 
 export const signupUser = createAsyncThunk('/sign-up',async(userData:{ username: string; email: string; password: string },{rejectWithValue})=>{
   try {
-    const response = await axios.post<SignupResponse>('http://localhost:8000/sign-up',userData);
+    const response = await axios.post<SignupResponse>(
+      "https://morrow.hashim-dev007.online/auth/sign-up",
+      userData
+    );
     return response.data;
   } catch (error) {
     console.log(error);
