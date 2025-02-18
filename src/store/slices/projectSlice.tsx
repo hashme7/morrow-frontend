@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { IProjectResponse, projectInputs, IProject } from "../../types/project";
-import extractIdFromToken from "../../utils/decodeToken";
 import apiClient from "../../utils/axios/projectAxios";
 
 
@@ -46,13 +45,8 @@ export const createProject = createAsyncThunk(
   "/create-project",
   async (values: projectInputs, { rejectWithValue }) => {
     try {
-      const userId = extractIdFromToken();
-      if (!userId) {
-        console.log("userid is not there");
-        return;
-      }
       const response = await apiClient.post(
-        `/create?userId=${userId}`,
+        `/create`,
         values
       );
       return response.data;
