@@ -37,9 +37,9 @@ const PModal: React.FC<PModalProps> = ({
 
   const onSubmit = async (values: typeof initialValues) => {
     await dispatch(createProject(values));
-    showNotification("Project creation successfully completed.");
     onClose();
     setTimeout(() => { 
+      showNotification("Project creation successfully completed.");
       dispatch(getProjects());
     }, 600);
   };
