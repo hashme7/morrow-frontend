@@ -3,7 +3,7 @@ import axios, { AxiosError } from "axios";
 import { IMessage } from "../../types/Chat";
 
 const api = axios.create({
-  baseURL: "http://localhost:8000/communicate",
+  baseURL: "https://morrow.hashim-dev007.online/communicate",
   withCredentials: true,
 });
 
