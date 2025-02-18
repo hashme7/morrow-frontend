@@ -18,7 +18,7 @@ import { createProject, getProjects } from "../../../store/slices/projectSlice";
 interface PModalProps {
   isOpen: boolean;
   onClose: () => void;
-  showNotification: (message: string) => void; // New prop  
+  showNotification: (message: string) => void; // New prop
 }
 
 const PModal: React.FC<PModalProps> = ({
@@ -38,10 +38,13 @@ const PModal: React.FC<PModalProps> = ({
   const onSubmit = async (values: typeof initialValues) => {
     await dispatch(createProject(values));
     onClose();
-    setTimeout(() => { 
-      showNotification("Project creation successfully completed.");
-      dispatch(getProjects());
-    }, 600);
+    const startLoadingProject = () => {
+      setTimeout(() => {
+        showNotification("Project creation successfully completed.");
+        dispatch(getProjects());
+      }, 900);
+    };
+    startLoadingProject();
   };
 
   return (
