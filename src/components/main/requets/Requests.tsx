@@ -5,24 +5,17 @@ import { acceptRequest, getRequests } from "../../../store/slices/RequestsSlice"
 import { IRequest } from "../../../types/requests";
 import {requestColumns as columns} from '../../../constants/data/data';
 import { Button } from "@nextui-org/react";
-import extractIdFromToken from "../../../utils/decodeToken";
 
 const Requests: React.FC = () => {
   const dispatch = useAppDispatch();
   const { requests, isLoading } = useAppSelector((state) => state.request);
 
   useEffect(() => {
-    const userId = extractIdFromToken();
-    if (userId) {
-      dispatch(getRequests(userId));
-    }
-  }, [dispatch,isLoading]);
+      dispatch(getRequests())
+  }, [dispatch]);
 
   const handleAccept = (requestId:string,teamId:string)=>{
-    const userId = localStorage.getItem('userId');
-    if(userId){
-      dispatch(acceptRequest({userId,requestId,teamId}));
-    }
+      dispatch(acceptRequest({requestId,teamId}));
   }
 
   const renderCell = (request: IRequest, column: { uid: string }) => {

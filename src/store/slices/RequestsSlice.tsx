@@ -11,12 +11,12 @@ const InitialState: IRequestsState = {
 
 export const getRequests = createAsyncThunk<
   IRequestResponse,
-  string,
+  void,
   { rejectValue: string }
->("request/getRequest", async (userId, { rejectWithValue }) => {
+>("request/getRequest", async (_, { rejectWithValue }) => {
   try {
     const response = await axios.get<IRequestResponse>(
-      `/getRequests?userId=${userId}`
+      `/getRequests`
     );
     return response.data;
   } catch (error) {
@@ -54,15 +54,14 @@ export const acceptRequest = createAsyncThunk(
   "members/acceptRequest",
   async (
     {
-      userId,
       requestId,
       teamId,
-    }: { userId: string; requestId: string; teamId: string },
+    }: { requestId: string; teamId: string },
     { rejectWithValue }
   ) => {
     try {
       const response = await axios.post(
-        `/acceptRequest?userId=${userId}&requestId=${requestId}&teamId=${teamId}`
+        `/acceptRequest?requestId=${requestId}&teamId=${teamId}`
       );
       return response.data;
     } catch (error) {
