@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import HistoryList from "./HistoryList";
 import { FaTrash } from "react-icons/fa";
 import MonacoEditor from "@monaco-editor/react";
-import taskApi from "../../../utils/axios/taskAxios";
+import Api from "../../../utils/axios/loginApi";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks/hooks";
 import { getApis, saveApi } from "../../../store/slices/apiSlice";
 import { toast } from "react-toastify";
@@ -73,7 +73,7 @@ const ApiTests: React.FC = () => {
           queryparams: params,
           body: json ? JSON.parse(json) : undefined,
         };
-        const { data } = await taskApi.post("/api-test", targetDetails);
+        const { data } = await Api.post("/api-test", targetDetails);
         setStatus(data.status,);
         setTime(data.time);
         setSize(data.size);
