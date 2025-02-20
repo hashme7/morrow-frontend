@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 // https://morrow.hashim-dev007.online/
 const loginApi = axios.create({
-  baseURL: "https://morrow.hashim-dev007.online/",
+  baseURL: "https://morrow.hashim-dev007.online",
   withCredentials: true,
 });
 

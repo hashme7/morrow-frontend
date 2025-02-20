@@ -56,7 +56,6 @@ const ApiSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(saveApi.fulfilled, (state, action) => {
-      console.log("kkkk");
       state.apis = [...state.apis, action.payload];
     });
     builder.addCase(getApis.fulfilled, (state, action) => {
