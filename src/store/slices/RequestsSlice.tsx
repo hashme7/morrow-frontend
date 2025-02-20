@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { IRequestResponse, IRequestsState } from "../../types/requests";
-import axios from "../../utils/axios/loginApi";
+import axios from "../../utils/axios/Apis";
 import { AxiosError } from "axios";
 
 const InitialState: IRequestsState = {
@@ -15,9 +15,7 @@ export const getRequests = createAsyncThunk<
   { rejectValue: string }
 >("request/getRequest", async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get<IRequestResponse>(
-      `/user/getRequests`
-    );
+    const response = await axios.get<IRequestResponse>(`/user/getRequests`);
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError<{ message: string }>;
@@ -53,10 +51,7 @@ export const sendRequest = createAsyncThunk(
 export const acceptRequest = createAsyncThunk(
   "members/acceptRequest",
   async (
-    {
-      requestId,
-      teamId,
-    }: { requestId: string; teamId: string },
+    { requestId, teamId }: { requestId: string; teamId: string },
     { rejectWithValue }
   ) => {
     try {

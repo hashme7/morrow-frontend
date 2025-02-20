@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import Api from "../../utils/axios/loginApi";
+import Api from "../../utils/axios/Apis";
 import {
   createStatusColumn,
   createStatusResponse,
@@ -136,7 +136,9 @@ export const getTasks = createAsyncThunk<
   { rejectValue: string }
 >("/getTask", async ({ team_id }, { rejectWithValue }) => {
   try {
-    const response = await Api.get<getTaskResponse>(`/task/getTasks/${team_id}`);
+    const response = await Api.get<getTaskResponse>(
+      `/task/getTasks/${team_id}`
+    );
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError<{ message: string }>;

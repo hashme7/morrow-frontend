@@ -1,15 +1,14 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { IProjectResponse, projectInputs, IProject } from "../../types/project";
-import apiClient from "../../utils/axios/loginApi";
-
+import apiClient from "../../utils/axios/Apis";
 
 interface IInitialState {
   projects: IProject[];
   selectProjectId: null | number;
   status: "idle" | "loading" | "failed";
   error: null | string;
-  selectProject:IProject | null;
+  selectProject: IProject | null;
 }
 
 const initialState: IInitialState = {
@@ -17,20 +16,20 @@ const initialState: IInitialState = {
   selectProjectId: null,
   status: "idle",
   error: null,
-  selectProject:null,
+  selectProject: null,
 };
 
 export const getProjects = createAsyncThunk<
   IProjectResponse,
   void,
   { rejectValue: string }
->("/get-projects", async ( _,{ rejectWithValue }) => {
+>("/get-projects", async (_, { rejectWithValue }) => {
   try {
     const response = await apiClient.get<IProjectResponse>(
       `/project/getprojects/`
     );
-    console.log(response.data,"____________------________");
-    
+    console.log(response.data, "____________------________");
+
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError<{ message: string }>;
@@ -45,10 +44,7 @@ export const createProject = createAsyncThunk(
   "/create-project",
   async (values: projectInputs, { rejectWithValue }) => {
     try {
-      const response = await apiClient.post(
-        `/project/create`,
-        values
-      );
+      const response = await apiClient.post(`/project/create`, values);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
@@ -68,16 +64,18 @@ const projects = createSlice({
       state.status = "idle";
       state.error = null;
     },
-    selectProject(state,action){
+    selectProject(state, action) {
       state.selectProjectId = action.payload;
-      state.selectProject = state.projects.filter((project)=>action.payload === project.id)[0];
-    }
+      state.selectProject = state.projects.filter(
+        (project) => action.payload === project.id
+      )[0];
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
       getProjects.fulfilled,
       (state, action: PayloadAction<IProjectResponse>) => {
-        console.log('action.payload',action.payload) 
+        console.log("action.payload", action.payload);
         state.status = "idle";
         state.projects = action.payload.data;
       }
@@ -90,19 +88,19 @@ const projects = createSlice({
       state.error = action.payload || "Unable to fetch projects";
       state.selectProject = null;
     });
-    builder.addCase(createProject.pending,(state)=>{
-      state.status = "loading"
+    builder.addCase(createProject.pending, (state) => {
+      state.status = "loading";
     });
-    builder.addCase(createProject.rejected,(state)=>{
+    builder.addCase(createProject.rejected, (state) => {
       state.error = "unable to create project";
-      state.status = 'failed';
-    })
-    builder.addCase(createProject.fulfilled,(state)=>{
-      state.error ="";
+      state.status = "failed";
+    });
+    builder.addCase(createProject.fulfilled, (state) => {
+      state.error = "";
       state.status = "idle";
-    })
+    });
   },
 });
 
-export const { clearError , selectProject } = projects.actions;
+export const { clearError, selectProject } = projects.actions;
 export default projects.reducer;

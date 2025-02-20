@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { IUpdateResponse, IUser } from "../../types/member";
 import { AxiosError } from "axios";
-import axios from "../../utils/axios/loginApi";
+import axios from "../../utils/axios/Apis";
 
 interface IInitialState {
   members: IUser[];

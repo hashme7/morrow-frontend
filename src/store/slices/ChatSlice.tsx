@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { IMessage } from "../../types/Chat";
-import api from '../../utils/axios/loginApi'
+import api from "../../utils/axios/Apis";
 interface IInitialState {
   teamName: string;
   teamId: string;
@@ -65,18 +65,18 @@ const chats = createSlice({
       state.error = null;
     },
     setMessage(state, action) {
-      state.chats = [...state.chats,action.payload];
-    },  
+      state.chats = [...state.chats, action.payload];
+    },
     setSeenMsg(state, action) {
-      console.log("msg status changing......")
+      console.log("msg status changing......");
       state.chats = state.chats.map((chat) => {
         if (chat._id == action.payload._id) {
           return action.payload;
         } else {
           return chat;
         }
-      })
-    }
+      });
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(sendMessage.fulfilled, () => {
@@ -88,6 +88,6 @@ const chats = createSlice({
   },
 });
 
-export const { clearError,setMessage ,setSeenMsg} = chats.actions;
+export const { clearError, setMessage, setSeenMsg } = chats.actions;
 
 export default chats.reducer;

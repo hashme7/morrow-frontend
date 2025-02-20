@@ -12,11 +12,10 @@ import React, { useEffect, useState } from "react";
 import HistoryList from "./HistoryList";
 import { FaTrash } from "react-icons/fa";
 import MonacoEditor from "@monaco-editor/react";
-import api from '../../../utils/axios/loginApi'
+import api from "../../../utils/axios/Apis";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks/hooks";
 import { getApis, saveApi } from "../../../store/slices/apiSlice";
 import { toast } from "react-toastify";
-
 
 const httpMethods = ["GET", "POST", "PUT", "DELETE", "PATCH"].map((method) => ({
   label: method,
@@ -25,7 +24,7 @@ const httpMethods = ["GET", "POST", "PUT", "DELETE", "PATCH"].map((method) => ({
 
 const ApiTests: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { apis } = useAppSelector(state => state.api);
+  const { apis } = useAppSelector((state) => state.api);
   const [endpoint, setEndpoint] = useState("");
   const [selectMethod, setSelectMethod] = useState<{
     label: string;
@@ -74,7 +73,7 @@ const ApiTests: React.FC = () => {
           body: json ? JSON.parse(json) : undefined,
         };
         const { data } = await api.post("/task/api-test", targetDetails);
-        setStatus(data.status,);
+        setStatus(data.status);
         setTime(data.time);
         setSize(data.size);
         setResponse(data.body);
@@ -91,7 +90,7 @@ const ApiTests: React.FC = () => {
           url: endpoint,
           method: selectMethod.value,
           body: json ? JSON.parse(json) : undefined,
-          response:response
+          response: response,
         };
         dispatch(saveApi(targetDetails));
         toast.success("api saved", {
@@ -103,17 +102,17 @@ const ApiTests: React.FC = () => {
         });
       }
     } catch (error) {
-      console.log(error,"eror");
+      console.log(error, "eror");
       toast.success("api is already there");
       throw error;
     }
-  }
+  };
 
   useEffect(() => {
     if (selectProject?.id) {
       dispatch(getApis({ projectId: selectProject.id }));
     }
-  },[selectProject])
+  }, [selectProject]);
 
   return (
     <div className="flex gap-4">

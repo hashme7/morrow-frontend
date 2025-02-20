@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { IDbDesign } from "../../types/diagram";
-import Api from "../../utils/axios/loginApi";
+import Api from "../../utils/axios/Apis";
 import { AxiosError } from "axios";
 
 const initialState: IDbDesign = {
@@ -18,7 +18,7 @@ export const saveDiagram = createAsyncThunk(
   "/save-diagram",
   async (dbDesign: IDbDesign, { rejectWithValue }) => {
     try {
-      console.log("saving the files....")
+      console.log("saving the files....");
       const response = await Api.post("/task/save-diagram", { dbDesign });
       return response.data;
     } catch (error) {
@@ -33,7 +33,9 @@ export const getDiagram = createAsyncThunk(
   "/get-diagram",
   async (projectId: number, { rejectWithValue }) => {
     try {
-      const response = await Api.get(`/task/get-diagram?projectId=${projectId}`);
+      const response = await Api.get(
+        `/task/get-diagram?projectId=${projectId}`
+      );
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
@@ -63,7 +65,7 @@ const DiagramSlice = createSlice({
         state.edges = action.payload.edges;
         state.viewport = action.payload.viewport;
       } else {
-        console.log("dfkasjdf;kas")
+        console.log("dfkasjdf;kas");
         state = {
           projectId: 0,
           nodes: [],

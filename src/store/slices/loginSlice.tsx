@@ -6,9 +6,9 @@ import {
   LogoutResponse,
   TokenValidityResponse,
 } from "../../types/login/loginState";
-import loginApi from "../../utils/axios/loginApi";
+import loginApi from "../../utils/axios/Apis";
 import { AxiosError } from "axios";
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 
 const initialState: LoginState = {
   email: "",
@@ -18,7 +18,7 @@ const initialState: LoginState = {
   errorMessage: null,
 };
 export const loginUser = createAsyncThunk(
-  "/login",
+  "/auth/login",
   async (
     loginData: { email: string; password: string },
     { rejectWithValue }
@@ -48,7 +48,7 @@ export const checkTokenValidity = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await loginApi.get<TokenValidityResponse>(
-        "/validate-token"
+        "/auth/validate-token"
       );
       return response.data;
     } catch (error) {
@@ -69,7 +69,7 @@ export const googleLogin = createAsyncThunk(
         refreshToken: string;
         accessToken: string;
         userId: string;
-      }>("/google-login", { token });
+      }>("/auth/google-login", { token });
       return response.data;
     } catch (error) {
       console.log(error);
@@ -85,9 +85,7 @@ export const logout = createAsyncThunk(
   "logout",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await loginApi.post<LogoutResponse>(
-        "/logout"
-      );
+      const response = await loginApi.post<LogoutResponse>("/auth/logout");
       Cookies.remove("accessToken");
       Cookies.remove("refreshToken");
       return response.data;
@@ -105,7 +103,7 @@ export const gitHubLogin = createAsyncThunk(
   async (code: string, { rejectWithValue }) => {
     try {
       const response = await loginApi.post<gitHubLoginResponse>(
-        "/github-login",
+        "/auth/github-login",
         { code }
       );
       return response.data;
@@ -127,17 +125,17 @@ const loginSlice = createSlice({
     },
     setIsLoggedIn(state) {
       state.isLoggedIn = false;
-    }
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(loginUser.fulfilled, (state,action) => {
-      console.log(action,"actionsss")
+    builder.addCase(loginUser.fulfilled, (state, action) => {
+      console.log(action, "actionsss");
       state.isLoggedIn = true;
       state.errorMessage = null;
     });
     builder.addCase(loginUser.rejected, (state) => {
       state.isLoggedIn = false;
-    })
+    });
     builder.addCase(checkTokenValidity.fulfilled, (state, action) => {
       if (action.payload.valid) {
         state.isLoggedIn = true;
@@ -145,10 +143,10 @@ const loginSlice = createSlice({
         state.isLoggedIn = false;
       }
     });
-    builder.addCase(checkTokenValidity.rejected, (state,action) => {
-      console.log(action,"action in rejection");
+    builder.addCase(checkTokenValidity.rejected, (state, action) => {
+      console.log(action, "action in rejection");
       state.isLoggedIn = false;
-    })
+    });
     builder.addCase(logout.fulfilled, (state) => {
       state.isLoggedIn = false;
     });
@@ -164,6 +162,6 @@ const loginSlice = createSlice({
   },
 });
 
-export const { clearError ,setIsLoggedIn} = loginSlice.actions;
+export const { clearError, setIsLoggedIn } = loginSlice.actions;
 
 export default loginSlice.reducer;
