@@ -1,8 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import  axios,{ AxiosError } from "axios";
 import { ObjectId } from "mongodb";
-// import { api } from "../../utils/axios/axiosConfig";
 
 interface SignupState{
   userName:string,

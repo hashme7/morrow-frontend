@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { IDbDesign } from "../../types/diagram";
-import taskApi from "../../utils/axios/taskAxios";
+import Api from "../../utils/axios/loginApi";
 import { AxiosError } from "axios";
 
 const initialState: IDbDesign = {
@@ -19,7 +19,7 @@ export const saveDiagram = createAsyncThunk(
   async (dbDesign: IDbDesign, { rejectWithValue }) => {
     try {
       console.log("saving the files....")
-      const response = await taskApi.post("/save-diagram", { dbDesign });
+      const response = await Api.post("/task/save-diagram", { dbDesign });
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
@@ -33,7 +33,7 @@ export const getDiagram = createAsyncThunk(
   "/get-diagram",
   async (projectId: number, { rejectWithValue }) => {
     try {
-      const response = await taskApi.get(`/get-diagram?projectId=${projectId}`);
+      const response = await Api.get(`/task/get-diagram?projectId=${projectId}`);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;

@@ -1,12 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { IMessage } from "../../types/Chat";
-
-const api = axios.create({
-  baseURL: "https://morrow.hashim-dev007.online/communicate",
-  withCredentials: true,
-});
-
+import api from '../../utils/axios/loginApi'
 interface IInitialState {
   teamName: string;
   teamId: string;
@@ -33,7 +28,7 @@ export const sendMessage = createAsyncThunk(
   ) => {
     try {
       const response = await api.post(
-        `/sendMessage?senderId=${senderId}&receiverId=${receiverId}&content=${content}`
+        `/communicate/sendMessage?senderId=${senderId}&receiverId=${receiverId}&content=${content}`
       );
       return response.data;
     } catch (error) {
@@ -52,7 +47,7 @@ export const getMessage = createAsyncThunk(
   ) => {
     try {
       const response = await api.get(
-        `/getMessage?receiverId=${receiverId}&page=${page}`
+        `/communicate/getMessage?receiverId=${receiverId}&page=${page}`
       );
       return response.data;
     } catch (error) {

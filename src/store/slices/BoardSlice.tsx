@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import taskApi from "../../utils/axios/taskAxios";
+import Api from "../../utils/axios/loginApi";
 import {
   createStatusColumn,
   createStatusResponse,
@@ -30,8 +30,8 @@ export const createColumn = createAsyncThunk<
 >("/createColumn", async (statusData, { rejectWithValue }) => {
   try {
     console.log(statusData, "statusData");
-    const response = await taskApi.post<createStatusResponse>(
-      "/create-status",
+    const response = await Api.post<createStatusResponse>(
+      "/task/create-status",
       statusData
     );
     return response.data;
@@ -49,8 +49,8 @@ export const getColumn = createAsyncThunk<
   { rejectValue: string }
 >("tasks/getStatus", async ({ teamId }, { rejectWithValue }) => {
   try {
-    const response = await taskApi.get<getStatusResponse>(
-      `/get-status/${teamId}`
+    const response = await Api.get<getStatusResponse>(
+      `/task/get-status/${teamId}`
     );
     return response.data;
   } catch (error) {
@@ -67,8 +67,8 @@ export const editColumnName = createAsyncThunk<
   { rejectValue: string }
 >("/updateColumn", async ({ name, id, team_id }, { rejectWithValue }) => {
   try {
-    const response = await taskApi.post<updateStatusResponse>(
-      `/update-status/${team_id}`,
+    const response = await Api.post<updateStatusResponse>(
+      `/task/update-status/${team_id}`,
       { name, id }
     );
     return response.data;
@@ -86,8 +86,8 @@ export const deleteColumn = createAsyncThunk<
   { rejectValue: string }
 >("/deleteColumn", async ({ id, team_id }, { rejectWithValue }) => {
   try {
-    const response = await taskApi.delete<deleteStatusResponse>(
-      `/delete-task/${team_id}?id=${id}`
+    const response = await Api.delete<deleteStatusResponse>(
+      `/task/delete-task/${team_id}?id=${id}`
     );
     return response.data;
   } catch (error) {
@@ -116,8 +116,8 @@ export const createTask = createAsyncThunk<
     { rejectWithValue }
   ) => {
     try {
-      const response = await taskApi.post<ITask>(
-        `/create-task/${team_id}?status=${status}&name=${name}&id=${id}&priority=${priority}`,
+      const response = await Api.post<ITask>(
+        `/task/create-task/${team_id}?status=${status}&name=${name}&id=${id}&priority=${priority}`,
         { assignee }
       );
       return response.data;
@@ -136,7 +136,7 @@ export const getTasks = createAsyncThunk<
   { rejectValue: string }
 >("/getTask", async ({ team_id }, { rejectWithValue }) => {
   try {
-    const response = await taskApi.get<getTaskResponse>(`/getTasks/${team_id}`);
+    const response = await Api.get<getTaskResponse>(`/task/getTasks/${team_id}`);
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError<{ message: string }>;
@@ -154,8 +154,8 @@ export const updateTaskStatus = createAsyncThunk<
   "/update-taskStatus",
   async ({ team_id, id, status }, { rejectWithValue }) => {
     try {
-      const response = await taskApi.put<ITask>(
-        `/update-taskStatus/${team_id}?id=${id}&status=${status}`
+      const response = await Api.put<ITask>(
+        `/task/update-taskStatus/${team_id}?id=${id}&status=${status}`
       );
       return response.data;
     } catch (error) {

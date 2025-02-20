@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from '../../utils/axios/usersApi'
+import axios from '../../utils/axios/loginApi'
 import { AxiosError } from "axios";
 import { ObjectId } from "mongodb";
 
@@ -38,7 +38,7 @@ export const fetchUser = createAsyncThunk(
   "profile/fetchProfileDetails",
   async ({ userId }: { userId: ObjectId }, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/user-details/${userId}`);
+      const response = await axios.get(`/user/user-details/${userId}`);
       return response.data;
     } catch (error) {
       return handleAxiosError(error, rejectWithValue, "Failed to fetch user details");
@@ -50,7 +50,7 @@ export const changeProfilImg = createAsyncThunk(
   "profile/uploadImage",
   async ({ data, userId }: { data: FormData; userId: ObjectId }, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`/profileImg/${userId}`, data);
+      const response = await axios.put(`/user/profileImg/${userId}`, data);
       return response.data;
     } catch (error) {
       return handleAxiosError(error, rejectWithValue, "Failed to change the profile picture");
@@ -77,7 +77,7 @@ export const changePassword = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axios.put(`/changePassword/${userId}`, {
+      const response = await axios.put(`/user/changePassword/${userId}`, {
         currentPassword,
         newPassword,
       });
@@ -95,7 +95,7 @@ export const updateProfileField = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axios.put(`/user-profile/${field}/${userId}`, {  value });
+      const response = await axios.put(`/user/user-profile/${field}/${userId}`, {  value });
       return response.data;
     } catch (error) {
       return handleAxiosError(error, rejectWithValue, `Failed to update ${field}`);

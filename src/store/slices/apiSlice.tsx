@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { IApi } from "../../types/api";
 import { AxiosError } from "axios";
-import taskApi from "../../utils/axios/taskAxios";
+import Api from "../../utils/axios/loginApi";
 
 type ApiState = {
   apis: IApi[];
@@ -16,7 +16,7 @@ export const saveApi = createAsyncThunk<
   { rejectValue: string }
 >("/test-api", async({ projectId, url, method, body ,response}, { rejectWithValue }) => {
     try {
-        const res = await taskApi.post('/save-api', { projectId, url, method, body, response });
+        const res = await Api.post('/task/save-api', { projectId, url, method, body, response });
         return res.data;
     } catch (error) {
     const axiosError = error as AxiosError<{ message: string }>;
@@ -27,7 +27,7 @@ export const saveApi = createAsyncThunk<
 });
 export const getApis = createAsyncThunk<IApi[], { projectId: number }, { rejectValue: string }>("/get-apis",async ({projectId},{rejectWithValue}) => {
   try {
-    const res = await taskApi.get(`/get-apis/${projectId}`);
+    const res = await Api.get(`/task/get-apis/${projectId}`);
     return res.data
   } catch (error) {
     const axiosError = error as AxiosError<{ message: string }>;

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { IProjectResponse, projectInputs, IProject } from "../../types/project";
-import apiClient from "../../utils/axios/projectAxios";
+import apiClient from "../../utils/axios/loginApi";
 
 
 interface IInitialState {
@@ -27,7 +27,7 @@ export const getProjects = createAsyncThunk<
 >("/get-projects", async ( _,{ rejectWithValue }) => {
   try {
     const response = await apiClient.get<IProjectResponse>(
-      `/getprojects/`
+      `/project/getprojects/`
     );
     console.log(response.data,"____________------________");
     
@@ -46,7 +46,7 @@ export const createProject = createAsyncThunk(
   async (values: projectInputs, { rejectWithValue }) => {
     try {
       const response = await apiClient.post(
-        `/create`,
+        `/project/create`,
         values
       );
       return response.data;

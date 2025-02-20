@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { IUpdateResponse, IUser } from "../../types/member";
 import { AxiosError } from "axios";
-import axios from "../../utils/axios/usersApi";
+import axios from "../../utils/axios/loginApi";
 
 interface IInitialState {
   members: IUser[];
@@ -24,7 +24,7 @@ export const getTeamMembers = createAsyncThunk(
   ) => {
     try {
       const response = await axios.get(
-        `/getTeamMembers?projectId=${projectId}&page=${page}`
+        `/user/getTeamMembers?projectId=${projectId}&page=${page}`
       );
       return response.data;
     } catch (error) {
@@ -44,7 +44,7 @@ export const updateRole = createAsyncThunk<
   async ({ teamId, userId, role }, { rejectWithValue }) => {
     try {
       const response = await axios.put(
-        `/update-role?userId=${userId}&teamId=${teamId}&role=${role}`
+        `/user/update-role?userId=${userId}&teamId=${teamId}&role=${role}`
       );
       return response.data;
     } catch (error) {
@@ -60,7 +60,7 @@ export const getAllUsers = createAsyncThunk(
   "members/getAllUsers",
   async ({ page }: { page: number }, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/users?page=${page}`);
+      const response = await axios.get(`/user/users?page=${page}`);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
