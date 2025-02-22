@@ -124,13 +124,14 @@ const Login: React.FC = () => {
 
           <form
             ref={formRef}
-            className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg p-8 rounded-xl shadow-xl w-full space-y-6"
+            className="bg-zinc-800 bg-opacity-10 backdrop-filter backdrop-blur-lg p-8 rounded-xl shadow-xl w-full space-y-6"
             onSubmit={handleSubmit}
           >
             <Input
               type="email"
               placeholder="Email"
               value={email}
+              variant="bordered"
               onChange={(e) => setEmail(e.target.value)}
               className="bg-white bg-opacity-5 text-white border-none placeholder-gray-300"
               fullWidth
@@ -142,6 +143,7 @@ const Login: React.FC = () => {
               type="password"
               placeholder="Password"
               value={password}
+              variant="bordered"
               onChange={(e) => setPassword(e.target.value)}
               className="bg-white bg-opacity-5 text-white border-none placeholder-gray-300"
               fullWidth

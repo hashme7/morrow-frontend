@@ -51,6 +51,7 @@ const ReusableTable = <T extends { _id: Types.ObjectId }>({
         base: "max-h-[520px] overflow-scroll",
         table: "min-h-[400px]",
       }}
+      className="bg-zinc-950"
     >
       <TableHeader columns={columns}>
         {(column) => (

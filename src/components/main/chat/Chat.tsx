@@ -26,10 +26,9 @@ const Chat: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const newSocket = io("https://morrow.hashim-dev007.online", {
-      path: "/socket.io/",
-      transports: ["websocket"],
+    const newSocket = io("wss://morrow.hashim-dev007.online/communicate", {
       withCredentials: true,
+      transports: ["websocket"],
     });
     setSocket(newSocket);
     if (selectProject?.id) {
