@@ -6,11 +6,12 @@ import RecentActivity from "./RecentActivity";
 
 const OverView: React.FC = () => {
   const projectInfo = {
-    title: "Promo Website",
-    startDate: "Aug 1, 2023",
-    deadline: "Aug 30, 2023",
+    name: "Promo Website",
+    plannedStartDate: "Aug 1, 2023",
+    plannedEndDate: "Aug 30, 2023",
     teamMembers: 5,
     projectLeader: "Nader Ahmed",
+    projectDescription:"efjaksdjfkajdskf dkjfaksjd;fkaskd faskdfa;ksdjfkajsd fa dskfjaskdfjaksjdfkasjdkf askdjfkajsd faskdjfkajsdkfjaksdjfk asdfja;ksdjfa;ksdjfkajs;dkfj",
   };
   const projects = [
     { id: 1, name: "UK Research", deadline: "Aug 22, 2023" },
@@ -25,7 +26,7 @@ const OverView: React.FC = () => {
 
   return (
     <>
-      <div className="p-8 grid grid-cols-2">
+      <div className="p-1 grid grid-cols-2">
         <div className="m-1">
           <ProjectInfo {...projectInfo} />
         </div>

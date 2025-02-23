@@ -5,7 +5,7 @@ interface RecentActivityProps {
 
 const RecentActivity: React.FC<RecentActivityProps> = ({ activities }) => {
   return (
-    <div className="bg-zinc-900 p-4 rounded-lg">
+    <div className="bg-zinc-950 p-4 rounded-lg">
       <h3 className="text-lg font-semibold">Recent Activity</h3>
       <ul className="mt-4">
         {activities.map((activity, index) => (
