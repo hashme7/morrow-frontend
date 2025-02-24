@@ -130,6 +130,7 @@ const loginSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(loginUser.fulfilled, (state, action) => {
       console.log(action, "actionsss");
+      localStorage.setItem('userId',action.payload.userId)
       state.isLoggedIn = true;
       state.errorMessage = null;
     });
@@ -138,24 +139,30 @@ const loginSlice = createSlice({
     });
     builder.addCase(checkTokenValidity.fulfilled, (state, action) => {
       if (action.payload.valid) {
+        localStorage.setItem("userId", action.payload.userId);
         state.isLoggedIn = true;
       } else {
+        localStorage.removeItem("userId");
         state.isLoggedIn = false;
       }
     });
     builder.addCase(checkTokenValidity.rejected, (state, action) => {
       console.log(action, "action in rejection");
+      localStorage.removeItem("userId")
       state.isLoggedIn = false;
     });
     builder.addCase(logout.fulfilled, (state) => {
+      localStorage.removeItem("userId");
       state.isLoggedIn = false;
     });
     builder.addCase(googleLogin.fulfilled, (state, action) => {
       console.log(action.payload);
+      localStorage.setItem("userId", action.payload.userId);
       state.isLoggedIn = true;
     });
     builder.addCase(gitHubLogin.fulfilled, (state, action) => {
       if (action.payload.accessToken && action.payload.refreshToken) {
+        localStorage.setItem("userId", action.payload.userId);
         state.isLoggedIn = true;
       }
     });

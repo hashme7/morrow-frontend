@@ -29,7 +29,7 @@ const Header: React.FC<{logout:()=>void,xsMenu:Boolean,setXsMenu:(xsMenu:Boolean
   };
 
   return (
-    <div className="flex justify-between rounded-3xl items-center p-2 bg-zinc-950 text-white ">
+    <div className="flex justify-between rounded-3xl items-center p-2 bg-zinc-950 text-white">
       <div className="flex flex-wrap space-x-2 md:space-x-4 justify-center">
         <button
           className={`p-1 sm:p-2 ${

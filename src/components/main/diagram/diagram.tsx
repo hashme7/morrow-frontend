@@ -166,10 +166,10 @@ const Diagram: React.FC = () => {
 
   return (
     <>
-      <div className="w-fit bg-zinc-900 ml-4 mb-4 mr-4 rounded-2xl flex justify-center relative">
+      <div className="sm:w-fit bg-zinc-900 ml-4 mb-6 mr-4 rounded-2xl flex justify-center relative">
         <div
-          style={{ width: "85vw", height: "90vh" }}
-          className="rounded-2xl relative"
+          style={{ width: "85vw", height: "90vh" }}  
+          className="rounded-2xl relative "
         >
           <ReactFlowProvider>
             <ReactFlow<customNode>

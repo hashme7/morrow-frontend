@@ -26,12 +26,9 @@ const Chat: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const newSocket = io("https://morrow.hashim-dev007.online", {
+    const newSocket = io("wss://morrow.hashim-dev007.online", {
       path: "/communicate/message-socket",
-      withCredentials: true,
       transports: ["websocket"],
-      reconnectionAttempts: 3,
-      timeout: 1000,
     });
     setSocket(newSocket);
     if (selectProject?.id) {
@@ -90,8 +87,8 @@ const Chat: React.FC = () => {
   };
 
   return (
-    <div className="bg-zinc-900 h-full rounded-3xl m-2 flex flex-col">
-      <div className="bg-zinc-800 h-fit rounded-xl">
+    <div className="bg-zinc-950 sm:h-[650px] h-[500px]  rounded-3xl mb-3 m-1 flex flex-col">
+      <div className="bg-zinc-950 rounded-xl">
         <ChatHeader name={selectProject?.name || ""} members={members} />
       </div>
 
