@@ -20,15 +20,15 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
         <Progress color="success" value={completed} />
       </div>
       <div className="grid grid-cols-2">
-        <div className="m-2 bg-zinc-950 p-3 rounded-2xl">
+        <div className="bg-zinc-950 p-3 m-1 rounded-2xl">
           <p className="font-semibold mb-1">On hold</p>
           <Progress color="warning" value={hold} />
         </div>
-        <div className="m-2 bg-zinc-950 p-3 rounded-2xl">
+        <div className="m-1 bg-zinc-950 p-3 rounded-2xl">
           <p className="font-semibold mb-1">progress</p>
           <Progress color="secondary" value={progress} />
         </div>
-        <div className="m-2 bg-zinc-950 p-3 rounded-2xl">
+        <div className="m-1 bg-zinc-950 p-3 rounded-2xl">
           <p className="font-semibold mb-1">pending</p>
           <Progress color="danger" value={pending} />
         </div>

@@ -9,9 +9,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 interface SideBarProps {
   showNotification: (message: string) => void;
+  xsMenu: Boolean;
 }
 
-const SideBar: React.FC<SideBarProps> = ({ showNotification }) => {
+const SideBar: React.FC<SideBarProps> = ({ showNotification, xsMenu }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useAppDispatch();
   const { projects, selectProjectId } = useAppSelector(
@@ -31,11 +32,33 @@ const SideBar: React.FC<SideBarProps> = ({ showNotification }) => {
 
   return (
     <>
-      <aside className="min-h-screen h-full w-48 p-4 m-3 text-zinc-600 bg-zinc-950 rounded-3xl">
-        <h1 className="text-2xl font-semibold mt-2 text-white">Morrow</h1>
-        <nav className="border-top mt-4 border-t-2 border-zinc-600 border-b-2 h-64">
-          <div className="pb-3 text-white mt-5">Menu</div>
-          <ul className="flex-col space-y-5">
+      <aside
+        className={` text-zinc-600 bg-zinc-950 rounded-3xl lg:block ${
+          xsMenu ? ` h-44` : "hidden min-h-screen h-full w-48 p-4 m-3"
+        }`}
+      >
+        <h1
+          className={`text-2xl font-semibold mt-2 text-white ${
+            xsMenu ? "hidden" : "block"
+          }`}
+        >
+          Morrow
+        </h1>
+        <nav
+          className={`${
+            xsMenu
+              ? "flex h-fit"
+              : "border-top mt-4 border-t-2 border-zinc-600 border-b-2 h-64"
+          } `}
+        >
+          <div
+            className={`pb-3 text-white mt-5 ${xsMenu ? "hidden" : "block"}`}
+          >
+            Menu
+          </div>
+          <ul
+            className={`${xsMenu ? "flex gap-2 m-2" : "flex-col space-y-5"} `}
+          >
             <li
               className={`flex items-center hover:cursor-pointer ${
                 location.pathname == "/dashboard/requests"
@@ -66,27 +89,30 @@ const SideBar: React.FC<SideBarProps> = ({ showNotification }) => {
             >
               <FaUsers className="mr-3" /> Meet
             </li>
-            <li className="flex items-center hover:cursor-pointer">
-              <FaCog className="mr-3" /> Settings
-            </li>
           </ul>
         </nav>
         <div className="mt-auto">
-          <h3 className="text-white text-lg mt-4">Projects</h3>
           <button
             className="bg-white text-black p-2 mt-4 rounded-md w-full"
             onClick={onOpen}
           >
             Create Project
           </button>
+          <h3 className="text-white text-xl font-bold mt-4 ">Projects</h3>
         </div>
         <div className="mt-auto ">
-          <ul>
+          <ul
+            className={`${
+              xsMenu
+                ? "grid grid-cols-3 text-small"
+                : "text-xl  font-semibold "
+            } p-1`}
+          >
             {projects.map((project: IProject) => (
               <li
                 className={` ${
                   project.id == selectProjectId ? "text-white" : "text-zinc-600"
-                }  text-xl  font-semibold hover:cursor-pointer mt-2`}
+                }  hover:cursor-pointer mt-2`}
                 key={project.id}
                 onClick={() => handleSelectProject(project.id)}
               >

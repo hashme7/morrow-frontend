@@ -15,7 +15,7 @@ import extractIdFromToken from "../../../utils/decodeToken";
 import { getTeamMembers } from "../../../store/slices/memberSlice";
 
 const Chat: React.FC = () => {
-  const {  chats } = useAppSelector((state) => state.chats);
+  const { chats } = useAppSelector((state) => state.chats);
   const { selectProject } = useAppSelector((state) => state.project);
   const { members } = useAppSelector((state) => state.members);
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -26,15 +26,25 @@ const Chat: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const newSocket = io("wss://morrow.hashim-dev007.online/communicate", {
+    const newSocket = io("https://morrow.hashim-dev007.online", {
+      path: "/communicate/message-socket",
       withCredentials: true,
       transports: ["websocket"],
+      reconnectionAttempts: 3,
+      timeout: 1000,
     });
     setSocket(newSocket);
     if (selectProject?.id) {
       newSocket.emit("joinRoom", selectProject.teamId, extractIdFromToken());
     }
     if (newSocket) {
+      newSocket.on("connect", () => {
+        console.log("Connected to server");
+      });
+      newSocket.on("connect_error", (err) => {
+        console.error("Connection Error:", err.message);
+        console.error("Error Details:", err);
+      });
       newSocket.on("new_message", (msg) => {
         dispatch(setMessage(msg));
       });
@@ -55,7 +65,7 @@ const Chat: React.FC = () => {
           dispatch(
             getTeamMembers({ projectId: selectProject.id.toString(), page: 1 })
           );
-          dispatch(getMessage({ receiverId: selectProject.teamId, page:1 }));
+          dispatch(getMessage({ receiverId: selectProject.teamId, page: 1 }));
         }
       } catch (error) {
         console.error("Error fetching messages:", error);
@@ -64,9 +74,7 @@ const Chat: React.FC = () => {
       }
     };
     fetchMessages();
-  }, [ selectProject?.id]);
-
- 
+  }, [selectProject?.id]);
 
   const handleSendMessage = (content: string) => {
     if (!socket || !selectProject?.teamId) return;
@@ -76,7 +84,7 @@ const Chat: React.FC = () => {
         senderId: userId,
         receiverId: selectProject?.teamId,
         content,
-      };  
+      };
       dispatch(sendMessage(message));
     }
   };

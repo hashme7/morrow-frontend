@@ -24,7 +24,7 @@ const ProjectInfo: React.FC<ProjectInfoProps> = ({
         <h1 className="text-xl font-bold">{name}</h1>
         <h4 className="text-zinc-600 font-normal">{projectDescription}</h4>
       </div>
-      <div className="flex gap-9 text-sm mt-5 ">
+      <div className="grid gap-9 text-sm mt-5 grid-cols-2 lg:grid-cols-4">
         <div>
           <label htmlFor="startDate" className="text-zinc-500 text-xs">
             start Date

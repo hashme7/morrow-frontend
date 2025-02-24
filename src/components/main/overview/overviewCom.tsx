@@ -26,7 +26,7 @@ const OverView: React.FC = () => {
 
   return (
     <>
-      <div className="p-1 grid grid-cols-2">
+      <div className="p-1 grid grid-cols-1 lg:grid-cols-2 text-small ">
         <div className="m-1">
           <ProjectInfo {...projectInfo} />
         </div>
