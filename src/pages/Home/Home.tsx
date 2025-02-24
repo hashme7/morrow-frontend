@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Header from "../../components/Home/Header";
 import Hero from "../../components/Home/Hero";
 import Features from "../../components/FeaturesSection/Features";
@@ -7,14 +7,17 @@ import { features } from "../../constants/features";
 import { gsap } from "gsap";
 
 const Home: React.FC = () => {
-  
+  const animatedImg = useRef<HTMLImageElement | null>(null);
 
   useEffect(() => {
-    gsap.fromTo(
+    const animation = gsap.fromTo(
       ".animated-image",
       { opacity: 0, y: 80 },
       { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }
     );
+    return () => {
+      animation.kill();
+    };
   }, []);
   return (
     <>
@@ -22,6 +25,7 @@ const Home: React.FC = () => {
       <div className="flex flex-col w-full h-full bg-cover bg-no-repeat bg-fixed bg-center">
         <Hero />
         <img
+          ref={animatedImg}
           className="animated-image"
           src="/assets/images/project-mangement.webp"
           alt=""

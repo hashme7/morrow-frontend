@@ -49,9 +49,9 @@ const Security: React.FC = () => {
   };
 
   return (
-    <div className="w-full m-3 px-6 py-4 rounded-lg shadow-lg">
+    <div className="w-fit m-5 rounded-lg shadow-lg">
       <h3 className="text-xl font-semibold mb-4">Security</h3>
-      <p className="text-sm mb-8 text-gray-400">
+      <p className="text-sm mb-5 text-gray-400">
         Change your password. When you change your password, we keep you logged
         in to this device but may log you out from your other devices.
       </p>
@@ -157,7 +157,7 @@ const Security: React.FC = () => {
           <p className="text-green-500 text-sm">{successMessage}</p>
         )}
 
-        <div>
+        <div className="pb-2">
           <button
             type="submit"
             className={` px-4 py-2 ${

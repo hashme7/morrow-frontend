@@ -37,6 +37,7 @@ const ReusableTable = <T extends { _id: Types.ObjectId }>({
   });
   return (
     <Table
+      style={{ backgroundColor: "#09090b" }}
       aria-label="Reusable Table with Infinite Scroll"
       isHeaderSticky
       baseRef={scrollerRef}
@@ -48,10 +49,9 @@ const ReusableTable = <T extends { _id: Types.ObjectId }>({
         ) : null
       }
       classNames={{
-        base: "max-h-[520px] overflow-scroll",
+        base: "max-h-[520px] overflow-scroll ",
         table: "min-h-[400px]",
       }}
-      className="bg-zinc-950"
     >
       <TableHeader columns={columns}>
         {(column) => (
@@ -64,7 +64,7 @@ const ReusableTable = <T extends { _id: Types.ObjectId }>({
         )}
       </TableHeader>
       <TableBody>
-        {data.map((item,) => {
+        {data.map((item) => {
           return (
             <TableRow key={String(item._id) as Key}>
               {columns.map((columnData, columnKey) => (

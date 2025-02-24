@@ -39,7 +39,8 @@ export const fetchUser = createAsyncThunk(
   "profile/fetchProfileDetails",
   async ({ userId }: { userId: ObjectId }, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/user/user-details/${userId}`);
+      console.log(userId);
+      const response = await axios.get(`/user/user-details`);
       return response.data;
     } catch (error) {
       return handleAxiosError(
@@ -58,7 +59,8 @@ export const changeProfilImg = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axios.put(`/user/profileImg/${userId}`, data);
+      console.log(userId)
+      const response = await axios.put(`/user/profileImg`, data);
       return response.data;
     } catch (error) {
       return handleAxiosError(
@@ -77,7 +79,8 @@ export const changeEmail = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axios.put(`/changeEmail/${userId}`, { email });
+      console.log(userId);
+      const response = await axios.put(`/changeEmail`, { email });
       return response.data;
     } catch (error) {
       return handleAxiosError(
@@ -99,8 +102,8 @@ export const changePassword = createAsyncThunk(
     }: { currentPassword: string; newPassword: string; userId: ObjectId },
     { rejectWithValue }
   ) => {
-    try {
-      const response = await axios.put(`/user/changePassword/${userId}`, {
+    try {console.log(userId)
+      const response = await axios.put(`/user/changePassword`, {
         currentPassword,
         newPassword,
       });
@@ -126,8 +129,9 @@ export const updateProfileField = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
+      console.log(userId)
       const response = await axios.put(
-        `/user/user-profile/${field}/${userId}`,
+        `/user/user-profile/${field}`,
         { value }
       );
       return response.data;

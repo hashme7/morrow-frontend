@@ -17,7 +17,7 @@ const Email: React.FC = () => {
   }
   return (
     <>
-  <div className="m-3 w-full rounded-lg p-6 ">
+  <div className="m-3 w-fit rounded-lg p-6 ">
     <h1 className="text-xl font-bold mb-2 text-white">Email</h1>
     <p className="text-sm text-gray-400 mb-4">
       Current email

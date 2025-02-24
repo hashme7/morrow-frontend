@@ -88,9 +88,9 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
   };
 
   return (
-    <div className="w-full sm:w-72 bg-zinc-900 rounded-lg flex flex-col items-center gap-4 p-1 sm:h-screen">
+    <div className="sm:w-72 bg-zinc-950 rounded-2xl m-3 flex flex-col items-center gap-4 p-1 sm:h-screen">
       {/* profile picture */}
-      <div className="relative w-24 h-24 rounded-full overflow-hidden bg-gray-900 flex justify-center items-center">
+      <div className="relative w-24 h-24 rounded-full overflow-hidden bg-gray-950 flex justify-center items-center">
         <img
           src={
             (prevImg as string) ||
@@ -238,7 +238,7 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
         </div>
 
         {/* Contact Details */}
-        <div className="w-full bg-zinc-800 rounded p-1">
+        <div className="w-full bg-zinc-900 rounded p-1">
           <h3 className="font-bold mb-2">Contact Details</h3>
           {/* Phone */}
           <div className="relative mb-4">

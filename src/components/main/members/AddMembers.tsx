@@ -31,7 +31,7 @@ const AddMembers: React.FC = () => {
   }, [loadMore,currUserPage,totalUserPage]);
   return (
     <>
-      <div className="bg-zinc-900 w-full rounded-lg mt-3">
+      <div className="bg-zinc-950  rounded-lg mt-2">
         <div className="flex justify-between p-4">
           <h3 className="font-semibold text-xl">Add Member</h3>
           <PlusIcon onClick={onOpen} />

@@ -9,19 +9,27 @@ import Language from "./Language";
 import WorkHours from "./WorkHour";
 import LinkedAccounts from "./LinkedAcconts";
 import HourlyRate from "./HourlyRate";
-import {gsap} from  'gsap'
+import { gsap } from "gsap";
 
 const Dev: React.FC = () => {
   const devRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const devElement = devRef.current;
-    gsap.fromTo(devElement, 
-      { opacity: 0, x: '100%' }, 
-      { opacity: 1, x: '0%', duration: 1, ease: "power1.out" }
-    );
+    if (devElement) {
+      gsap.fromTo(
+        devElement,
+        { opacity: 0, x: "100%" },
+        { opacity: 1, x: "0%", duration: 1, ease: "power1.out" }
+      );
+    }
     return () => {
-      gsap.to(devElement, { opacity: 0, x: '-100%', duration: 0.3, ease: "power3.in" });
+      gsap.to(devElement, {
+        opacity: 0,
+        x: "-100%",
+        duration: 0.3,
+        ease: "power3.in",
+      });
     };
   }, []);
   const [editMode, setEditMode] = useState({

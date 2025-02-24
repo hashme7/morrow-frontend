@@ -78,7 +78,7 @@ const Member: React.FC = () => {
   };
   return (
     <div>
-      <div className="ml-5">
+      <div className="bg-zinc-950">
         <Table
           data={members}
           columns={membersColumns}
@@ -88,7 +88,7 @@ const Member: React.FC = () => {
           isLoading={isLoading}
         />
       </div>
-      <div className="ml-5">
+      <div className="">
         <AddMembers />
       </div>
     </div>
