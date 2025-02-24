@@ -33,8 +33,8 @@ const SideBar: React.FC<SideBarProps> = ({ showNotification, xsMenu }) => {
   return (
     <>
       <aside
-        className={` text-zinc-600 bg-zinc-950 rounded-3xl lg:block ${
-          xsMenu ? ` h-44` : "hidden min-h-screen h-full w-48 p-4 m-3"
+        className={` text-zinc-600 bg-zinc-950  lg:block ${
+          xsMenu ? ` h-44 p-1 m-1 rounded-xl` : "hidden min-h-screen h-full w-48 p-4 m-3"
         }`}
       >
         <h1
@@ -47,7 +47,7 @@ const SideBar: React.FC<SideBarProps> = ({ showNotification, xsMenu }) => {
         <nav
           className={`${
             xsMenu
-              ? "flex h-fit"
+              ? "flex h-fit justify-center"
               : "border-top mt-4 border-t-2 border-zinc-600 border-b-2 h-64"
           } `}
         >
@@ -57,7 +57,7 @@ const SideBar: React.FC<SideBarProps> = ({ showNotification, xsMenu }) => {
             Menu
           </div>
           <ul
-            className={`${xsMenu ? "flex gap-2 m-2" : "flex-col space-y-5"} `}
+            className={`${xsMenu ? "flex gap-3 m-2 " : "flex-col space-y-5"} `}
           >
             <li
               className={`flex items-center hover:cursor-pointer ${
@@ -93,7 +93,9 @@ const SideBar: React.FC<SideBarProps> = ({ showNotification, xsMenu }) => {
         </nav>
         <div className="mt-auto">
           <button
-            className="bg-white text-black p-2 mt-4 rounded-md w-full"
+            className={`bg-white text-black  mt-4 rounded-md w-full ${
+              xsMenu ? "relative p-1 w-5/6" : "p-2"
+            }`}
             onClick={onOpen}
           >
             Create Project
@@ -103,9 +105,7 @@ const SideBar: React.FC<SideBarProps> = ({ showNotification, xsMenu }) => {
         <div className="mt-auto ">
           <ul
             className={`${
-              xsMenu
-                ? "grid grid-cols-3 text-small"
-                : "text-xl  font-semibold "
+              xsMenu ? "grid grid-cols-3 text-small" : "text-xl  font-semibold "
             } p-1`}
           >
             {projects.map((project: IProject) => (

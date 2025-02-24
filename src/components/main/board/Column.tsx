@@ -71,7 +71,7 @@ export const Column: React.FC<IColumnProps> = ({
   return (
     <div
       ref={setNodeRef}
-      className={`w-[200px] h-fit flex flex-col rounded-xl border-2 p-2 ${columnStyle} `}
+      className={`sm:w-[200px] h-fit flex flex-col rounded-xl border-2 p-2 ${columnStyle} `}
     >
       <div className="flex items-center justify-between">
         {isEditing ? (
@@ -125,14 +125,12 @@ export const Column: React.FC<IColumnProps> = ({
               placeholder="Task name"
               variant="bordered"
             />
-            <Button
-              onPress={toggleAssigneeModal}
-              variant="bordered"
-              size="sm"
-              className="w-[160px]"
+            <button
+              onClick={toggleAssigneeModal}
+              className="border rounded border-zinc-800 sm:w-[160px] text-small text-zinc-400"
             >
               Add Assignee
-            </Button>
+            </button>
             {isAssigneeOpen && (
               <AddAssignee
                 members={members}

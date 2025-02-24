@@ -83,7 +83,7 @@ export const Task: React.FC<ITaskProps> = ({ task, columnId }) => {
       <div className="flex flex-col gap-1">
         {/* Assignee Section */}
         <div className="p-2 flex justify-stretch gap-4">
-          <div className="flex flex-col">
+          <div className="flex flex-col w-7">
             <FontAwesomeIcon
               icon={faUserCircle}
               size="xl"
@@ -92,7 +92,7 @@ export const Task: React.FC<ITaskProps> = ({ task, columnId }) => {
             <small className="text-xs">Assignee</small>
           </div>
           <div className="flex justify-evenly align-middle left-4">
-            <AvatarGroup size="sm">
+            <AvatarGroup size="lg">
               {assignedUsers.map((user) => (
                 <Dropdown key={user._id.toString()}>
                   <DropdownTrigger>
@@ -103,7 +103,7 @@ export const Task: React.FC<ITaskProps> = ({ task, columnId }) => {
                       src={user.image}
                     />
                   </DropdownTrigger>
-                  <DropdownMenu>
+                  <DropdownMenu className="w-7 h-7">
                     <DropdownItem key={user._id.toString()}>
                       <strong>{user.username}</strong>
                     </DropdownItem>
