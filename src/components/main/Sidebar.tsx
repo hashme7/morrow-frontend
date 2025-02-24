@@ -1,6 +1,6 @@
 import { useDisclosure } from "@nextui-org/react";
 import React, { useEffect } from "react";
-import { FaCalendarAlt, FaCog, FaTasks, FaUsers } from "react-icons/fa";
+import { FaCalendarAlt,  FaTasks, FaUsers } from "react-icons/fa";
 import PModal from "./modals/ProjectCreateModal";
 import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks";
 import { getProjects, selectProject } from "../../store/slices/projectSlice";
