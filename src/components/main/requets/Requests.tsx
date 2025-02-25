@@ -17,12 +17,16 @@ const Requests: React.FC = () => {
 
   const handleAccept = (requestId:string,teamId:string)=>{
     dispatch(acceptRequest({ requestId, teamId }));
-    dispatch(getRequests());
-    dispatch(getProjects())
+    setTimeout(() => {
+      dispatch(getRequests());
+    }, 300);
+    dispatch(getProjects());
   }
   const handleDecline = (requestId: string) => {
     dispatch(declineRequest({ requestId }));
-    dispatch(getRequests());
+    setTimeout(() => {
+      dispatch(getRequests());
+    }, 300);
   }
 
   const renderCell = (request: IRequest, column: { uid: string }) => {
