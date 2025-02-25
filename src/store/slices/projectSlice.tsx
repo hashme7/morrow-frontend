@@ -72,6 +72,7 @@ const projects = createSlice({
     },
     clearSelectProject(state) {
       state.selectProject = null;
+      state.selectProjectId = null;
     }
   },
   extraReducers: (builder) => {
