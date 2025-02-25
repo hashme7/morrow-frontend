@@ -1,14 +1,11 @@
-interface Project {
-    id: number;
-    name: string;
-    deadline: string;
-  }
+
   
   interface ProjectStatisticsProps {
-    projects: Project[];
+    projects: IProject[];
   }
   
 import React from 'react';
+import { IProject } from '../../../types/project';
   const ProjectStatistics: React.FC<ProjectStatisticsProps> = ({ projects }) => {
     return (
       <div className="bg-zinc-950 p-4 rounded-2xl h-64">
@@ -20,7 +17,7 @@ import React from 'react';
               className="flex justify-between text-sm text-gray-400 mt-2"
             >
               <span>{project.name}</span>
-              <span>{project.deadline}</span>
+              <span>{project.plannedEndDate}</span>
             </li>
           ))}
         </ul>

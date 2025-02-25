@@ -3,20 +3,19 @@ import ProjectInfo from "./ProjectInfo";
 import ProgressBar from "./ProgressBar";
 import ProjectStatistics from "./ProjectStatistics";
 import RecentActivity from "./RecentActivity";
+import { useAppSelector } from "../../../store/hooks/hooks";
 
 const OverView: React.FC = () => {
+  const { selectProject ,projects} = useAppSelector((state) => state.project);
   const projectInfo = {
-    name: "Promo Website",
-    plannedStartDate: "Aug 1, 2023",
-    plannedEndDate: "Aug 30, 2023",
-    teamMembers: 5,
-    projectLeader: "Nader Ahmed",
-    projectDescription:"efjaksdjfkajdskf dkjfaksjd;fkaskd faskdfa;ksdjfkajsd fa dskfjaskdfjaksjdfkasjdkf askdjfkajsd faskdjfkajsdkfjaksdjfk asdfja;ksdjfa;ksdjfkajs;dkfj",
+    name: selectProject?.name || "",
+    plannedStartDate: selectProject?.plannedStartDate || "2/2/2024",
+    plannedEndDate: selectProject?.plannedEndDate || "2/2/2024",
+    teamMembers: 1,
+    projectLeader: "zayh",
+    projectDescription: selectProject?.projectDescription || "dk",
   };
-  const projects = [
-    { id: 1, name: "UK Research", deadline: "Aug 22, 2023" },
-    { id: 2, name: "Promo Website", deadline: "Aug 30, 2023" },
-  ];
+  
 
   const activities = [
     "Floyd Miles joined the project",
