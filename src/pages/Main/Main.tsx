@@ -6,6 +6,7 @@ import Header from "../../components/main/Header";
 import Notification from "../../components/Notification";
 import { Outlet, useLocation } from "react-router-dom";
 import LandingDiv from "../../components/main/landingDiv/LandingDiv";
+import { clearSelectProject } from "../../store/slices/projectSlice";
 
 const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -22,6 +23,7 @@ const Dashboard: React.FC = () => {
 
   const handleLogout = async () => {
     dispatch(logout());
+    dispatch(clearSelectProject());
   };
 
   useEffect(() => {

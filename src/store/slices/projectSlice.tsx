@@ -70,6 +70,9 @@ const projects = createSlice({
         (project) => action.payload === project.id
       )[0];
     },
+    clearSelectProject(state) {
+      state.selectProject = null;
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -103,5 +106,5 @@ const projects = createSlice({
   },
 });
 
-export const { clearError, selectProject } = projects.actions;
+export const { clearError, selectProject,clearSelectProject } = projects.actions;
 export default projects.reducer;
