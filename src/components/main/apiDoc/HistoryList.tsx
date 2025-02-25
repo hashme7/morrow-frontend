@@ -23,17 +23,17 @@ const HistoryList: React.FC<{apis:IApi[]}> = ({apis}) => {
   return (
     <>
       <Button
-        className="w-64 bg-zinc-950 mb-1 rounded-xl h-10"
+        className="w-full sm:w-64 bg-zinc-950 mb-1 rounded-xl h-10"
         endContent={<FaPlus />}
       >
-        New Request{" "}
+        New Request{""}
       </Button>
       <div
-        className={`relative top-0 h-full ${"w-64"} transition-width duration-300 rounded-xl shadow-lg bg-zinc-950`}
+        className={`relative top-0 h-full sm:w-64 transition-width duration-300 rounded-xl shadow-lg bg-zinc-950`}
       >
-        <div className="p-4">
+        <div className="p-4 ">
           <h2 className="text-lg font-bold mb-4 ">Request History</h2>
-          <ul>
+          <ul className="overflow-y-scroll max-h-24">
             {apis.length > 0 ? (
               apis.map((item, index) => (
                 <li key={index} className="mb-2 rounded-xl bg-zinc-900 p-1">
@@ -43,9 +43,7 @@ const HistoryList: React.FC<{apis:IApi[]}> = ({apis}) => {
                     >
                       {item.method}
                     </span>
-                    <span className="text-sm text-gray-500">
-                      
-                    </span>
+                    <span className="text-sm text-gray-500"></span>
                   </div>
                   <div className="text-sm">{item.url}</div>
                 </li>

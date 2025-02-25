@@ -115,18 +115,18 @@ const ApiTests: React.FC = () => {
   }, [selectProject]);
 
   return (
-    <div className="flex gap-4">
+    <div className="flex flex-col sm:flex-row gap-4">
       <div className="m-2">
         <HistoryList apis={apis} />
       </div>
-      <div className="p-4 w-4/5 m-2">
-        <div className="flex justify-between items-center mb-4">
+      <div className="p-2 w-4/5 ">
+        <div className="flex justify-between gap-1 m-1  sm:w-full">
           <Autocomplete
             defaultItems={httpMethods}
             color="secondary"
             size="sm"
             label="Method"
-            className="w-32 bg-zinc-950"
+            className=" bg-zinc-950"
             selectedKey={selectMethod.value}
             onSelectionChange={handleSelectMethod}
           >
@@ -141,7 +141,7 @@ const ApiTests: React.FC = () => {
             placeholder="Enter API Endpoint"
             value={endpoint}
             onChange={(e) => setEndpoint(e.target.value)}
-            className="rounded-xl bg-zinc-900 h-12 p-2 flex-1 ml-4"
+            className="rounded-xl bg-zinc-900 h-12 p-1"
           />
           <button
             onClick={handleSendRequest}
@@ -151,8 +151,8 @@ const ApiTests: React.FC = () => {
           </button>
         </div>
 
-        <div className="mb-4">
-          <Tabs aria-label="Tab-option" radius="full">
+        <div className="m-1 w-full">
+          <Tabs aria-label="Tab-option" size="sm" radius="full">
             <Tab key="QUERY_PARAMS" title="Query Params">
               <Card>
                 <CardBody className="bg-zinc-950">
@@ -281,7 +281,7 @@ const ApiTests: React.FC = () => {
               </label>
             </div>
           </div>
-          <div className="rounded-xl p-2 h-48 overflow-auto bg-zinc-950">
+          <div className="rounded-xl p-5 w-full h-48 overflow-auto bg-zinc-950">
             <MonacoEditor
               height="300px"
               defaultLanguage="json"
