@@ -5,6 +5,7 @@ import { acceptRequest, declineRequest, getRequests } from "../../../store/slice
 import { IRequest } from "../../../types/requests";
 import {requestColumns as columns} from '../../../constants/data/data';
 import { Button } from "@nextui-org/react";
+import { getProjects } from "../../../store/slices/projectSlice";
 
 const Requests: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -17,6 +18,7 @@ const Requests: React.FC = () => {
   const handleAccept = (requestId:string,teamId:string)=>{
     dispatch(acceptRequest({ requestId, teamId }));
     dispatch(getRequests());
+    dispatch(getProjects())
   }
   const handleDecline = (requestId: string) => {
     dispatch(declineRequest({ requestId }));

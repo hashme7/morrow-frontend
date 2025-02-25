@@ -28,8 +28,6 @@ export const getProjects = createAsyncThunk<
     const response = await apiClient.get<IProjectResponse>(
       `/project/getprojects/`
     );
-    console.log(response.data, "____________------________");
-
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError<{ message: string }>;
