@@ -64,9 +64,9 @@ const projects = createSlice({
     },
     selectProject(state, action) {
       state.selectProjectId = action.payload;
-      // state.selectProject = state.projects.filter(
-      //   (project) => action.payload === project.id
-      // )[0];
+      state.selectProject = state.projects.filter(
+        (project) => action.payload === project.id
+      )[0];
     },
     clearSelectProject(state) {
       state.selectProject = null;
@@ -80,7 +80,6 @@ const projects = createSlice({
         console.log("action.payload", action.payload);
         state.status = "idle";
         state.projects = action.payload.data;
-        state.selectProject = null;
       }
     );
     builder.addCase(getProjects.pending, (state) => {
