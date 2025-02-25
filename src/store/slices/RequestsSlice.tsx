@@ -67,6 +67,25 @@ export const acceptRequest = createAsyncThunk(
     }
   }
 );
+export const declineRequest = createAsyncThunk(
+  "members/declineRequest",
+  async (
+    { requestId}: { requestId: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await axios.post(
+        `/user/declineRequest?requestId=${requestId}`
+      );
+      return response.data;
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message: string }>;
+      return rejectWithValue(
+        axiosError.response?.data.message || "failed to accept request"
+      );
+    }
+  }
+);
 
 const requestSlice = createSlice({
   name: "Request",
@@ -85,6 +104,7 @@ const requestSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(acceptRequest.pending, (state) => {
+
       state.isLoading = true;
     });
     builder.addCase(acceptRequest.fulfilled, (state) => {

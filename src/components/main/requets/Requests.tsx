@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Table from "../members/table";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks/hooks";
-import { acceptRequest, getRequests } from "../../../store/slices/RequestsSlice";
+import { acceptRequest, declineRequest, getRequests } from "../../../store/slices/RequestsSlice";
 import { IRequest } from "../../../types/requests";
 import {requestColumns as columns} from '../../../constants/data/data';
 import { Button } from "@nextui-org/react";
@@ -15,7 +15,12 @@ const Requests: React.FC = () => {
   }, [dispatch]);
 
   const handleAccept = (requestId:string,teamId:string)=>{
-      dispatch(acceptRequest({requestId,teamId}));
+    dispatch(acceptRequest({ requestId, teamId }));
+    dispatch(getRequests());
+  }
+  const handleDecline = (requestId: string) => {
+    dispatch(declineRequest({ requestId }));
+    dispatch(getRequests());
   }
 
   const renderCell = (request: IRequest, column: { uid: string }) => {
@@ -26,8 +31,8 @@ const Requests: React.FC = () => {
         return <p>{request.note}</p>;
       case "action":
         return (<div className="flex justify-start gap-4">
-         <Button color="success" variant="shadow" onClick={()=>handleAccept(String(request._id),String(request.team_id))} >Accept</Button>
-         <Button color="danger" variant="shadow">decline</Button>
+         <Button color="success" variant="shadow" onPress={()=>handleAccept(String(request._id),String(request.team_id))} >Accept</Button>
+         <Button color="danger" variant="shadow" onPress={()=>handleDecline(String(request._id))}>decline</Button>
         </div>);
       default:
         return null;
