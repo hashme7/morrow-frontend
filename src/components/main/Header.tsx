@@ -29,10 +29,10 @@ const Header: React.FC<{logout:()=>void,xsMenu:Boolean,setXsMenu:(xsMenu:Boolean
   };
 
   return (
-    <div className="flex justify-between rounded-3xl items-center p-2 bg-zinc-950 text-white">
-      <div className="flex flex-wrap space-x-2 md:space-x-4 justify-center">
+    <div className="flex justify-between rounded-3xl items-center p-2 bg-zinc-950 text-white ">
+      <div className="flex flex-wrap space-x-2 md:space-x-4 justify-center sm:h-7 ">
         <button
-          className={`p-1 sm:p-2 ${
+          className={`p-3 flex gap-1 ${
             activeButton === "overview"
               ? "bg-white text-black"
               : "bg-transparent text-white"
@@ -43,7 +43,7 @@ const Header: React.FC<{logout:()=>void,xsMenu:Boolean,setXsMenu:(xsMenu:Boolean
           <span className="hidden sm:block">Overview</span>
         </button>
         <button
-          className={`p-1 sm:p-2 ${
+          className={`p-3 sm:flex sm:gap-1 sm:p-2 ${
             activeButton === "board"
               ? "bg-white text-black"
               : "bg-transparent text-white"
@@ -54,7 +54,7 @@ const Header: React.FC<{logout:()=>void,xsMenu:Boolean,setXsMenu:(xsMenu:Boolean
           <span className="hidden sm:block">Board</span>
         </button>
         <button
-          className={`p-1 sm:p-2 ${
+          className={`p-3 sm:flex sm:gap-1 sm:p-2 ${
             activeButton === "member"
               ? "bg-white text-black"
               : "bg-transparent text-white"
@@ -65,7 +65,7 @@ const Header: React.FC<{logout:()=>void,xsMenu:Boolean,setXsMenu:(xsMenu:Boolean
           <span className="hidden sm:block">Members</span>
         </button>
         <button
-          className={`p-1 sm:p-2 ${
+          className={`p-3 sm:p-2 sm:flex sm:gap-1 ${
             activeButton === "api"
               ? "bg-white text-black"
               : "bg-transparent text-white"
@@ -76,7 +76,7 @@ const Header: React.FC<{logout:()=>void,xsMenu:Boolean,setXsMenu:(xsMenu:Boolean
           <span className="hidden sm:block">API</span>
         </button>
         <button
-          className={`p-1 sm:p-2  ${
+          className={`p-1 sm:p-2  sm:flex sm:gap-1 ${
             activeButton === "diagram"
               ? "bg-white text-black"
               : "bg-transparent text-white"
@@ -89,14 +89,14 @@ const Header: React.FC<{logout:()=>void,xsMenu:Boolean,setXsMenu:(xsMenu:Boolean
       </div>
       <div className="flex sm:gap-1 md:space-x-4 gap-2">
         <button
-          className="material-icons text-sm sm:text-sm md:text-sm"
+          className="flex gap-1 material-icons text-sm sm:text-sm md:text-sm"
           onClick={logout}
         >
           <HiOutlineLogout />
           <span className="hidden sm:block">logout</span>
         </button>
         <button
-          className="material-icons text-sm sm:text-sm md:text-sm"
+          className="flex gap-1 material-icons text-sm sm:text-sm md:text-sm"
           onClick={() => navigate("/profile")}
         >
           <CgProfile />

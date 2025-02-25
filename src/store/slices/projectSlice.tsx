@@ -78,6 +78,7 @@ const projects = createSlice({
         console.log("action.payload", action.payload);
         state.status = "idle";
         state.projects = action.payload.data;
+        state.selectProject = null;
       }
     );
     builder.addCase(getProjects.pending, (state) => {
