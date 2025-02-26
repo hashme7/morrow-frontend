@@ -67,6 +67,14 @@ const chats = createSlice({
     setMessage(state, action) {
       state.chats = [...state.chats, action.payload];
     },
+    clearChat(state) {
+      state = {
+        teamName: "",
+        teamId: "",
+        chats: [],
+        error: null,
+      };
+    },
     setSeenMsg(state, action) {
       console.log("msg status changing......");
       state.chats = state.chats.map((chat) => {
@@ -88,6 +96,6 @@ const chats = createSlice({
   },
 });
 
-export const { clearError, setMessage, setSeenMsg } = chats.actions;
+export const { clearError, setMessage, setSeenMsg , clearChat} = chats.actions;
 
 export default chats.reducer;

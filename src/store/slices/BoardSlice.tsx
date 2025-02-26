@@ -177,6 +177,12 @@ const BoardSlice = createSlice({
     setTask(state) {
       state.tasks = state.tasks;
     },
+    clearBoard(state) {
+      state = {
+        columns: [],
+        tasks: [],
+      };
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(createColumn.fulfilled, (state, action) => {
@@ -232,5 +238,5 @@ const BoardSlice = createSlice({
   },
 });
 
-export const { setTask } = BoardSlice.actions;
+export const { setTask , clearBoard} = BoardSlice.actions;
 export default BoardSlice.reducer;

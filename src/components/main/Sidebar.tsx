@@ -6,6 +6,11 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks";
 import { getProjects, selectProject } from "../../store/slices/projectSlice";
 import { IProject } from "../../types/project";
 import { useLocation, useNavigate } from "react-router-dom";
+import { resetMembers } from "../../store/slices/memberSlice";
+import { clearDb } from "../../store/slices/diagramSlice";
+import { clearChat } from "../../store/slices/ChatSlice";
+import { clearBoard } from "../../store/slices/BoardSlice";
+import { clearApis } from "../../store/slices/apiSlice";
 
 interface SideBarProps {
   showNotification: (message: string) => void;
@@ -27,6 +32,11 @@ const SideBar: React.FC<SideBarProps> = ({ showNotification, xsMenu }) => {
   }, [requests]);
 
   const handleSelectProject = (id: number) => {
+    dispatch(resetMembers());
+    dispatch(clearDb());
+    dispatch(clearChat());
+    dispatch(clearBoard());
+    dispatch(clearApis());
     dispatch(selectProject(id));
   };
 

@@ -20,7 +20,7 @@ import "@xyflow/react/dist/style.css";
 import { Button, useDisclosure } from "@nextui-org/react";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks/hooks";
 import { RootState } from "../../../store/store";
-import { getDiagram, saveDiagram } from "../../../store/slices/diagramSlice";
+import { clearDb, getDiagram, saveDiagram } from "../../../store/slices/diagramSlice";
 import TableModal from "./tableModal";
 import { tableState } from "../../../types/diagram";
 import DbCollectionNode from "./tableNode";
@@ -48,7 +48,6 @@ const Diagram: React.FC = () => {
   const debouncedSave = useMemo(
     () =>
       debounce(() => {
-        console.log(instanceofRC, "instance");
         if (instanceofRC && selectProject?.id) {
           const flow = instanceofRC.toObject();
           const convertedNodes = flow.nodes.map((node) => ({
@@ -156,6 +155,9 @@ const Diagram: React.FC = () => {
     } else {
       setNodes(initialNodes);
       setEdges(initialEdges);
+    }
+    return () => {
+      dispatch(clearDb());
     }
   }, [selectProject, dispatch]);
 

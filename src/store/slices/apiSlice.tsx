@@ -53,7 +53,13 @@ export const getApis = createAsyncThunk<
 const ApiSlice = createSlice({
   name: "Apis",
   initialState,
-  reducers: {},
+  reducers: {
+    clearApis(state) {
+      state = {
+        apis: [],
+      };
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(saveApi.fulfilled, (state, action) => {
       state.apis = [...state.apis, action.payload];
@@ -65,4 +71,5 @@ const ApiSlice = createSlice({
   },
 });
 
+export const { clearApis } = ApiSlice.actions;
 export default ApiSlice.reducer;

@@ -105,16 +105,7 @@ const membersSlice = createSlice({
       })
       .addCase(getTeamMembers.fulfilled, (state, action) => {
         const { data, totalItems, totalPages, currentPage } = action.payload;
-        console.log(`data is members : ${data}`);
-        const hash = new Map();
-        for (const member of state.members) {
-          hash.set(String(member._id), member);
-        }
-        const filterMember = data.filter(
-          (member: IUser) => !hash.has(String(member._id))
-        );
-        console.log(filterMember, "filtered membersss..");
-        state.members = [...state.members, ...filterMember];
+        state.members = data;
         state.totalItems = totalItems;
         state.totalPages = totalPages;
         state.currentPage = currentPage;

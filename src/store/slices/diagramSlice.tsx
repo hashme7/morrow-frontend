@@ -49,7 +49,20 @@ export const getDiagram = createAsyncThunk(
 const DiagramSlice = createSlice({
   name: "diagram",
   initialState,
-  reducers: {},
+  reducers: {
+    clearDb: (state) => {
+      state = {
+        projectId: 0,
+        nodes: [],
+        edges: [],
+        viewport: {
+          x: 0,
+          y: 0,
+          zoom: 0,
+        },
+      };
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(saveDiagram.fulfilled, (state, action) => {
       // Object.assign(state, action.payload);
@@ -80,5 +93,7 @@ const DiagramSlice = createSlice({
     });
   },
 });
+
+export const { clearDb } = DiagramSlice.actions;
 
 export default DiagramSlice.reducer;

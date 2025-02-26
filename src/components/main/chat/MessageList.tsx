@@ -14,8 +14,8 @@ const MessagesList = forwardRef<HTMLDivElement,IMessagesListProps>(({ messages }
 
   return (
     <div
-      className="space-y-4 min-h-[700px] overflow-y-auto"
-      style={{ maxHeight: "calc(85vh - 100px)" }}
+      className={`space-y-4 min-h-[700px] ${members.length>10?'overflow-y-auto':"overflow-y-hidden"}`}
+      // style={{ maxHeight: "calc(85vh - 100px)" }}
       ref={ref}
     >
       {messages.length ? (
