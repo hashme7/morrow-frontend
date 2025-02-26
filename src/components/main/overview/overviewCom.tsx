@@ -6,11 +6,16 @@ import RecentActivity from "./RecentActivity";
 import { useAppSelector } from "../../../store/hooks/hooks";
 
 const OverView: React.FC = () => {
-  const { selectProject ,projects} = useAppSelector((state) => state.project);
+  const { selectProject, projects } = useAppSelector((state) => state.project);
+  if (!selectProject) {
+    return <></>;
+  }
   const projectInfo = {
     name: selectProject?.name || "",
-    plannedStartDate: selectProject?.plannedStartDate || "2/2/2024",
-    plannedEndDate: selectProject?.plannedEndDate || "2/2/2024",
+    plannedStartDate:
+      new Date(selectProject.plannedStartDate).toDateString() || "2/2/2024",
+    plannedEndDate:
+      new Date(selectProject.plannedEndDate).toDateString()|| "2/2/2024",
     teamMembers: 1,
     projectLeader: "zayh",
     projectDescription: selectProject?.projectDescription || "dk",

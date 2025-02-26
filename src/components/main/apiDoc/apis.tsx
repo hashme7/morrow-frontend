@@ -119,7 +119,7 @@ const ApiTests: React.FC = () => {
       <div className="m-2">
         <HistoryList apis={apis} />
       </div>
-      <div className="p-2 w-4/5 ">
+      <div className="p-2 sm:w-4/5 ">
         <div className="flex justify-between gap-1 m-1  sm:w-full">
           <Autocomplete
             defaultItems={httpMethods}
@@ -141,7 +141,7 @@ const ApiTests: React.FC = () => {
             placeholder="Enter API Endpoint"
             value={endpoint}
             onChange={(e) => setEndpoint(e.target.value)}
-            className="rounded-xl bg-zinc-900 h-12 p-1"
+            className="rounded-xl bg-zinc-900 h-12 p-1 w-40 sm:w-auto"
           />
           <button
             onClick={handleSendRequest}
@@ -151,15 +151,15 @@ const ApiTests: React.FC = () => {
           </button>
         </div>
 
-        <div className="m-1 w-full">
+        <div className="sm:m-1 w-full">
           <Tabs aria-label="Tab-option" size="sm" radius="full">
             <Tab key="QUERY_PARAMS" title="Query Params">
               <Card>
                 <CardBody className="bg-zinc-950">
                   {params.map((param, i) => (
-                    <div className="flex gap-1 m-1" key={i}>
+                    <div className="flex gap-1 m-2" key={i}>
                       <Input
-                        className="w-1/6"
+                        className="w-1/6 h-3 sm:h-auto"
                         label="Key"
                         labelPlacement="inside"
                         value={param.key}
@@ -170,7 +170,7 @@ const ApiTests: React.FC = () => {
                         }}
                       />
                       <Input
-                        className="w-5/6"
+                        className="w-5/6 h-3  sm:h-auto"
                         label="Value"
                         labelPlacement="inside"
                         value={param.value}
@@ -182,7 +182,7 @@ const ApiTests: React.FC = () => {
                       />
                       <FaTrash
                         color="brown"
-                        className="m-2 hover:cursor-pointer w-6 h-6"
+                        className="m-2 hover:cursor-pointer  sm:w-6 sm:h-6"
                         onClick={() => {
                           const newParams = params.filter(
                             (_, index) => index !== i
@@ -192,19 +192,22 @@ const ApiTests: React.FC = () => {
                       />
                     </div>
                   ))}
-                  <Button className="w-1/5 m-1" onPress={handleAddParams}>
+                  <button
+                    className="w-1/5 m-2 p-2 bg-zinc-900 rounded-3xl "
+                    onClick={handleAddParams}
+                  >
                     Add
-                  </Button>
+                  </button>
                 </CardBody>
               </Card>
             </Tab>
             <Tab key="HEADERS" title="Headers">
               <Card>
-                <CardBody>
+                <CardBody className="bg-zinc-950">
                   {headers.map((header, i) => (
-                    <div className="flex gap-1 m-1" key={i}>
+                    <div className="flex gap-1 m-1 " key={i}>
                       <Input
-                        className="w-1/6"
+                        className="w-1/6 h-3 sm:h-auto"
                         label="Key"
                         labelPlacement="inside"
                         value={header.key}
@@ -215,7 +218,7 @@ const ApiTests: React.FC = () => {
                         }}
                       />
                       <Input
-                        className="w-5/6"
+                        className="w-5/6 h-3 sm:h-auto"
                         label="Value"
                         labelPlacement="inside"
                         value={header.value}
@@ -227,7 +230,7 @@ const ApiTests: React.FC = () => {
                       />
                       <FaTrash
                         color="brown"
-                        className="m-2 hover:cursor-pointer w-6 h-6"
+                        className="m-2 hover:cursor-pointer  sm:w-6 sm:h-6"
                         onClick={() => {
                           const newHeaders = headers.filter(
                             (_, index) => index !== i
@@ -237,7 +240,10 @@ const ApiTests: React.FC = () => {
                       />
                     </div>
                   ))}
-                  <Button className="w-1/5 m-1" onPress={handleAddHeaders}>
+                  <Button
+                    className="w-1/5 m-2 p-2 bg-zinc-900 rounded-3xl"
+                    onPress={handleAddHeaders}
+                  >
                     Add
                   </Button>
                 </CardBody>

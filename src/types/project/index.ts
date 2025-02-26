@@ -11,8 +11,8 @@ export interface IProject {
   name: string;
   projectStartDate: string | null;
   projectEndDate: string | null;
-  plannedStartDate: string;
-  plannedEndDate: string | null;
+  plannedStartDate: Date;
+  plannedEndDate: Date;
   projectDescription: string | null;
   teamId: string;
   createdAt?: string;

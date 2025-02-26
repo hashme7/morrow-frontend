@@ -93,7 +93,9 @@ const Chat: React.FC = () => {
       </div>
 
       <div
-        className="flex-grow overflow-y-auto p-4"
+        className={`flex-grow ${
+          chats.length > 6 ? "overflow-auto" : "overflow-y-hidden"
+        } p-4`}
         style={{ maxHeight: "calc(85vh - 100px)" }}
       >
         <MessagesList messages={chats} ref={chatRef} />
