@@ -71,7 +71,6 @@ const Signup: React.FC = () => {
       const params = window.location.search;
       const code = new URLSearchParams(params).get("code");
       if (code) {
-        console.log("handle github login.....");
         const response = await dispatch(gitHubLogin(code));
         if (gitHubLogin.fulfilled.match(response)) {
           navigate("/dashboard");
@@ -129,34 +128,37 @@ const Signup: React.FC = () => {
 
           <div
             ref={formRef}
-            className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg p-8 rounded-xl shadow-xl w-full space-y-6"
+            className="bg-zinc-900 bg-opacity-10 backdrop-filter backdrop-blur-lg p-8 rounded-xl shadow-xl w-full space-y-6"
           >
             <Input
+              variant="bordered"
               type="text"
               placeholder="Username"
               onChange={(e) => setUserName(e.target.value)}
               value={userName}
-              className="bg-white bg-opacity-5 text-white border-none placeholder-gray-300"
+              className="bg-zinc-950 bg-opacity-5 text-white placeholder-gray-300"
             />
             {errors.userName && (
               <p className="text-red-500 ">{errors.userName}</p>
             )}
 
             <Input
+              variant="bordered"
               type="email"
               placeholder="Email"
               onChange={(e) => setEmail(e.target.value)}
               value={email}
-              className="bg-white bg-opacity-5 text-white border-none placeholder-gray-300"
+              className="bg-zinc-950 bg-opacity-5 text-white border-none placeholder-gray-300"
             />
             {errors.email && <p className="text-red-500">{errors.email}</p>}
 
             <Input
+              variant="bordered"
               type={`${showPassword ? "text" : "password"}`}
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
               value={password}
-              className="bg-white bg-opacity-5 text-white border-none placeholder-gray-300"
+              className="bg-zinc-950 bg-opacity-5 text-white border-none placeholder-gray-300"
               endContent={
                 <button
                   type="button"
@@ -171,11 +173,12 @@ const Signup: React.FC = () => {
             )}
 
             <Input
+              variant="bordered"
               type={`${showCnfmPassword ? "text" : "password"}`}
               placeholder="confirm Password"
               onChange={(e) => setConfirmPassword(e.target.value)}
               value={confirmPassword}
-              className="bg-white bg-opacity-5 text-white border-none placeholder-gray-300"
+              className="bg-zinc-950 bg-opacity-5 text-white border-none placeholder-gray-300"
               endContent={
                 <button
                   type="button"
@@ -194,13 +197,13 @@ const Signup: React.FC = () => {
             >
               Sign Up
             </Button>
-            <div className="flex flex-col md:flex-row justify-center space-x-0 md:space-x-4 mt-4">
-              <div className="mb-2 md:mb-0">
+            <div className="flex flex-col justify-center align-middle space-x-0 sm:gap-2">
+              <div className="m-1  md:mb-0 bg-white flex justify-center sm:h-12 p-1 rounded-3xl">
                 <GoogleLogin onSuccess={handleGoogleSubmit} />
               </div>
               <Button
                 onPress={handleGitHubSubmit}
-                className="bg-gray-800 text-white hover:bg-gray-600 flex items-center justify-center py-2 px-4 rounded"
+                className="bg-gray-800 text-white h-12 w-full rounded-3xl  hover:bg-gray-600 flex items-center"
               >
                 <FaGithub className="mr-2" />
                 <p className="block md:hidden">Sign up with GitHub</p>

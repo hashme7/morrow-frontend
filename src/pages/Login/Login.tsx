@@ -132,13 +132,13 @@ const Login: React.FC = () => {
             </Button>
 
             {errors.form && <p className="text-red-500">{errors.form}</p>}
-            <div className="flex flex-col md:flex-row justify-center space-x-0 md:space-x-4 mt-4">
-              <div className="mb-2 md:mb-0">
+            <div className="flex flex-col justify-center align-middle space-x-0 gap-2">
+              <div className="sm:m-0 m-2 md:mb-0 bg-white flex justify-center sm:h-12 p-1 rounded-3xl">
                 <GoogleLogin onSuccess={handleGoogleSubmit} />
               </div>
               <Button
                 onPress={handleGitHubSubmit}
-                className="bg-gray-800 text-white hover:bg-gray-600 flex items-center justify-center py-2 px-4 rounded"
+                className="bg-gray-800 text-white h-12 w-full rounded-3xl  hover:bg-gray-600 flex items-center"
               >
                 <FaGithub className="mr-2" />
                 <p className="block md:hidden">Sign up with GitHub</p>
