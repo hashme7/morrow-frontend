@@ -15,7 +15,7 @@ const initialState: LoginState = {
   password: "",
   isLoggedIn: false,
   role: null,
-  errorMessage: null,
+  errorMessage: "",
 };
 export const loginUser = createAsyncThunk(
   "/auth/login",

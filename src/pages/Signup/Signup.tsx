@@ -8,7 +8,7 @@ import { validateFields } from "../../utils/validations/authValidation/signup&lo
 import { GoogleLogin } from "@react-oauth/google";
 import { IGoogleResponse } from "../../types/login/loginState.tsx";
 import { gitHubLogin, googleLogin } from "../../store/slices/loginSlice.tsx";
-import { FaGithub } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaGithub } from "react-icons/fa";
 
 const Signup: React.FC = () => {
   const titleRef = useRef<HTMLHeadingElement | null>(null);
@@ -20,6 +20,8 @@ const Signup: React.FC = () => {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showCnfmPassword, setShowCnfmPass] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState<{
     email?: string;
@@ -31,7 +33,9 @@ const Signup: React.FC = () => {
     try {
       const validationErrors = validateFields({ email, password, userName });
       if (Object.keys(validationErrors).length === 0) {
-        const response = await dispatch(signupUser({ username: userName, email, password }));
+        const response = await dispatch(
+          signupUser({ username: userName, email, password })
+        );
         if (signupUser.fulfilled.match(response)) {
           console.log("navigating : /otp ");
           navigate("/otp");
@@ -66,8 +70,8 @@ const Signup: React.FC = () => {
     const handleGitHubLogin = async () => {
       const params = window.location.search;
       const code = new URLSearchParams(params).get("code");
-      if(code){
-        console.log('handle github login.....')
+      if (code) {
+        console.log("handle github login.....");
         const response = await dispatch(gitHubLogin(code));
         if (gitHubLogin.fulfilled.match(response)) {
           navigate("/dashboard");
@@ -148,22 +152,38 @@ const Signup: React.FC = () => {
             {errors.email && <p className="text-red-500">{errors.email}</p>}
 
             <Input
-              type="password"
+              type={`${showPassword ? "text" : "password"}`}
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
               value={password}
               className="bg-white bg-opacity-5 text-white border-none placeholder-gray-300"
+              endContent={
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              }
             />
             {errors.password && (
               <p className="text-red-500">{errors.password}</p>
             )}
 
             <Input
-              type="confirm password"
+              type={`${showCnfmPassword ? "text" : "password"}`}
               placeholder="confirm Password"
               onChange={(e) => setConfirmPassword(e.target.value)}
               value={confirmPassword}
               className="bg-white bg-opacity-5 text-white border-none placeholder-gray-300"
+              endContent={
+                <button
+                  type="button"
+                  onClick={() => setShowCnfmPass(!showCnfmPassword)}
+                >
+                  {showCnfmPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              }
             />
             {errorMessage && <p className="text-red-500">{errorMessage}</p>}
 
