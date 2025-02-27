@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { FaCalendarAlt, FaTasks, FaUsers } from "react-icons/fa";
 import PModal from "./modals/ProjectCreateModal";
 import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks";
-import { getProjects, selectProject } from "../../store/slices/projectSlice";
+import { clearSelectProject, getProjects, selectProject } from "../../store/slices/projectSlice";
 import { IProject } from "../../types/project";
 import { useLocation, useNavigate } from "react-router-dom";
 import { resetMembers } from "../../store/slices/memberSlice";
@@ -29,6 +29,7 @@ const SideBar: React.FC<SideBarProps> = ({ showNotification, xsMenu }) => {
 
   useEffect(() => {
     dispatch(getProjects());
+    dispatch(clearSelectProject());
   }, [requests]);
 
   const handleSelectProject = (id: number) => {
