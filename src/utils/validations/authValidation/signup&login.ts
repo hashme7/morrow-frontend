@@ -4,16 +4,17 @@ export const validateFields = (fields: {
   confirmPassword: string | undefined;
   userName?: string;
 }) => {
-  const errors: {
+  let errors: {
     email?: string;
-    password?: string;
+    password?: string; 
     userName?: string;
     confirmPassword?: string;
   } = {};
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (!fields.email || !emailRegex.test(fields.email)) {
-    errors.email = "Please enter a valid email.";
+    console.log("entered in emial validtion failed..")
+    errors.email = "Please enter a valid email address.";
   }
 
   if (!fields.password || fields.password.length < 6) {
@@ -23,13 +24,13 @@ export const validateFields = (fields: {
   } else if (!/\d/.test(fields.password)) {
     errors.password = "Password must contain at least one number.";
   } else if (!/[!@#$%^&*]/.test(fields.password)) {
+    console.log("password must contain special character")
     errors.password = "Password must contain at least one special character.";
-  }
+  } 
   if (
     typeof fields.confirmPassword != "undefined" &&
     fields.confirmPassword != fields.password
   ) {
-    console.log("entered");
     errors.confirmPassword =
       "Password and confirm password should not be different";
   }

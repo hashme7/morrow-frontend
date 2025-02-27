@@ -1,24 +1,18 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input, Button } from "@nextui-org/react";
 import { Link, useNavigate } from "react-router-dom";
-import { validateFields } from "../../utils/validations/authValidation/signup&login.ts";
-import { useAppDispatch ,useAppSelector} from "../../store/hooks/hooks.ts";
-import { gitHubLogin, googleLogin, loginUser } from "../../store/slices/loginSlice.tsx";
+import { useAppDispatch } from "../../store/hooks/hooks.ts";
 import { GoogleLogin } from "@react-oauth/google";
-import { IGoogleResponse } from "../../types/login/loginState.tsx";
 import { FaGithub ,FaEyeSlash,FaEye} from "react-icons/fa";
+import { handleGitHubLogin, handleGitHubSubmit, handleGoogleSubmit, handleLogin } from "../../services/auth-service/index.ts";
 
 const Login: React.FC = () => {
-  const titleRef = useRef<HTMLHeadingElement | null>(null);
-  const formRef = useRef<HTMLFormElement | null>(null);
-  const animationRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState(""); 
   const [showPassword, setShowPassword] = useState(false);
-  const { isLoggedIn } = useAppSelector((state)=>state.login);
   
   const [errors, setErrors] = useState<{
     email?: string;
@@ -26,67 +20,21 @@ const Login: React.FC = () => {
     form?: string; 
   }>({});
 
-  const handleSubmit = async () => {
-    setErrors({});
-    const validationErrors = validateFields({ email, password, confirmPassword:undefined });
-    if (Object.keys(validationErrors).length === 0) {
-      const resultAction = await dispatch(loginUser({ email, password }));
-
-      if (loginUser.fulfilled.match(resultAction)) {
-        console.log("Navigating from login to /dashboard");
-        if (isLoggedIn) navigate("/dashboard");
-      } else if (loginUser.rejected.match(resultAction)) {
-        const errorPayload = resultAction.payload as string;
-        setErrors({ ...errors, form: errorPayload || "Login failed" });
-      }
-    } else {
-      setErrors(validationErrors);
-    }
-  };
-
-  const handleGitHubSubmit = () => {
-    window.location.assign(
-      "https://github.com/login/oauth/authorize?client_id=Ov23liQLEQjkuY7FHHPO&scope=user:email"
-    );
-  };
-
-  const handleGoogleSubmit = async (_credentialResponse:IGoogleResponse) => {
-    if(_credentialResponse.credential){
-      const response = await dispatch(googleLogin(_credentialResponse.credential))
-      if (googleLogin.fulfilled.match(response)) {
-        console.log("navigating from login to /dashboard.");
-        
-        navigate('/dashboard');
-      }
-    }
-  };
-
   useEffect(() => {
-    const handleGitHubLogin = async () => {
-      const params = window.location.search;
-      const code = new URLSearchParams(params).get("code");
-      if(code){
-        const response = await dispatch(gitHubLogin(code));
-        if (gitHubLogin.fulfilled.match(response)) {
-          navigate("/dashboard");
-        }
-      }
-    };
-    handleGitHubLogin();
+    const params = window.location.search;
+    const code = new URLSearchParams(params).get("code");
+    handleGitHubLogin(code,dispatch,navigate);
   }, []);
-
-  
 
   return (
     <section className="login h-screen flex items-center justify-center bg-black">
       <div className="container flex flex-col md:flex-row items-center justify-between w-11/12 max-w-6xl h-4/5 bg-transparent">
         <div className="form-section w-full md:w-1/2 flex flex-col justify-center px-4">
-          <h1 ref={titleRef} className="text-4xl font-bold text-white mb-6">
+          <h1  className="text-4xl font-bold text-white mb-6">
             Log In to Your Account
           </h1>
 
           <form
-            ref={formRef}
             className="bg-zinc-800 bg-opacity-10 backdrop-filter backdrop-blur-lg p-8 rounded-xl shadow-xl w-full space-y-6"
           >
             <Input
@@ -124,7 +72,15 @@ const Login: React.FC = () => {
             )}
 
             <Button
-              onPress={handleSubmit}
+              onPress={() =>
+                handleLogin(
+                  email,
+                  password,
+                  dispatch,
+                  navigate,
+                  setErrors
+                )
+              }
               radius="full"
               className="w-full bg-green-900 text-white shadow-lg font-semibold py-3 hover:bg-green-600"
             >
@@ -134,7 +90,7 @@ const Login: React.FC = () => {
             {errors.form && <p className="text-red-500">{errors.form}</p>}
             <div className="flex flex-col justify-center align-middle space-x-0 gap-2">
               <div className="sm:m-0 m-2 md:mb-0 bg-white flex justify-center sm:h-12 p-1 rounded-3xl">
-                <GoogleLogin onSuccess={handleGoogleSubmit} />
+                <GoogleLogin onSuccess={(res)=>handleGoogleSubmit(res,dispatch,navigate)} />
               </div>
               <Button
                 onPress={handleGitHubSubmit}
@@ -158,7 +114,6 @@ const Login: React.FC = () => {
 
         <div className="animation-section sm:block hidden w-full md:w-1/2 h-full justify-center items-center">
           <div
-            ref={animationRef}
             className="project-management-animation w-full h-full flex-co justify-end relative"
           >
             <div className="task-card w-50 h-50 bg-black bg-opacity-10 rounded-lg shadow-lg p-4 absolute top-0 left-10 text-center">

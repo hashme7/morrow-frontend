@@ -27,7 +27,7 @@ const Signup: React.FC = () => {
     email?: string;
     password?: string;
     userName?: string;
-    confirmPassword?: string;
+    confirmPassword?:string,
   }>({});
 
   const handleSignup = async () => {
@@ -202,10 +202,10 @@ const Signup: React.FC = () => {
               radius="full"
               className="w-full bg-green-900 text-white shadow-lg font-semibold py-3 hover:bg-green-600"
               onPress={handleSignup}
-            >
+              >
               Sign Up
             </Button>
-            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+              {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             <div className="flex flex-col justify-center align-middle space-x-0 sm:gap-2">
               <div className="m-1  md:mb-0 bg-white flex justify-center sm:h-12 p-1 rounded-3xl">
                 <GoogleLogin onSuccess={handleGoogleSubmit} />
