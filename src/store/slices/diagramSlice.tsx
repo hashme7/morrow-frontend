@@ -51,15 +51,11 @@ const DiagramSlice = createSlice({
   initialState,
   reducers: {
     clearDb: (state) => {
-      state = {
-        projectId: 0,
-        nodes: [],
-        edges: [],
-        viewport: {
-          x: 0,
-          y: 0,
-          zoom: 0,
-        },
+      (state.projectId = 0), (state.nodes = []), (state.edges = []);
+      state.viewport = {
+        x: 0,
+        y: 0,
+        zoom: 0,
       };
     },
   },

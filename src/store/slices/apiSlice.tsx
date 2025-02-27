@@ -55,9 +55,7 @@ const ApiSlice = createSlice({
   initialState,
   reducers: {
     clearApis(state) {
-      state = {
-        apis: [],
-      };
+      state.apis = []
     },
   },
   extraReducers: (builder) => {
