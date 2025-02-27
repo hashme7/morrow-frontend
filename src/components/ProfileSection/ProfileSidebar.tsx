@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState } from "react";
 import { FaCamera, FaCheck, FaEdit } from "react-icons/fa";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { ProfileSidebarProps } from "../../types/profile";
 import {
   changeProfilImg,
@@ -10,9 +11,10 @@ import mongoose from "mongoose";
 
 const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
   const dispatch = useAppDispatch();
-  const { image,fullName,userName,basedIn,jobTitle ,phone} = useAppSelector((state) => state.profile);
+  const { image, fullName, userName, basedIn, jobTitle, phone, isLoading } =
+    useAppSelector((state) => state.profile);
   const [newFullName, setNewFullName] = useState(fullName);
-  const [newPublicName, setNewPublicName] = useState(userName);
+  const [newUserName, setNewUserName] = useState(userName);
   const [newBasedIn, setNewBasedIn] = useState(basedIn);
   const [newJobTitle, setNewJobTitle] = useState(jobTitle);
   const [newPhone, setNewPhone] = useState(phone);
@@ -20,7 +22,7 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
 
   const [EditMode, setEditMode] = useState({
     fullName: false,
-    publicName: false,
+    userName: false,
     basedIn: false,
     jobTitle: false,
     phone: false,
@@ -58,24 +60,16 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
       uploadImg(e.target.files[0]);
     }
   };
-
-  // Update handlers
   const handleFieldUpdate = async (field: keyof typeof EditMode) => {
-    const userId = localStorage.getItem("userId");
-    const userOjbectId = new mongoose.Types.ObjectId(userId as string);
-    if (userId) {
-      await dispatch(updateProfileField({ userId: userOjbectId, field, value: getFieldValue(field) }));
-      toggleEdit(field);
-    }
+    dispatch(updateProfileField({ field, value: getFieldValue(field) }));
+    toggleEdit(field);
   };
-
-  // Get the current value based on the field
   const getFieldValue = (field: keyof typeof EditMode) => {
     switch (field) {
       case "fullName":
         return newFullName;
-      case "publicName":
-        return newPublicName;
+      case "userName":
+        return newUserName;
       case "basedIn":
         return newBasedIn;
       case "jobTitle":
@@ -89,7 +83,6 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
 
   return (
     <div className="sm:w-72 bg-zinc-950 rounded-2xl m-3 flex flex-col items-center gap-4 p-1 sm:h-screen">
-      {/* profile picture */}
       <div className="relative w-24 h-24 rounded-full overflow-hidden bg-gray-950 flex justify-center items-center">
         <img
           src={
@@ -99,7 +92,10 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
           alt="profile-img"
           className="w-full h-full object-cover"
         />
-        <label htmlFor="profileImage" className="absolute bottom-0 p-1 rounded-full cursor-pointer">
+        <label
+          htmlFor="profileImage"
+          className="absolute bottom-0 p-1 rounded-full cursor-pointer"
+        >
           <FaCamera className="opacity-0.1 text-zinc-500 hover:text-white" />
         </label>
         <input
@@ -133,13 +129,20 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
             </div>
           ) : (
             <div>
-              <span
-                className="absolute top-0 right-0 p-1 cursor-pointer text-white"
-                onClick={() => toggleEdit("fullName")}
-              >
-                <FaEdit />
-              </span>
-              <p className="text-zinc-600 font-medium p-1">{profile.fullName}</p>
+              {isLoading == "fullName" ? (
+                <AiOutlineLoading3Quarters className="absolute right-0 top-0 animate-spin text-white" />
+              ) : (
+                <span
+                  className="absolute top-0 right-0 p-1 cursor-pointer text-white"
+                  onClick={() => toggleEdit("fullName")}
+                >
+                  <FaEdit />
+                </span>
+              )}
+
+              <p className="text-zinc-600 font-medium p-1">
+                {profile.fullName}
+              </p>
             </div>
           )}
         </div>
@@ -147,30 +150,36 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
         {/* Public Name */}
         <div className="relative mb-4">
           <h3 className="font-medium text-small">Public Name</h3>
-          {EditMode.publicName ? (
+          {EditMode.userName ? (
             <>
               <input
                 type="text"
                 className="mt-1 bg-zinc-800 p-2 w-full rounded"
-                onChange={(e) => setNewPublicName(e.target.value)}
-                value={newPublicName}
+                onChange={(e) => setNewUserName(e.target.value)}
+                value={newUserName}
               />
               <span
                 className="absolute right-0 top-0 cursor-pointer"
-                onClick={() => handleFieldUpdate("publicName")}
+                onClick={() => handleFieldUpdate("userName")}
               >
                 <FaCheck />
               </span>
             </>
           ) : (
             <>
-              <p className="text-zinc-600 font-medium p-1">{profile.userName}</p>
-              <span
-                className="absolute top-0 right-0 p-1 cursor-pointer"
-                onClick={() => toggleEdit("publicName")}
-              >
-                <FaEdit />
-              </span>
+              <p className="text-zinc-600 font-medium p-1">
+                {profile.userName}
+              </p>
+              {isLoading == "userName" ? (
+                <AiOutlineLoading3Quarters className="absolute right-0 top-0 animate-spin text-white" />
+              ) : (
+                <span
+                  className="absolute top-0 right-0 p-1 cursor-pointer"
+                  onClick={() => toggleEdit("userName")}
+                >
+                  <FaEdit />
+                </span>
+              )}
             </>
           )}
         </div>
@@ -186,6 +195,7 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
                 onChange={(e) => setNewBasedIn(e.target.value)}
                 value={newBasedIn}
               />
+
               <span
                 className="absolute right-0 top-0 cursor-pointer"
                 onClick={() => handleFieldUpdate("basedIn")}
@@ -196,12 +206,16 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
           ) : (
             <>
               <p className="text-zinc-600 font-medium p-1">{profile.basedIn}</p>
-              <span
-                className="absolute top-0 right-0 p-1 cursor-pointer"
-                onClick={() => toggleEdit("basedIn")}
-              >
-                <FaEdit />
-              </span>
+              {isLoading == "basedIn" ? (
+                <AiOutlineLoading3Quarters className="absolute right-0 top-0 animate-spin text-white" />
+              ) : (
+                <span
+                  className="absolute top-0 right-0 p-1 cursor-pointer"
+                  onClick={() => toggleEdit("basedIn")}
+                >
+                  <FaEdit />
+                </span>
+              )}
             </>
           )}
         </div>
@@ -226,13 +240,19 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
             </>
           ) : (
             <>
-              <p className="text-zinc-600 font-medium p-1">{profile.jobTitle}</p>
-              <span
-                className="absolute right-0 top-0 cursor-pointer"
-                onClick={() => toggleEdit("jobTitle")}
-              >
-                <FaEdit />
-              </span>
+              <p className="text-zinc-600 font-medium p-1">
+                {profile.jobTitle}
+              </p>
+              {isLoading == "jobTitle" ? (
+                <AiOutlineLoading3Quarters className="absolute right-0 top-0 animate-spin text-white" />
+              ) : (
+                <span
+                  className="absolute right-0 top-0 cursor-pointer"
+                  onClick={() => toggleEdit("jobTitle")}
+                >
+                  <FaEdit />
+                </span>
+              )}
             </>
           )}
         </div>
@@ -260,13 +280,17 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
               </>
             ) : (
               <>
-                <p className="text-zinc-600 font-medium p-1">{profile.phone}</p>
-                <span
-                  className="absolute right-0 top-0 cursor-pointer"
-                  onClick={() => toggleEdit("phone")}
-                >
-                  <FaEdit />
-                </span>
+                  <p className="text-zinc-600 font-medium p-1">{profile.phone}</p>
+                  {isLoading == "phone" ? (
+                    <AiOutlineLoading3Quarters className="absolute right-0 top-0 animate-spin text-white" />
+                  ) : (
+                    <span
+                      className="absolute right-0 top-0 cursor-pointer"
+                      onClick={() => toggleEdit("phone")}
+                    >
+                      <FaEdit />
+                    </span>
+                  )}
               </>
             )}
           </div>

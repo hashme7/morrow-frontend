@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/ProfileSection/Header";
 import ProfileSidebar from "../../components/ProfileSection/ProfileSidebar";
-import Dev from "../../components/ProfileSection/Dev/Dev";
 import Email from "../../components/ProfileSection/Email";
 import Security from "../../components/ProfileSection/Security";
 import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks";
 import { fetchUser } from "../../store/slices/profileSlice";
-import mongoose from "mongoose";
 
 const Profile: React.FC = () => {
-  const [activeTab, setActiveTab] = useState("Dev");
+  const [activeTab, setActiveTab] = useState("Email");
   const { profile } = useAppSelector((state) => state);
   const dispatch = useAppDispatch();
 
   const renderActiveTab = () => {
     switch (activeTab) {
-      case "Dev":
-        return <Dev />;
+      // case "Dev":
+      //   return <Dev />;
       case "Email":
         return <Email />;
       case "Security":
@@ -25,13 +23,7 @@ const Profile: React.FC = () => {
   };
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    if (userId && mongoose.Types.ObjectId.isValid(userId)) {
-      const objectId = new mongoose.Types.ObjectId(userId);
-      dispatch(fetchUser({ userId: objectId }));
-    } else {
-      console.error("Invalid userId in localStorage");
-    }
+      dispatch(fetchUser());
   }, [dispatch]);
 
   return (

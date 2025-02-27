@@ -1,13 +1,25 @@
 import * as yup from "yup";
 
 export const passwordSchema = yup.object().shape({
-  currentPassword: yup
-    .string()
-    .required("Current password is required"),
+  currentPassword: yup.string()
+    .min(6, "Password must be at least 6 characters long.")
+    .matches(/\d/, "Password must contain at least one number.")
+    .matches(/[A-Z]/, "Password must contain at least one uppercase letter.")
+    .matches(
+      /[!@#$%^&*]/,
+      "Password must contain at least one special character."
+    )
+    .required("Password is required."),
   newPassword: yup
     .string()
-    .required("New password is required")
-    .min(8, "Password must be at least 8 characters long"),
+    .min(6, "Password must be at least 6 characters long.")
+    .matches(/\d/, "Password must contain at least one number.")
+    .matches(/[A-Z]/, "Password must contain at least one uppercase letter.")
+    .matches(
+      /[!@#$%^&*]/,
+      "Password must contain at least one special character."
+    )
+    .required("Password is required."),
   confirmPassword: yup
     .string()
     .oneOf([yup.ref("newPassword")], "Passwords must match")

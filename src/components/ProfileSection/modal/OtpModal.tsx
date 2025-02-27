@@ -13,9 +13,6 @@ const OtpModal: React.FC<{visible:boolean,setVisible:(value:boolean) => void}> =
   const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
-  
-
-  console.log(visible, "visible...");
 
   const handleVerifyOtp = () => {
     if (otp) {

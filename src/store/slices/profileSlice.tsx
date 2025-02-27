@@ -11,7 +11,7 @@ const initialState = {
   jobTitle: "",
   phone: "",
   email: "",
-  isLoading: false,
+  isLoading: "",
   errorMessage: "",
   successMessage: "",
   error: false,
@@ -29,6 +29,12 @@ const handleAxiosError = (
   defaultMessage: string
 ) => {
   const axiosError = error as AxiosError<{ message: string }>;
+  if (axiosError.response?.status == 404) {
+    return rejectWithValue("request not found");
+  } 
+  if (axiosError.response?.status == 403) {
+    return rejectWithValue(axiosError.response?.data.message);
+  }
   return rejectWithValue(
     (axiosError.response?.data.message as string) || defaultMessage
   );
@@ -37,9 +43,8 @@ const handleAxiosError = (
 // Async Thunks
 export const fetchUser = createAsyncThunk(
   "profile/fetchProfileDetails",
-  async ({ userId }: { userId: ObjectId }, { rejectWithValue }) => {
+  async (_: void, { rejectWithValue }) => {
     try {
-      console.log(userId);
       const response = await axios.get(`/user/user-details`);
       return response.data;
     } catch (error) {
@@ -59,7 +64,7 @@ export const changeProfilImg = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      console.log(userId)
+      console.log(userId);
       const response = await axios.put(`/user/profileImg`, data);
       return response.data;
     } catch (error) {
@@ -75,14 +80,14 @@ export const changeProfilImg = createAsyncThunk(
 export const changeEmail = createAsyncThunk(
   "profile/changeEmail",
   async (
-    { email, userId }: { email: string; userId: string },
+    { email }: { email: string; },
     { rejectWithValue }
   ) => {
     try {
-      console.log(userId);
-      const response = await axios.put(`/changeEmail`, { email });
+      const response = await axios.put(`/user/changeEmail`, { email });
       return response.data;
     } catch (error) {
+      console.log(error,"error")
       return handleAxiosError(
         error,
         rejectWithValue,
@@ -98,11 +103,10 @@ export const changePassword = createAsyncThunk(
     {
       currentPassword,
       newPassword,
-      userId,
-    }: { currentPassword: string; newPassword: string; userId: ObjectId },
+    }: { currentPassword: string; newPassword: string;},
     { rejectWithValue }
   ) => {
-    try {console.log(userId)
+    try {
       const response = await axios.put(`/user/changePassword`, {
         currentPassword,
         newPassword,
@@ -121,21 +125,18 @@ export const changePassword = createAsyncThunk(
 export const updateProfileField = createAsyncThunk(
   "profile/updateField",
   async (
-    {
-      field,
-      value,
-      userId,
-    }: { field: string; value: string; userId: ObjectId },
+    { field, value }: { field: string; value: string },
     { rejectWithValue }
   ) => {
     try {
-      console.log(userId)
       const response = await axios.put(
-        `/user/user-profile/${field}`,
+        `/user/user-profile/${field == "userName" ? "username" : field}`,
         { value }
       );
+      console.log("response", response);
       return response.data;
     } catch (error) {
+      console.log("error on the update Profile field", error);
       return handleAxiosError(
         error,
         rejectWithValue,
@@ -151,7 +152,7 @@ const profileSlice = createSlice({
   initialState,
   reducers: {
     loading: (state) => {
-      state.isLoading = true;
+      state.isLoading = "";
     },
   },
   extraReducers: (builder) => {
@@ -169,32 +170,39 @@ const profileSlice = createSlice({
         state.error = false;
         state.errorMessage = "";
       })
-      // Change Profile Image
       .addCase(changeProfilImg.fulfilled, (state, action) => {
         state.image = action.payload.data.image;
         state.error = false;
         state.errorMessage = "";
       })
-      // Change Password
+      .addCase(changePassword.pending, (state) => {
+        state.isLoading = "secure"
+      })
       .addCase(changePassword.rejected, (state, action) => {
         state.error = true;
         state.errorMessage = action.payload as string;
+        state.isLoading = "";
       })
       .addCase(changePassword.fulfilled, (state) => {
         state.error = false;
         state.errorMessage = "";
+        state.isLoading = "";
       })
-      // Update Profile Fields
       .addCase(updateProfileField.fulfilled, (state, action) => {
+        console.log("log from ", action.payload, action.meta.arg);
         const { field, value } = action.meta.arg as UpdateFieldPayload;
-
-        if (field in state) {
-          state[field] = value as never;
-          state.error = false;
-          state.errorMessage = "";
-        } else {
-          console.error(`Invalid field: ${field}`);
-        }
+        state[field] = value as never;
+        state.error = false;
+        state.errorMessage = "";
+        state.isLoading = "";
+      })
+      .addCase(updateProfileField.pending, (state, action) => {
+        state.isLoading = action.meta.arg.field;
+        console.log(state.isLoading, "loadin");
+      })
+      .addCase(updateProfileField.rejected, (state, action) => {
+        console.log("from reject:", state, action);
+        state.isLoading = "";
       });
   },
 });

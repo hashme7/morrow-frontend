@@ -18,6 +18,7 @@ const reusableRules = {
   password: Yup.string()
     .min(6, "Password must be at least 6 characters long.")
     .matches(/\d/, "Password must contain at least one number.")
+    .matches(/[A-Z]/, "Password must contain at least one uppercase letter.")
     .matches(
       /[!@#$%^&*]/,
       "Password must contain at least one special character."
@@ -35,6 +36,7 @@ export const validationSchemas = {
     columnName: reusableRules.requiredString(3, 50, "Column name"),
   }),
 };
+
 
 export const validateField = async (
   schema: Yup.ObjectSchema<never>,
