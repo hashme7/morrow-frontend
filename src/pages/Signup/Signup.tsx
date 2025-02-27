@@ -27,11 +27,17 @@ const Signup: React.FC = () => {
     email?: string;
     password?: string;
     userName?: string;
+    confirmPassword?: string;
   }>({});
 
   const handleSignup = async () => {
     try {
-      const validationErrors = validateFields({ email, password, userName });
+      const validationErrors = validateFields({
+        email,
+        password,
+        userName,
+        confirmPassword,
+      });
       if (Object.keys(validationErrors).length === 0) {
         const response = await dispatch(
           signupUser({ username: userName, email, password })
@@ -188,7 +194,9 @@ const Signup: React.FC = () => {
                 </button>
               }
             />
-            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+            {errors.confirmPassword && (
+              <p className="text-red-500">{errors.confirmPassword}</p>
+            )}
 
             <Button
               radius="full"
@@ -197,6 +205,7 @@ const Signup: React.FC = () => {
             >
               Sign Up
             </Button>
+            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             <div className="flex flex-col justify-center align-middle space-x-0 sm:gap-2">
               <div className="m-1  md:mb-0 bg-white flex justify-center sm:h-12 p-1 rounded-3xl">
                 <GoogleLogin onSuccess={handleGoogleSubmit} />

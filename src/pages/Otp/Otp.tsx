@@ -2,7 +2,11 @@ import React, { useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { Input, Button } from "@nextui-org/react";
 import { useAppSelector, useAppDispatch } from "../../store/hooks/hooks.ts";
-import { verifyOtp, resetOtpState, resendOtp } from "../../store/slices/otpSlice.tsx";
+import {
+  verifyOtp,
+  resetOtpState,
+  resendOtp,
+} from "../../store/slices/otpSlice.tsx";
 import { useNavigate } from "react-router-dom";
 
 const OtpPage: React.FC = () => {
@@ -11,22 +15,30 @@ const OtpPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { otpVerified, errorMessage, loading } = useAppSelector((state) => state.otp);
+  const { otpVerified, errorMessage, loading } = useAppSelector(
+    (state) => state.otp
+  );
   const { userId } = useAppSelector((state) => state.signup);
   const [otp, setOtp] = useState("");
-  const [timer, setTimer] = useState(60); 
+  const [timer, setTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
+  const [otpError, setOtpError] = useState("");
 
   const handleVerifyOtp = () => {
+    setOtpError("");
+    if (otp.length < 6) {
+      setOtp("OTP must be exactly 6 characters long.");
+      return 
+    }
     if (otp) {
       dispatch(verifyOtp({ otp, userId }));
     }
   };
 
   const handleResendOtp = () => {
-    setTimer(60); 
-    dispatch(resendOtp({userId}))
-    setCanResend(false); 
+    setTimer(60);
+    dispatch(resendOtp({ userId }));
+    setCanResend(false);
   };
 
   useEffect(() => {
@@ -56,11 +68,11 @@ const OtpPage: React.FC = () => {
         setTimer((prev) => prev - 1);
       }, 1000);
     } else {
-      setCanResend(true); 
+      setCanResend(true);
     }
 
     return () => {
-      clearInterval(interval); 
+      clearInterval(interval);
     };
   }, [timer]);
 
@@ -76,7 +88,8 @@ const OtpPage: React.FC = () => {
             className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg p-8 rounded-xl shadow-xl w-full space-y-6"
           >
             <p className="text-white text-lg">
-              Please enter the six-digit verification code sent to your email or phone number.
+              Please enter the six-digit verification code sent to your email or
+              phone number.
             </p>
             <Input
               type="text"
@@ -86,15 +99,16 @@ const OtpPage: React.FC = () => {
               className="bg-white bg-opacity-5 text-white border-node placeholder-gray-300"
               maxLength={6}
             />
-            {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+            {otpError.length && <p style={{ color: "red" }}>{otpError}</p>}
             <Button
               radius="full"
               className="w-full bg-green-900 text-white shadow-lg font-semibold py-3 hover:bg-green-600"
-              onClick={handleVerifyOtp}
+              onPress={handleVerifyOtp}
               disabled={loading}
             >
               {loading ? "Verifying..." : "Verify Code"}
             </Button>
+            {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
             <p className="text-gray-400 mt-4">
               Didn't receive the code?{" "}
               {canResend ? (
@@ -105,9 +119,7 @@ const OtpPage: React.FC = () => {
                   Resend Code
                 </span>
               ) : (
-                <span className="text-gray-400">
-                  Resend in {timer} seconds
-                </span>
+                <span className="text-gray-400">Resend in {timer} seconds</span>
               )}
             </p>
           </div>

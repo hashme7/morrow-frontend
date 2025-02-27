@@ -24,19 +24,20 @@ export const loginUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await loginApi.post<LoginResponse>("/auth/login", loginData);
+      const response = await loginApi.post<LoginResponse>(
+        "/auth/login",
+        loginData
+      );
       return response.data;
     } catch (error) {
+      console.log(error);
       const axiosError = error as AxiosError<{ message: string }>;
-
+      
       if (axiosError.response) {
-        if (axiosError.response.status === 401) {
-          return rejectWithValue("Invalid email or password");
+        if (axiosError.response.status == 500) {
+          return rejectWithValue("Server is down please try again later");
         }
-
-        return rejectWithValue(
-          axiosError.response.data.message || "Login failed"
-        );
+        return rejectWithValue(axiosError.response.data.message);
       }
       return rejectWithValue("Network error");
     }
@@ -129,8 +130,7 @@ const loginSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(loginUser.fulfilled, (state, action) => {
-      console.log(action, "actionsss");
-      localStorage.setItem('userId',action.payload.userId)
+      localStorage.setItem("userId", action.payload.userId);
       state.isLoggedIn = true;
       state.errorMessage = null;
     });
@@ -148,7 +148,7 @@ const loginSlice = createSlice({
     });
     builder.addCase(checkTokenValidity.rejected, (state, action) => {
       console.log(action, "action in rejection");
-      localStorage.removeItem("userId")
+      localStorage.removeItem("userId");
       state.isLoggedIn = false;
     });
     builder.addCase(logout.fulfilled, (state) => {

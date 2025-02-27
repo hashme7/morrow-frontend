@@ -28,13 +28,13 @@ const Login: React.FC = () => {
 
   const handleSubmit = async () => {
     setErrors({});
-    const validationErrors = validateFields({ email, password });
+    const validationErrors = validateFields({ email, password, confirmPassword:undefined });
     if (Object.keys(validationErrors).length === 0) {
       const resultAction = await dispatch(loginUser({ email, password }));
 
       if (loginUser.fulfilled.match(resultAction)) {
         console.log("Navigating from login to /dashboard");
-        if (isLoggedIn)navigate("/dashboard");
+        if (isLoggedIn) navigate("/dashboard");
       } else if (loginUser.rejected.match(resultAction)) {
         const errorPayload = resultAction.payload as string;
         setErrors({ ...errors, form: errorPayload || "Login failed" });
