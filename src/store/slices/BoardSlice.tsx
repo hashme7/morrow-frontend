@@ -178,10 +178,8 @@ const BoardSlice = createSlice({
       state.tasks = state.tasks;
     },
     clearBoard(state) {
-      state = {
-        columns: [],
-        tasks: [],
-      };
+      state.columns = [];
+      state.tasks = [];
     },
   },
   extraReducers: (builder) => {

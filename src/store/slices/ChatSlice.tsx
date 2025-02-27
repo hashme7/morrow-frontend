@@ -68,12 +68,11 @@ const chats = createSlice({
       state.chats = [...state.chats, action.payload];
     },
     clearChat(state) {
-      state = {
-        teamName: "",
-        teamId: "",
-        chats: [],
-        error: null,
-      };
+      state.teamName = "";
+      state.teamId = "";
+      state.chats = [];
+      state.error = null
+        
     },
     setSeenMsg(state, action) {
       console.log("msg status changing......");

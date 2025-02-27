@@ -17,7 +17,7 @@ import { IProject } from '../../../types/project';
               className="flex justify-between text-sm text-gray-400 mt-2"
             >
               <span>{project.name}</span>
-              <span>{project.plannedEndDate}</span>
+              <span>{new Date(project.plannedEndDate).toDateString()}</span>
             </li>
           ))}
         </ul>
