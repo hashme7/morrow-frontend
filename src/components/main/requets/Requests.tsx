@@ -1,9 +1,13 @@
 import React, { useEffect } from "react";
 import Table from "../members/table";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks/hooks";
-import { acceptRequest, declineRequest, getRequests } from "../../../store/slices/RequestsSlice";
+import {
+  acceptRequest,
+  declineRequest,
+  getRequests,
+} from "../../../store/slices/RequestsSlice";
 import { IRequest } from "../../../types/requests";
-import {requestColumns as columns} from '../../../constants/data/data';
+import { requestColumns as columns } from "../../../constants/data/data";
 import { Button } from "@nextui-org/react";
 import { getProjects } from "../../../store/slices/projectSlice";
 
@@ -12,22 +16,22 @@ const Requests: React.FC = () => {
   const { requests, isLoading } = useAppSelector((state) => state.request);
 
   useEffect(() => {
-      dispatch(getRequests())
+    dispatch(getRequests());
   }, [dispatch]);
 
-  const handleAccept = (requestId:string,teamId:string)=>{
+  const handleAccept = (requestId: string, teamId: string) => {
     dispatch(acceptRequest({ requestId, teamId }));
     setTimeout(() => {
       dispatch(getRequests());
-    }, 300);
+    }, 150);
     dispatch(getProjects());
-  }
+  };
   const handleDecline = (requestId: string) => {
     dispatch(declineRequest({ requestId }));
     setTimeout(() => {
       dispatch(getRequests());
     }, 300);
-  }
+  };
 
   const renderCell = (request: IRequest, column: { uid: string }) => {
     switch (column.uid) {
@@ -36,10 +40,27 @@ const Requests: React.FC = () => {
       case "note":
         return <p>{request.note}</p>;
       case "action":
-        return (<div className="flex justify-start gap-4">
-         <Button color="success" variant="shadow" onPress={()=>handleAccept(String(request._id),String(request.team_id))} >Accept</Button>
-         <Button color="danger" variant="shadow" onPress={()=>handleDecline(String(request._id))}>decline</Button>
-        </div>);
+        return (
+          <div className="flex justify-start gap-4">
+            <Button
+              color="success"
+              variant="shadow"
+              onPress={() =>
+                handleAccept(String(request._id), String(request.team_id))
+              }
+            >
+              {" "}
+              {isLoading ? "Accepting" : "Accept"}
+            </Button>
+            <Button
+              color="danger"
+              variant="shadow"
+              onPress={() => handleDecline(String(request._id))}
+            >
+              decline
+            </Button>
+          </div>
+        );
       default:
         return null;
     }

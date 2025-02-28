@@ -35,7 +35,6 @@ import { validateColumnName } from "../../../utils/validations/yup";
 import { getTeamMembers } from "../../../store/slices/memberSlice";
 import { Types } from "mongoose";
 import extractIdFromToken from "../../../utils/decodeToken";
-import { Tooltip } from "@nextui-org/react";
 
 const KanbanBoard: React.FC = () => {
   const { columns, tasks } = useAppSelector((state) => state.tasks);
@@ -224,7 +223,6 @@ const KanbanBoard: React.FC = () => {
             ))}
           </SortableContext>
           <div className="flex-col">
-            <Tooltip content="I am a tooltip">
               <button
                 onClick={() => setColumnModal(true)}
                 className="h-[60px] w-[250px] min-[w-250px] cursor-pointer rounded-lg bg-black ring-zinc-900 p-4 hover:ring-2 flex gap-2"
@@ -232,7 +230,6 @@ const KanbanBoard: React.FC = () => {
                 <PlusIcon className="w-6 h-6" />
                 Add Column
               </button>
-            </Tooltip>
             <div>
               {columnModal && <AddColumnModal handleSubmit={addColumn} />}
             </div>

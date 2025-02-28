@@ -120,7 +120,7 @@ const Chat: React.FC = () => {
   };
 
   return (
-    <div className="bg-zinc-950 sm:h-[550px] h-[500px] rounded-3xl mb-3 m-1 flex flex-col">
+    <div className="bg-zinc-950 md:h-[600px] h-[500px] rounded-3xl mb-3 m-1 flex flex-col">
       <ChatHeader name={selectProject?.name || ""} members={members} />
       <div className="px-4 text-sm text-gray-400">
         {Object.keys(typingUsers)
