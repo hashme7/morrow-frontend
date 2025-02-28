@@ -10,7 +10,6 @@ import {
   setMessage,
   setSeenMsg,
 } from "../../../store/slices/ChatSlice";
-import { Spinner } from "@nextui-org/react";
 // import extractIdFromToken from "../../../utils/decodeToken";
 import { getTeamMembers } from "../../../store/slices/memberSlice";
 
@@ -31,6 +30,7 @@ const Chat: React.FC = () => {
 
   useEffect(() => {
     if (!selectProject?.teamId) return;
+    console.log(loading)
 
     const newSocket = io("wss://morrow.hashim-dev007.online", {
       path: "/communicate/message-socket",
@@ -122,7 +122,17 @@ const Chat: React.FC = () => {
   return (
     <div className="bg-zinc-950 sm:h-[550px] h-[500px] rounded-3xl mb-3 m-1 flex flex-col">
       <ChatHeader name={selectProject?.name || ""} members={members} />
-
+      <div className="px-4 text-sm text-gray-400">
+        {Object.keys(typingUsers)
+          .filter((id) => typingUsers[id] && id !== userId)
+          .map((id, index, arr) => (
+            <span key={id}>
+              {members.find((member) => member._id.toString() === id)
+                ?.username || "Someone"}{" "}
+              {index === arr.length - 1 ? "is typing..." : ", "}
+            </span>
+          ))}
+      </div>
       <div
         className={`flex-grow ${
           chats.length > 6 ? "overflow-auto" : "overflow-y-hidden"
@@ -130,25 +140,16 @@ const Chat: React.FC = () => {
         style={{ maxHeight: "calc(85vh - 100px)" }}
       >
         <MessagesList messages={chats} ref={chatRef} />
-        {loading && <Spinner size="sm" />}
         <div ref={messagesEndRef} />
       </div>
-      
 
       {socket && selectProject && (
         <>
-          <div className="px-4 text-sm text-gray-400">
-            {Object.keys(typingUsers)
-              .filter((id) => typingUsers[id] && id !== userId)
-              .map((id, index, arr) => (
-                <span key={id}>
-                  {members.find((member) => member._id.toString() === id)?.username || "Someone"}{" "}
-                  {index === arr.length - 1 ? "is typing..." : ", "}
-                </span>
-              ))}
-          </div>
-
-          <MessageInput socket={socket} roomId={selectProject.teamId} handleSendMessage={handleSendMessage} />
+          <MessageInput
+            socket={socket}
+            roomId={selectProject.teamId}
+            handleSendMessage={handleSendMessage}
+          />
         </>
       )}
     </div>

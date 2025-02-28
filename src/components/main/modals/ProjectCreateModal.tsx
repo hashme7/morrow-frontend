@@ -32,11 +32,13 @@ const PModal: React.FC<PModalProps> = ({
     plannedEndDate: null,
     description: "",
   };
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const dispatch = useAppDispatch();
 
   const onSubmit = async (values: typeof initialValues) => {
     await dispatch(createProject(values));
+    setIsLoading(true);
     onClose();
     const startLoadingProject = () => {
       setTimeout(() => {
@@ -127,7 +129,7 @@ const PModal: React.FC<PModalProps> = ({
                   Close
                 </Button>
                 <Button color="default" type="submit">
-                  Create
+                  {isLoading ? "Creating... ⏳" : "Create"}
                 </Button>
               </ModalFooter>
             </Form>
