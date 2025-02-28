@@ -32,7 +32,7 @@ export const loginUser = createAsyncThunk(
     } catch (error) {
       console.log(error);
       const axiosError = error as AxiosError<{ message: string }>;
-      
+
       if (axiosError.response) {
         if (axiosError.response.status == 500) {
           return rejectWithValue("Server is down please try again later");
@@ -78,6 +78,50 @@ export const googleLogin = createAsyncThunk(
       return rejectWithValue(
         axiosError.response?.data.message || "Token validation failed.."
       );
+    }
+  }
+);
+export const forgotPassword = createAsyncThunk(
+  "forgot-password",
+  async (email: string, { rejectWithValue }) => {
+    try {
+      const response = await loginApi.post<{ message: string }>(
+        `/auth/forgot-password`,
+        { email }
+      );
+      return response.data;
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message: string }>;
+      if (axiosError.response) {
+        if (axiosError.response.status == 500) {
+          return rejectWithValue("Server is down please try again later");
+        }
+        return rejectWithValue(axiosError.response.data.message);
+      }
+      return rejectWithValue("Network error");
+    }
+  }
+);
+export const resetPassword = createAsyncThunk(
+  "reset-password",
+  async (
+    { newPassword, token }: { newPassword: string; token: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await loginApi.post<{ message: string }>(
+        `/auth/reset-password/${token}?password=${newPassword}`
+      );
+      return response.data;
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message: string }>;
+      if (axiosError.response) {
+        if (axiosError.response.status == 500) {
+          return rejectWithValue("Server is down please try again later");
+        }
+        return rejectWithValue(axiosError.response.data.message);
+      }
+      return rejectWithValue("Network error");
     }
   }
 );
@@ -134,7 +178,7 @@ const loginSlice = createSlice({
       state.isLoggedIn = true;
       state.errorMessage = null;
     });
-    builder.addCase(loginUser.rejected, (state,action) => {
+    builder.addCase(loginUser.rejected, (state, action) => {
       state.errorMessage = action.payload as string;
       state.isLoggedIn = false;
     });
@@ -166,6 +210,12 @@ const loginSlice = createSlice({
         localStorage.setItem("userId", action.payload.userId);
         state.isLoggedIn = true;
       }
+    });
+    builder.addCase(forgotPassword.fulfilled, (state, action) => {
+      console.log("reject forgot password", state, action);
+    });
+    builder.addCase(forgotPassword.rejected, (state, action) => {
+      console.log("reject forgot password", state, action);
     });
   },
 });

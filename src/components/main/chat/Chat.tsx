@@ -30,7 +30,7 @@ const Chat: React.FC = () => {
 
   useEffect(() => {
     if (!selectProject?.teamId) return;
-    console.log(loading)
+    console.log(loading);
 
     const newSocket = io("wss://morrow.hashim-dev007.online", {
       path: "/communicate/message-socket",
@@ -55,12 +55,12 @@ const Chat: React.FC = () => {
       dispatch(setSeenMsg(msg));
     });
     newSocket.on("typing", ({ userId, isTyping }) => {
-      console.log("typing... from ",userId,isTyping)
+      console.log("typing... from ", userId, isTyping);
       setTypingUsers((prev) => ({
         ...prev,
         [userId]: isTyping,
       }));
-      console.log("log from typing",typingUsers)
+      console.log("log from typing", typingUsers);
     });
 
     return () => {
@@ -90,13 +90,12 @@ const Chat: React.FC = () => {
     dispatch(
       getTeamMembers({ projectId: selectProject.id.toString(), page: 1 })
     );
-  },[selectProject])
+  }, [selectProject]);
 
   useEffect(() => {
     if (!selectProject) return;
 
     setLoading(true);
-    
 
     dispatch(getMessage({ receiverId: selectProject.teamId, page: 1 })).then(
       (response) => {
@@ -120,7 +119,7 @@ const Chat: React.FC = () => {
   };
 
   return (
-    <div className="bg-zinc-950 md:h-[600px] h-[500px] rounded-3xl mb-3 m-1 flex flex-col">
+    <div className="bg-zinc-950 md:h-full h-[500px] rounded-3xl mb-3 m-1 flex flex-col">
       <ChatHeader name={selectProject?.name || ""} members={members} />
       <div className="px-4 text-sm text-gray-400">
         {Object.keys(typingUsers)
@@ -133,10 +132,11 @@ const Chat: React.FC = () => {
             </span>
           ))}
       </div>
+
       <div
-        className={`flex-grow ${
+        className={`block flex-grow  p-4 ${
           chats.length > 6 ? "overflow-auto" : "overflow-y-hidden"
-        } p-4`}
+        }`}
         style={{ maxHeight: "calc(85vh - 100px)" }}
       >
         <MessagesList messages={chats} ref={chatRef} />

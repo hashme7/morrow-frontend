@@ -8,17 +8,18 @@ import { getAllUsers } from "../../../store/slices/memberSlice";
 
 const AddMembers: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { users,  isLoading ,totalUserPage,currUserPage} = useAppSelector((state) => state.members);
+  const { users, isLoading, totalUserPage, currUserPage } = useAppSelector((state) => state.members);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [note, setNote] = useState("");
 
   const loadMore = useCallback(() => {
-      dispatch(getAllUsers({ page: currUserPage+1}));
+      dispatch(getAllUsers({ page: currUserPage}));
   }, [dispatch]);
 
   useEffect(()=>{
     loadMore()
-  },[])
+  }, [])
+  
   const handleNoteChange = useCallback((e:React.ChangeEvent<HTMLInputElement>)=>{
     const {value} = e.target;
     setNote(()=>value);
@@ -28,7 +29,8 @@ const AddMembers: React.FC = () => {
     if (!isLoading && totalUserPage > currUserPage) {
       loadMore();
     }
-  }, [loadMore,currUserPage,totalUserPage]);
+  }, [loadMore, currUserPage, totalUserPage]);
+  
   return (
     <>
       <div className="bg-zinc-950  rounded-lg mt-2">

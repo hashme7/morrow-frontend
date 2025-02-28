@@ -1,5 +1,6 @@
 import { validateFields } from "../../utils/validations/authValidation/signup&login";
 import {
+  forgotPassword,
   gitHubLogin,
   googleLogin,
   loginUser,
@@ -73,3 +74,10 @@ export const handleGitHubLogin = async (
     }
   }
 };
+
+export const handleForgotPass = async (email:string,dispatch:AppDispatch,navigate:(path:string)=>void) => {
+  const response = await dispatch(forgotPassword(email));
+  if (forgotPassword.fulfilled.match(response)) {
+    navigate("/login");
+  }
+}

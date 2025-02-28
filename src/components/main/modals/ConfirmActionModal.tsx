@@ -27,7 +27,7 @@ const ConfirmAction: React.FC<ConfirmActionProps> = ({
       isOpen={isOpen}
       placement={modalPlacement}
       onOpenChange={(isOpen) => {
-        if (!isOpen) onCancel(); // Trigger cancel when modal closes
+        if (!isOpen) onCancel(); 
       }}
       aria-labelledby="confirm-action-title"
       aria-describedby="confirm-action-description"

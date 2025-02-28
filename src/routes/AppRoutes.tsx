@@ -10,6 +10,7 @@ import Meet from "../components/main/Meet/meet";
 import ApiTests from "../components/main/apiDoc/apis";
 import { Toaster } from "react-hot-toast";
 import LoadingScreen from "../components/loading/Loading";
+import { ResetPassword } from "../pages/resetPassword/ResetPassword";
 // import ApiDoc from "../components/main/apiDoc/apis";
 
 const Home = lazy(() => import("../pages/Home/Home"));
@@ -49,6 +50,14 @@ const AppRoutes: React.FC = () => {
           element={
             <AuthRoute>
               <OtpPage />
+            </AuthRoute>
+          }
+        />
+        <Route
+          path="/changePassword"
+          element={
+            <AuthRoute>
+              <ResetPassword />
             </AuthRoute>
           }
         />

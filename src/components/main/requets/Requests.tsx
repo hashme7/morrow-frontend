@@ -9,6 +9,7 @@ import {
 import { IRequest } from "../../../types/requests";
 import { requestColumns as columns } from "../../../constants/data/data";
 import { Button } from "@nextui-org/react";
+import { showToast } from "../../popup/hot-toast";
 import { getProjects } from "../../../store/slices/projectSlice";
 
 const Requests: React.FC = () => {
@@ -17,20 +18,21 @@ const Requests: React.FC = () => {
 
   useEffect(() => {
     dispatch(getRequests());
-  }, [dispatch]);
+  }, []);
 
-  const handleAccept = (requestId: string, teamId: string) => {
-    dispatch(acceptRequest({ requestId, teamId }));
-    setTimeout(() => {
-      dispatch(getRequests());
-    }, 150);
-    dispatch(getProjects());
+  const handleAccept = async (requestId: string, teamId: string) => {
+    const response =await dispatch(acceptRequest({ requestId, teamId }));
+    if (acceptRequest.fulfilled.match(response)) {
+      showToast({
+        message: "You have been added to the project!",
+        type: "success",
+        icon: "🎉",
+      });
+      dispatch(getProjects());
+    }
   };
   const handleDecline = (requestId: string) => {
     dispatch(declineRequest({ requestId }));
-    setTimeout(() => {
-      dispatch(getRequests());
-    }, 300);
   };
 
   const renderCell = (request: IRequest, column: { uid: string }) => {
@@ -49,8 +51,7 @@ const Requests: React.FC = () => {
                 handleAccept(String(request._id), String(request.team_id))
               }
             >
-              {" "}
-              {isLoading ? "Accepting" : "Accept"}
+              Accept
             </Button>
             <Button
               color="danger"

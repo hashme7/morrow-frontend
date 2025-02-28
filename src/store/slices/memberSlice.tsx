@@ -127,14 +127,15 @@ const membersSlice = createSlice({
       })
       .addCase(getAllUsers.fulfilled, (state, action) => {
         const { data, totalItems, totalPages, currentPage } = action.payload;
-        const hash = new Map();
-        for (const user of state.users) {
-          hash.set(user._id, user);
-        }
+        const memberIds = new Set(
+          state.members.map((member) => String(member._id))
+        );
         const filteredData = data.filter(
-          (user: IUser) => !hash.has(String(user._id))
+          (user:IUser) => !memberIds.has(String(user._id))
         );
         state.users = [...state.users, ...filteredData];
+
+        state.users = filteredData;
         state.totalUserItems = totalItems;
         state.totalUserPage = totalPages;
         state.currUserPage = currentPage;

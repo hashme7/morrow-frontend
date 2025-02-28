@@ -103,14 +103,26 @@ const requestSlice = createSlice({
       state.error = false;
       state.isLoading = false;
     });
-    builder.addCase(acceptRequest.pending, (state) => {
-
+    builder.addCase(acceptRequest.pending, (state,action) => {
+      console.log(action.payload, "akdjsk");
       state.isLoading = true;
     });
-    builder.addCase(acceptRequest.fulfilled, (state) => {
+    builder.addCase(acceptRequest.fulfilled, (state,action) => {
+      const acceptedRequestId = action.meta.arg.requestId
+      state.requests = state.requests.filter((req) => req._id.toString() != acceptedRequestId)
       state.isLoading = false;
       state.error = false;
-    });
+    })
+    builder.addCase(acceptRequest.rejected, (state) => {
+      state.isLoading = false;
+      state.error = true;
+    })
+    builder.addCase(sendRequest.fulfilled, (state) => {
+      state.error = false;
+    })
+    builder.addCase(sendRequest.pending, (state) => {
+      state.error = true;
+    })
   },
 });
 

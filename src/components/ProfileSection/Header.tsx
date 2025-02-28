@@ -19,16 +19,6 @@ const Header: React.FC<{ setActiveTab: (tab: string) => void; activeTab: string 
           >
             <GiFastBackwardButton />
           </button>
-          {/* <button
-            className={`rounded-full p-1 ${
-              activeTab === "Dev"
-                ? "bg-white text-black"
-                : "bg-zinc-950 text-white"
-            }`}
-            onClick={() => setActiveTab("Dev")}
-          >
-            Dev
-          </button> */}
           <button
             className={`rounded-full p-1 ${
               activeTab === "Email"

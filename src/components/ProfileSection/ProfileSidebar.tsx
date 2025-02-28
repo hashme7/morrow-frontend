@@ -184,7 +184,6 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
           )}
         </div>
 
-        {/* Based In */}
         <div className="relative mb-4">
           <h3 className="font-medium text-small">Based In</h3>
           {EditMode.basedIn ? (
@@ -219,8 +218,6 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
             </>
           )}
         </div>
-
-        {/* Job Title */}
         <div className="relative mb-4">
           <h3 className="font-medium text-small">Job Title</h3>
           {EditMode.jobTitle ? (

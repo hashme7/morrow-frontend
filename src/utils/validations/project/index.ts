@@ -5,11 +5,15 @@ export const projectCreateSchema = Yup.object({
   name: Yup.string().trim().required("Project name is required"),
   plannedStartDate: Yup.date()
     .required("Start date is required")
-    .test("data-test-startdate", "start date must be after or ", (value) => {
-      const todaysDate = new Date();
-      const startDate = moment(value, "MM/DD/YYYY").toDate();
-      return todaysDate < startDate;
-    }),
+    .test(
+      "data-test-startdate",
+      "Please select a date after today. ",
+      (value) => {
+        const todaysDate = new Date();
+        const startDate = moment(value, "MM/DD/YYYY").toDate();
+        return todaysDate < startDate;
+      }
+    ),
   plannedEndDate: Yup.date()
     .required("Complete date is required")
     .test(

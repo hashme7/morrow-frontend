@@ -44,7 +44,7 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
     return (
       <div
         ref={messageContainerRef}
-        className="messageList space-y-4 min-h-[700px] overflow-y-auto max-h-[700px] p-4"
+        className={`messageList space-y-4  min-h-[700px] overflow-y-auto max-h-[700px] p-4`}
       >
         {messages.length ? (
           messages.map((message, index) => (

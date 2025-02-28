@@ -1,9 +1,9 @@
-import { useDisclosure } from "@nextui-org/react";
+import { Chip, useDisclosure } from "@nextui-org/react";
 import React, { useEffect } from "react";
 import { FaCalendarAlt, FaTasks, FaUsers } from "react-icons/fa";
 import PModal from "./modals/ProjectCreateModal";
 import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks";
-import { clearSelectProject, getProjects, selectProject } from "../../store/slices/projectSlice";
+import {  getProjects, selectProject } from "../../store/slices/projectSlice";
 import { IProject } from "../../types/project";
 import { useLocation, useNavigate } from "react-router-dom";
 import { resetMembers } from "../../store/slices/memberSlice";
@@ -11,6 +11,7 @@ import { clearDb } from "../../store/slices/diagramSlice";
 import { clearChat } from "../../store/slices/ChatSlice";
 import { clearBoard } from "../../store/slices/BoardSlice";
 import { clearApis } from "../../store/slices/apiSlice";
+import { getRequests } from "../../store/slices/RequestsSlice";
 
 interface SideBarProps {
   showNotification: (message: string) => void;
@@ -28,9 +29,9 @@ const SideBar: React.FC<SideBarProps> = ({ showNotification, xsMenu }) => {
   const location = useLocation();
 
   useEffect(() => {
+    dispatch(getRequests());
     dispatch(getProjects());
-    dispatch(clearSelectProject());
-  }, [requests]);
+  },[])
 
   const handleSelectProject = (id: number) => {
     dispatch(resetMembers());
@@ -73,14 +74,22 @@ const SideBar: React.FC<SideBarProps> = ({ showNotification, xsMenu }) => {
             className={`${xsMenu ? "flex gap-3 m-2 " : "flex-col space-y-5"} `}
           >
             <li
-              className={`flex items-center hover:cursor-pointer ${
+              className={`flex gap-2 items-center hover:cursor-pointer ${
                 location.pathname == "/dashboard/requests"
                   ? "text-white"
                   : "text-zinc-600"
               }`}
               onClick={() => navigate("/dashboard/requests")}
             >
-              <FaTasks className="mr-3" /> Requests
+              <FaTasks className="mr-3" />
+              Requests
+              {requests.length>0 && (<Chip
+                variant="bordered"
+                size="sm"
+              >
+                
+                {requests.length}
+              </Chip>)}
             </li>
             <li
               className={`flex items-center hover:cursor-pointer  ${

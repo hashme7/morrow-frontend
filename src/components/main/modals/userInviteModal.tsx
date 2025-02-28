@@ -24,7 +24,7 @@ const AddMemberModal: React.FC<{
   hasMore: boolean;
   isLoading: boolean;
   note: string;
-  handleNoteChange: (e:React.ChangeEvent<HTMLInputElement>) => void;
+  handleNoteChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }> = ({
   isOpen,
   onOpenChange,
@@ -41,17 +41,16 @@ const AddMemberModal: React.FC<{
     onOpen: disclosureOnOpen,
     onOpenChange: disclosureOnOpenChange,
   } = useDisclosure();
-  const { selectProjectId } = useAppSelector((state) => state.project);
+  const { selectProject } = useAppSelector((state) => state.project);
   const [requested, setRequested] = useState(new Map());
   const [selectedUser, setSelectedUser] = useState<string>("");
   const handleConfirm = () => {
-    if (selectedUser && selectProjectId) {
-      console.log('selectedUser ,      ',selectedUser)
+    if (selectedUser && selectProject?.id) {
       dispatch(
         sendRequest({
-          projectId: String(selectProjectId),
+          projectId:selectProject?.id.toString(),
           userId: selectedUser,
-          note:note
+          note: note,
         })
       );
       setRequested((prev) => {
@@ -82,12 +81,12 @@ const AddMemberModal: React.FC<{
       EMAIL: <span>{user.email || "unknown"}</span>,
       ACTIONS: (
         <Button
-          color={requested.get(user._id.toString())?"success":"default"}
+          color={requested.get(user._id.toString()) ? "success" : "default"}
           variant="bordered"
           onPress={disclosureOnOpen}
           onClick={() => setSelectedUser(String(user._id))}
         >
-          {requested.get(user._id.toString())?"Requested":"Invite"}
+          {requested.get(user._id.toString()) ? "Requested" : "Invite"}
         </Button>
       ),
     }[column.uid] || null);
