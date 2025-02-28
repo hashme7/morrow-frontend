@@ -80,7 +80,7 @@ const projects = createSlice({
         console.log("action.payload", action.payload);
         state.status = "idle";
         state.projects = action.payload.data;
-        if (!state.selectProject) {
+        if (!state.selectProject && state.projects.length) {
           state.selectProject = state.projects[state.projects.length - 1];
           state.selectProjectId = state.projects[state.projects.length - 1].id;
         }

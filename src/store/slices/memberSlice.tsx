@@ -105,6 +105,8 @@ const membersSlice = createSlice({
       })
       .addCase(getTeamMembers.fulfilled, (state, action) => {
         const { data, totalItems, totalPages, currentPage } = action.payload;
+
+        console.log(action.payload,"action")
         const hash = new Map();
         for (const member of state.members) {
           hash.set(String(member._id), member);
