@@ -11,7 +11,7 @@ import {
   setSeenMsg,
 } from "../../../store/slices/ChatSlice";
 import { Spinner } from "@nextui-org/react";
-import extractIdFromToken from "../../../utils/decodeToken";
+// import extractIdFromToken from "../../../utils/decodeToken";
 import { getTeamMembers } from "../../../store/slices/memberSlice";
 
 const Chat: React.FC = () => {
