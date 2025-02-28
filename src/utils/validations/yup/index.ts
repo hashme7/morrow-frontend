@@ -89,3 +89,8 @@ export const NewTableSchema = Yup.object().shape({
     )
     .required("At least one field is required"),
 });
+
+
+export const emailValidationSchema = Yup.object({
+  email: reusableRules.email,
+});

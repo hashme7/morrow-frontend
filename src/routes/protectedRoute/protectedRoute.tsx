@@ -4,6 +4,7 @@ import { useAppSelector, useAppDispatch } from "../../store/hooks/hooks.ts";
 import {
   checkTokenValidity,
 } from "../../store/slices/loginSlice";
+import LoadingScreen from "../../components/loading/Loading.tsx";
 
 const ProtectedRoute: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -25,7 +26,7 @@ const ProtectedRoute: React.FC<{ redirectTo: string }> = ({ redirectTo }) => {
   }, []);
 
   if (isLoading) {
-    return <div>Loadi</div>;
+    return <LoadingScreen />;
   }
 
   if (!isLoggedIn) {

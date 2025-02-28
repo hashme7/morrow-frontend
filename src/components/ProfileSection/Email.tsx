@@ -8,7 +8,15 @@ const Email: React.FC = () => {
   const [visible, setVisible] = useState(false);
   const [newEmail, setNewEmail] = useState("");
   const dispatch = useAppDispatch();
+  const [error, setError] = useState("");
+
   const handleSubmit = () => {
+    if (!newEmail.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      setError("Please enter a valid email.");
+      return;
+    }
+
+    setError(""); 
     const response = dispatch(changeEmail({ email: newEmail }));
     if (changeEmail.fulfilled.match(response)) {
       setVisible(true);
@@ -51,6 +59,7 @@ const Email: React.FC = () => {
             className="bg-zinc-900 text-white p-2 rounded-lg w-64 mb-4 "
             placeholder="Enter new email address"
           />
+          {error && <p className="text-red-500 text-sm">{error}</p>}
           <button
             className="w-24 px-4 py-2 text-white bg-zinc-800 rounded"
             onClick={handleSubmit}

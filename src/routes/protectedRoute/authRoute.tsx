@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks.ts";
 import { checkTokenValidity } from "../../store/slices/loginSlice";
+import LoadingScreen from "../../components/loading/Loading.tsx";
 
 interface AuthRouteProps {
   children: JSX.Element;
@@ -28,7 +29,7 @@ const AuthRoute: React.FC<AuthRouteProps> = ({ children }) => {
   }, []);
 
   if (isLoading) {
-    return <div>Loading............123</div>;
+    return <LoadingScreen/>;
   }
 
   if (isLoggedIn) {

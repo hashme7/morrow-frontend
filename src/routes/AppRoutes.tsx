@@ -9,6 +9,7 @@ import ZegoMeet from "../components/main/Meet/zego-meet";
 import Meet from "../components/main/Meet/meet";
 import ApiTests from "../components/main/apiDoc/apis";
 import { Toaster } from "react-hot-toast";
+import LoadingScreen from "../components/loading/Loading";
 // import ApiDoc from "../components/main/apiDoc/apis";
 
 const Home = lazy(() => import("../pages/Home/Home"));
@@ -23,7 +24,7 @@ const Dashboard = lazy(() => import("../pages/Main/Main"));
 
 const AppRoutes: React.FC = () => {
   return (
-    <Suspense fallback={<div>Loading.....</div>}>
+    <Suspense fallback={<LoadingScreen />}>
       <Toaster />
       <Routes>
         <Route path="/" element={<Home />} />
