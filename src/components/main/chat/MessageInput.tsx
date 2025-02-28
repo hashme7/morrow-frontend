@@ -11,12 +11,15 @@ const MessageInput: React.FC<{
   const [isTyping, setIsTyping] = useState(false);
 
   useEffect(() => {
-    if (message.length > 0) {
+    if (message.length > 0 && !isTyping) {
+      console.log("typing.....",roomId)
       socket.emit("userTyping", { userId: extractIdFromToken(), roomId });
       setIsTyping(true);
     }
     if (!message.length && isTyping) {
-      socket.emit("userStoppedTyping", { userId: extractIdFromToken, roomId });
+      console.log("user stoped typing");
+      
+      socket.emit("userStoppedTyping", { userId: extractIdFromToken(), roomId });
       setIsTyping(false);
     }
   }, [message]);

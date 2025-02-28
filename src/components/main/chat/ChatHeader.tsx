@@ -1,16 +1,15 @@
-import React from "react";
+import React, { memo, useMemo } from "react";
 import { IChatHeaderProps } from "../../../types/Chat";
 
 const ChatHeader: React.FC<IChatHeaderProps> = ({ name, members }) => {
-  console.log(members,"memebersss..")
+  const memberCount = useMemo(() => members.length, [members]);
+
   return (
-    <>
-      <div className="p-2">
-        <h1 className="text-2xl font-roboto font-bold">{name}</h1>
-        <p className="text-sm">{members.length} members</p>
-      </div>
-    </>
+    <div className="p-2">
+      <h1 className="text-2xl font-roboto font-bold">{name}</h1>
+      <p className="text-sm">{memberCount} members</p>
+    </div>
   );
 };
 
-export default ChatHeader;
+export default memo(ChatHeader);

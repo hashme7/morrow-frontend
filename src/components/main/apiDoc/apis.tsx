@@ -54,6 +54,18 @@ const ApiTests: React.FC = () => {
   const handleJsonEditor = (value: string | undefined) => {
     setJson(value || "");
   };
+  const resetFields = () => {
+    setEndpoint("");
+    setSelectMethod({ label: "GET", value: "GET" });
+    setStatus("");
+    setTime(0);
+    setSize(0);
+    setResponse("");
+    setParams([{ key: "", value: "" }]);
+    setHeaders([{ key: "", value: "" }]);
+    setJson("");
+  };
+
 
   const handleSelectMethod = (selectedValue: any) => {
     const selectedOption = httpMethods.find(
@@ -117,7 +129,7 @@ const ApiTests: React.FC = () => {
   return (
     <div className="flex flex-col sm:flex-row gap-4">
       <div className="m-2">
-        <HistoryList apis={apis} />
+        <HistoryList apis={apis} resetFields={resetFields} />
       </div>
       <div className="p-2 sm:w-4/5 ">
         <div className="flex justify-between gap-1 m-1  sm:w-full">

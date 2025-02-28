@@ -44,10 +44,10 @@ const SideBar: React.FC<SideBarProps> = ({ showNotification, xsMenu }) => {
   return (
     <>
       <aside
-        className={` text-zinc-600 bg-zinc-950  lg:block  ${
+        className={`h-auto text-zinc-600 bg-zinc-950  lg:block  ${
           xsMenu
-            ? ` h-44 p-1 m-1 rounded-xl`
-            : "hidden min-h-screen h-full w-48 p-4 m-3"
+            ? `h-44 p-1 m-1 rounded-xl`
+            : "hidden min-h-screen h-fit w-48 p-4 m-3"
         } `}
       >
         <h1

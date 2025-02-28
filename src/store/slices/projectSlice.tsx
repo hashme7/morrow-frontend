@@ -71,7 +71,7 @@ const projects = createSlice({
     clearSelectProject(state) {
       state.selectProject = null;
       state.selectProjectId = null;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -80,6 +80,10 @@ const projects = createSlice({
         console.log("action.payload", action.payload);
         state.status = "idle";
         state.projects = action.payload.data;
+        if (!state.selectProject) {
+          state.selectProject = state.projects[state.projects.length - 1];
+          state.selectProjectId = state.projects[state.projects.length - 1].id;
+        }
       }
     );
     builder.addCase(getProjects.pending, (state) => {
@@ -89,6 +93,7 @@ const projects = createSlice({
       state.status = "failed";
       state.error = action.payload || "Unable to fetch projects";
       state.selectProject = null;
+      state.selectProjectId = null;
     });
     builder.addCase(createProject.pending, (state) => {
       state.status = "loading";
@@ -104,5 +109,6 @@ const projects = createSlice({
   },
 });
 
-export const { clearError, selectProject,clearSelectProject } = projects.actions;
+export const { clearError, selectProject, clearSelectProject } =
+  projects.actions;
 export default projects.reducer;

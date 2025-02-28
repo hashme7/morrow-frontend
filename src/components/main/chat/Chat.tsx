@@ -18,6 +18,9 @@ const Chat: React.FC = () => {
   const { chats } = useAppSelector((state) => state.chats);
   const { selectProject } = useAppSelector((state) => state.project);
   const { members } = useAppSelector((state) => state.members);
+  const [typingUsers, setTypingUsers] = useState<{ [key: string]: boolean }>(
+    {}
+  );
   const dispatch = useAppDispatch();
 
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -51,9 +54,18 @@ const Chat: React.FC = () => {
       console.log("Message seen:", msg);
       dispatch(setSeenMsg(msg));
     });
+    newSocket.on("typing", ({ userId, isTyping }) => {
+      console.log("typing... from ",userId,isTyping)
+      setTypingUsers((prev) => ({
+        ...prev,
+        [userId]: isTyping,
+      }));
+      console.log("log from typing",typingUsers)
+    });
 
     return () => {
       newSocket.disconnect();
+      newSocket.off("typing");
       setSocket(null);
     };
   }, [selectProject]);
@@ -73,14 +85,18 @@ const Chat: React.FC = () => {
       });
     });
   }, [chats, selectProject, socket, userId]);
+  useEffect(() => {
+    if (!selectProject) return;
+    dispatch(
+      getTeamMembers({ projectId: selectProject.id.toString(), page: 1 })
+    );
+  },[selectProject])
 
   useEffect(() => {
     if (!selectProject) return;
 
     setLoading(true);
-    dispatch(
-      getTeamMembers({ projectId: selectProject.id.toString(), page: 1 })
-    );
+    
 
     dispatch(getMessage({ receiverId: selectProject.teamId, page: 1 })).then(
       (response) => {
@@ -117,13 +133,23 @@ const Chat: React.FC = () => {
         {loading && <Spinner size="sm" />}
         <div ref={messagesEndRef} />
       </div>
+      
 
       {socket && selectProject && (
-        <MessageInput
-          socket={socket}
-          roomId={selectProject.teamId}
-          handleSendMessage={handleSendMessage}
-        />
+        <>
+          <div className="px-4 text-sm text-gray-400">
+            {Object.keys(typingUsers)
+              .filter((id) => typingUsers[id] && id !== userId)
+              .map((id, index, arr) => (
+                <span key={id}>
+                  {members.find((member) => member._id.toString() === id)?.username || "Someone"}{" "}
+                  {index === arr.length - 1 ? "is typing..." : ", "}
+                </span>
+              ))}
+          </div>
+
+          <MessageInput socket={socket} roomId={selectProject.teamId} handleSendMessage={handleSendMessage} />
+        </>
       )}
     </div>
   );
