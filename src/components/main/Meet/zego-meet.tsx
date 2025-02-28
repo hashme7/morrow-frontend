@@ -3,8 +3,6 @@ import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks/hooks";
 import gsap from "gsap";
 import { fetchUser } from "../../../store/slices/profileSlice";
-import extractIdFromToken from "../../../utils/decodeToken";
-import mongoose from "mongoose";
 
 function generateRandomID(len: number = 5): string {
   const chars =
@@ -64,7 +62,7 @@ const ZegoMeet: React.FC = () => {
     // Dispatch fetchUser only if needed
     if (!email) {
       dispatch(
-        fetchUser({ userId: new mongoose.Types.ObjectId(extractIdFromToken()?.toString()) })
+        fetchUser()
       );
     }
 
