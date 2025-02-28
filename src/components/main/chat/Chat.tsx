@@ -63,7 +63,10 @@ const Chat: React.FC = () => {
           dispatch(
             getTeamMembers({ projectId: selectProject.id.toString(), page: 1 })
           );
-          dispatch(getMessage({ receiverId: selectProject.teamId, page: 1 }));
+          const response =await dispatch(getMessage({ receiverId: selectProject.teamId, page: 1 }));
+          if (getMessage.fulfilled.match(response)) {
+            updateMessages();
+          }
         }
       } catch (error) {
         console.error("Error fetching messages:", error);
@@ -96,8 +99,6 @@ const Chat: React.FC = () => {
         });
       });
     }
-    updateMessages();
-    
     return () => {
       newSocket.disconnect();
       setSocket(null);
