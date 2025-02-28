@@ -13,10 +13,15 @@ import { useAppSelector } from "../../../store/hooks/hooks";
 import { RootState } from "../../../store/store";
 import { IUser } from "../../../types/member";
 import { Avatar, AvatarGroup } from "@nextui-org/avatar";
-import { Dropdown, DropdownItem, DropdownMenu,DropdownTrigger } from "@nextui-org/react";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@nextui-org/react";
 
 export const Task: React.FC<ITaskProps> = ({ task, columnId }) => {
-  console.log(columnId)
+  console.log(columnId);
   const {
     setNodeRef,
     attributes,
@@ -54,7 +59,7 @@ export const Task: React.FC<ITaskProps> = ({ task, columnId }) => {
       </div>
     );
   }
-  
+
   return (
     <div
       ref={setNodeRef}
@@ -80,6 +85,7 @@ export const Task: React.FC<ITaskProps> = ({ task, columnId }) => {
           </button>
         </div>
       </div>
+
       <div className="flex flex-col gap-1">
         {/* Assignee Section */}
         <div className="p-2 flex justify-stretch gap-4">
@@ -105,7 +111,7 @@ export const Task: React.FC<ITaskProps> = ({ task, columnId }) => {
                   </DropdownTrigger>
                   <DropdownMenu className="w-7 h-7">
                     <DropdownItem key={user._id.toString()}>
-                      <strong>{user.username}</strong>
+                      <strong className="text-sm">{user.username}</strong>
                     </DropdownItem>
                     <DropdownItem key={user.email}>
                       Email: {user.email}

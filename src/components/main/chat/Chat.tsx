@@ -29,12 +29,16 @@ const Chat: React.FC = () => {
     const newSocket = io("wss://morrow.hashim-dev007.online", {
       path: "/communicate/message-socket",
       transports: ["websocket"],
+      reconnection: true,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 2000,
     });
     setSocket(newSocket);
     if (selectProject?.id) {
       newSocket.emit("joinRoom", selectProject.teamId, extractIdFromToken());
     }
     if (newSocket) {
+      setSocket(newSocket);
       newSocket.on("connect", () => {
         console.log("Connected to server");
       });
@@ -46,11 +50,13 @@ const Chat: React.FC = () => {
         dispatch(setMessage(msg));
       });
       newSocket.on("message_status", (msg) => {
+        console.log("message seen", msg);
         dispatch(setSeenMsg(msg));
       });
     }
     return () => {
       newSocket.disconnect();
+      setSocket(null);
     };
   }, [selectProject]);
 
@@ -71,6 +77,21 @@ const Chat: React.FC = () => {
       }
     };
     fetchMessages();
+    if (socket) {
+      const unseenMessages = chats.filter(
+        (msg) =>
+          msg.senderId !== localStorage.getItem("userId") &&
+          msg.status !== "seen"
+      );
+
+      unseenMessages.forEach((msg) => {
+        console.log("updating the message seen..");
+        socket.emit("message_seen", {
+          messageId: msg._id,
+          userId: localStorage.getItem("userId"),
+        });
+      });
+    }
   }, [selectProject?.id]);
 
   const handleSendMessage = (content: string) => {
@@ -102,8 +123,13 @@ const Chat: React.FC = () => {
         {loading && <Spinner size="sm" />}
         <div ref={messagesEndRef} />
       </div>
-
-      <MessageInput handleSendMessage={handleSendMessage} />
+      {socket && selectProject && (
+        <MessageInput
+          socket={socket}
+          roomId={selectProject.teamId}
+          handleSendMessage={handleSendMessage}
+        />
+      )}
     </div>
   );
 };

@@ -11,6 +11,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
   Input,
+  Tooltip,
 } from "@nextui-org/react";
 import { AddAssignee } from "../modals/addAssignee";
 import mongoose from "mongoose";
@@ -35,8 +36,8 @@ export const Column: React.FC<IColumnProps> = ({
     { _id: mongoose.Types.ObjectId }[]
   >([]);
   useEffect(() => {
-    console.log("taskk cahnge")
-  },[tasks])
+    console.log("taskk cahnge");
+  }, [tasks]);
   const { setNodeRef, isOver } = useDroppable({
     id: column.id,
     data: { type: "Column", column },
@@ -69,110 +70,123 @@ export const Column: React.FC<IColumnProps> = ({
     }
   };
   return (
-    <div
-      ref={setNodeRef}
-      className={`sm:w-[200px] h-fit flex flex-col rounded-xl border-2 p-2 ${columnStyle} `}
+    <Tooltip
+      showArrow
+      delay={1500}
+      classNames={{
+        base: ["before:bg-neutral-700 dark:before:bg-zinc-700"],
+        content: [
+          "py-2 px-4 shadow-xl",
+          "text-black bg-gradient-to-br from-white to-neutral-400",
+        ],
+      }}
+      content="Drag and drop tasks to different columns to update their status."
     >
-      <div className="flex items-center justify-between">
-        {isEditing ? (
-          <div>
-            <input
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-              onKeyDown={handleNameUpdate}
-              className="w-full px-1 py-0.5 border rounded"
-            />
-            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+      <div
+        ref={setNodeRef}
+        className={`sm:w-[200px] h-fit flex flex-col rounded-xl border-2 p-2 ${columnStyle} `}
+      >
+        <div className="flex items-center justify-between">
+          {isEditing ? (
+            <div>
+              <input
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+                onKeyDown={handleNameUpdate}
+                className="w-full px-1 py-0.5 border rounded"
+              />
+              {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+            </div>
+          ) : (
+            <div
+              className="m-1 text-white cursor-pointer"
+              style={{ backgroundColor: column.color }}
+              onClick={() => setIsEditing(true)}
+            >
+              {column.name}
+            </div>
+          )}
+          <DeleteIcon
+            className="cursor-pointer"
+            onClick={() => handleColumnDelete(column.id)}
+          />
+        </div>
+
+        <div className="overflow-y-auto max-h-[200px] flex flex-col">
+          <SortableContext items={taskIds}>
+            {tasks
+              .filter((task) => task.status === column.id)
+              .map((task) => (
+                <Task
+                  key={task._id.toString()}
+                  task={task}
+                  columnId={task.status}
+                />
+              ))}
+          </SortableContext>
+        </div>
+
+        {isTaskFormOpen ? (
+          <div className="mt-2 p-2 rounded-xl ring-2 relative">
+            <div className="flex flex-col gap-1">
+              <Input
+                size="sm"
+                className="mb-2 text-white"
+                type="text"
+                value={taskName}
+                onChange={(e) => setTaskName(e.target.value)}
+                placeholder="Task name"
+                variant="bordered"
+              />
+              <button
+                onClick={toggleAssigneeModal}
+                className="border rounded border-zinc-800 sm:w-[160px] text-small text-zinc-400"
+              >
+                Add Assignee
+              </button>
+              {isAssigneeOpen && (
+                <AddAssignee
+                  members={members}
+                  setIsOpen={setIsAssigneeOpen}
+                  Assignees={Assignees}
+                  setAssignees={setAssignees}
+                />
+              )}
+
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button variant="bordered" size="sm">
+                    {priority || "Priority"}
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  aria-label="Priority Options"
+                  variant="faded"
+                  onAction={(key) => setPriority(key as string)}
+                >
+                  <DropdownItem key="High">High</DropdownItem>
+                  <DropdownItem key="Normal">Normal</DropdownItem>
+                  <DropdownItem key="Low">Low</DropdownItem>
+                  <DropdownItem key="Urgent">Urgent</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+            <Button
+              className="w-full mt-2 hover:bg-black"
+              onPress={handleTaskSave}
+            >
+              Save
+            </Button>
           </div>
         ) : (
-          <div
-            className="m-1 text-white cursor-pointer"
-            style={{ backgroundColor: column.color }}
-            onClick={() => setIsEditing(true)}
-          >
-            {column.name}
-          </div>
-        )}
-        <DeleteIcon
-          className="cursor-pointer"
-          onClick={() => handleColumnDelete(column.id)}
-        />
-      </div>
-
-      <div className="overflow-y-auto max-h-[200px] flex flex-col">
-        <SortableContext items={taskIds}>
-          {tasks
-            .filter((task) => task.status === column.id)
-            .map((task) => (
-              <Task
-                key={task._id.toString()}
-                task={task}
-                columnId={task.status}
-              />
-            ))}
-        </SortableContext>
-      </div>
-
-      {isTaskFormOpen ? (
-        <div className="mt-2 p-2 rounded-xl ring-2 relative">
-          <div className="flex flex-col gap-1">
-            <Input
-              size="sm"
-              className="mb-2 text-white"
-              type="text"
-              value={taskName}
-              onChange={(e) => setTaskName(e.target.value)}
-              placeholder="Task name"
-              variant="bordered"
-            />
-            <button
-              onClick={toggleAssigneeModal}
-              className="border rounded border-zinc-800 sm:w-[160px] text-small text-zinc-400"
-            >
-              Add Assignee
-            </button>
-            {isAssigneeOpen && (
-              <AddAssignee
-                members={members}
-                setIsOpen={setIsAssigneeOpen}
-                Assignees={Assignees}
-                setAssignees={setAssignees}
-              />
-            )}
-
-            <Dropdown>
-              <DropdownTrigger>
-                <Button variant="bordered" size="sm">
-                  {priority || "Priority"}
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                aria-label="Priority Options"
-                variant="faded"
-                onAction={(key) => setPriority(key as string)}
-              >
-                <DropdownItem key="High">High</DropdownItem>
-                <DropdownItem key="Normal">Normal</DropdownItem>
-                <DropdownItem key="Low">Low</DropdownItem>
-                <DropdownItem key="Urgent">Urgent</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
           <Button
-            className="w-full mt-2 hover:bg-black"
-            onPress={handleTaskSave}
+            onPress={() => setTaskFormOpen(true)}
+            className="m-2 w-[40px] h-[20px] hover:bg-lime-950 bg-inherit border text-sm rounded-md"
           >
-            Save
+            + Add Task
           </Button>
-        </div>
-      ) : (
-        <Button
-          onPress={() => setTaskFormOpen(true)}
-          className="m-2 w-[40px] h-[20px] hover:bg-lime-950 bg-inherit border text-sm rounded-md"
-        >
-          + Add Task
-        </Button>
-      )}
-    </div>
+        )}
+      </div>
+    </Tooltip>
   );
 };

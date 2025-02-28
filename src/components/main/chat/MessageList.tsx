@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useRef } from "react";
 import { IMessagesListProps } from "../../../types/Chat";
 import { Chip } from "@nextui-org/react";
-import { CheckIcon, BellIcon } from "@heroicons/react/24/outline";
+import { CheckIcon } from "@heroicons/react/24/outline";
 import { useAppSelector } from "../../../store/hooks/hooks";
 import { RootState } from "../../../store/store";
 
@@ -14,7 +14,7 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
     }
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
     useEffect(() => {
-      if (messagesEndRef.current && messages.length>6) {
+      if (messagesEndRef.current && messages.length > 6) {
         messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
       }
     }, [messages]);
@@ -38,7 +38,7 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
             >
               <Chip
                 endContent={
-                  message.senderId === localStorage.getItem("userId") ? (
+                  message.senderId === localStorage.getItem("userId") && (
                     <span>
                       {message.readBy.length ? (
                         <CheckIcon className="h-4 w-4 text-green-500" />
@@ -46,8 +46,8 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
                         <CheckIcon className="h-4 w-4 text-gray-500" />
                       )}
                     </span>
-                  ) : (
-                    <BellIcon className="h-4 w-4 text-gray-300" />
+                    // )
+                    // <BellIcon className="h-4 w-4 text-gray-300" />
                   )
                 }
                 style={{

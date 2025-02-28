@@ -35,12 +35,11 @@ import { validateColumnName } from "../../../utils/validations/yup";
 import { getTeamMembers } from "../../../store/slices/memberSlice";
 import { Types } from "mongoose";
 import extractIdFromToken from "../../../utils/decodeToken";
+import { Tooltip } from "@nextui-org/react";
 
 const KanbanBoard: React.FC = () => {
   const { columns, tasks } = useAppSelector((state) => state.tasks);
-  const { selectProject } = useAppSelector(
-    (state) => state.project
-  );
+  const { selectProject } = useAppSelector((state) => state.project);
   const { members } = useAppSelector((state) => state.members);
   const [taskIds, setTaskIds] = useState<string[]>([]);
   const [activeTask, setActiveTask] = useState<ITask | null>(null);
@@ -48,15 +47,14 @@ const KanbanBoard: React.FC = () => {
   const [error, setError] = useState<string>("");
   const [showModal, setShowModal] = useState<boolean>(false);
 
-
   const columnsIds = useMemo(
-    () => columns.map((column:any) => column._id.toString()),
+    () => columns.map((column: any) => column._id.toString()),
     [columns]
   );
   const dispatch = useAppDispatch();
 
   const updateTaskIds = useCallback(
-    () => setTaskIds(tasks.map((task:ITask) => task._id.toString())),
+    () => setTaskIds(tasks.map((task: ITask) => task._id.toString())),
     [tasks]
   );
 
@@ -66,18 +64,14 @@ const KanbanBoard: React.FC = () => {
       dispatch(getTasks({ team_id: selectProject.teamId }));
       updateTaskIds();
     }
-  }, [
-    selectProject?.teamId,
-    selectProject,
-    columns
-  ]);
+  }, [selectProject?.teamId, selectProject, columns]);
   useEffect(() => {
     if (selectProject) {
       dispatch(
-          getTeamMembers({ projectId: selectProject.id.toString(), page: 1 })
-        );
+        getTeamMembers({ projectId: selectProject.id.toString(), page: 1 })
+      );
     }
-  },[selectProject])
+  }, [selectProject]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -157,12 +151,12 @@ const KanbanBoard: React.FC = () => {
   };
 
   const onDragStart = (event: DragStartEvent) => {
-    console.log(event.active)
+    console.log(event.active);
     for (let tsk of tasks) {
       if (event.active.id == tsk._id.toString()) {
         const userId = extractIdFromToken();
         if (userId) {
-          if(!tsk.assignee.includes(userId)){
+          if (!tsk.assignee.includes(userId)) {
             setShowModal(true);
             return;
           }
@@ -216,27 +210,29 @@ const KanbanBoard: React.FC = () => {
         <div className="grid lg:grid-cols-4 grid-cols-2 gap-4 overflow-auto">
           <SortableContext items={columnsIds}>
             {columns.map((col) => (
-              <Column
-                tasks={tasks}
-                key={col.id}
-                column={col}
-                addTask={addTask}
-                taskIds={taskIds}
-                handleColumnNameUpdate={handleColumnNameUpdate}
-                handleColumnDelete={handleColumnDelete}
-                error={error}
-                members={members}
-              />
+                <Column
+                  tasks={tasks}
+                  key={col.id}
+                  column={col}
+                  addTask={addTask}
+                  taskIds={taskIds}
+                  handleColumnNameUpdate={handleColumnNameUpdate}
+                  handleColumnDelete={handleColumnDelete}
+                  error={error}
+                  members={members}
+                />
             ))}
           </SortableContext>
           <div className="flex-col">
-            <button
-              onClick={() => setColumnModal(true)}
-              className="h-[60px] w-[250px] min-[w-250px] cursor-pointer rounded-lg bg-black ring-zinc-900 p-4 hover:ring-2 flex gap-2"
-            >
-              <PlusIcon className="w-6 h-6" />
-              Add Column
-            </button>
+            <Tooltip content="I am a tooltip">
+              <button
+                onClick={() => setColumnModal(true)}
+                className="h-[60px] w-[250px] min-[w-250px] cursor-pointer rounded-lg bg-black ring-zinc-900 p-4 hover:ring-2 flex gap-2"
+              >
+                <PlusIcon className="w-6 h-6" />
+                Add Column
+              </button>
+            </Tooltip>
             <div>
               {columnModal && <AddColumnModal handleSubmit={addColumn} />}
             </div>
