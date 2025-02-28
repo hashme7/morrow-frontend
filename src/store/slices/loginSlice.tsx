@@ -134,7 +134,8 @@ const loginSlice = createSlice({
       state.isLoggedIn = true;
       state.errorMessage = null;
     });
-    builder.addCase(loginUser.rejected, (state) => {
+    builder.addCase(loginUser.rejected, (state,action) => {
+      state.errorMessage = action.payload as string;
       state.isLoggedIn = false;
     });
     builder.addCase(checkTokenValidity.fulfilled, (state, action) => {

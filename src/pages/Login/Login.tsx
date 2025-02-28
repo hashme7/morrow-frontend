@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Input, Button } from "@nextui-org/react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../store/hooks/hooks.ts";
+import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks.ts";
 import { GoogleLogin } from "@react-oauth/google";
 import { FaGithub ,FaEyeSlash,FaEye} from "react-icons/fa";
 import { handleGitHubLogin, handleGitHubSubmit, handleGoogleSubmit, handleLogin } from "../../services/auth-service/index.ts";
@@ -13,6 +13,7 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState(""); 
   const [showPassword, setShowPassword] = useState(false);
+  const { errorMessage } = useAppSelector((state) => state.login);
   
   const [errors, setErrors] = useState<{
     email?: string;
@@ -30,13 +31,11 @@ const Login: React.FC = () => {
     <section className="login h-screen flex items-center justify-center bg-black">
       <div className="container flex flex-col md:flex-row items-center justify-between w-11/12 max-w-6xl h-4/5 bg-transparent">
         <div className="form-section w-full md:w-1/2 flex flex-col justify-center px-4">
-          <h1  className="text-4xl font-bold text-white mb-6">
+          <h1 className="text-4xl font-bold text-white mb-6">
             Log In to Your Account
           </h1>
 
-          <form
-            className="bg-zinc-800 bg-opacity-10 backdrop-filter backdrop-blur-lg p-8 rounded-xl shadow-xl w-full space-y-6"
-          >
+          <form className="bg-zinc-800 bg-opacity-10 backdrop-filter backdrop-blur-lg p-8 rounded-xl shadow-xl w-full space-y-6">
             <Input
               type="email"
               placeholder="Email"
@@ -73,24 +72,22 @@ const Login: React.FC = () => {
 
             <Button
               onPress={() =>
-                handleLogin(
-                  email,
-                  password,
-                  dispatch,
-                  navigate,
-                  setErrors
-                )
+                handleLogin(email, password, dispatch, navigate, setErrors)
               }
               radius="full"
               className="w-full bg-green-900 text-white shadow-lg font-semibold py-3 hover:bg-green-600"
             >
               Log In
             </Button>
-
-            {errors.form && <p className="text-red-500">{errors.form}</p>}
+            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+            {/* {errors.form && <p className="text-red-500">{errors.form}</p>} */}
             <div className="flex flex-col justify-center align-middle space-x-0 gap-2">
               <div className="sm:m-0 m-2 md:mb-0 bg-white flex justify-center sm:h-12 p-1 rounded-3xl">
-                <GoogleLogin onSuccess={(res)=>handleGoogleSubmit(res,dispatch,navigate)} />
+                <GoogleLogin
+                  onSuccess={(res) =>
+                    handleGoogleSubmit(res, dispatch, navigate)
+                  }
+                />
               </div>
               <Button
                 onPress={handleGitHubSubmit}
@@ -113,9 +110,7 @@ const Login: React.FC = () => {
         </div>
 
         <div className="animation-section sm:block hidden w-full md:w-1/2 h-full justify-center items-center">
-          <div
-            className="project-management-animation w-full h-full flex-co justify-end relative"
-          >
+          <div className="project-management-animation w-full h-full flex-co justify-end relative">
             <div className="task-card w-50 h-50 bg-black bg-opacity-10 rounded-lg shadow-lg p-4 absolute top-0 left-10 text-center">
               <p className="text-white font-semibold">DB Diagram (stuart)</p>
               <p className="text-gray-800 text-sm">In Progress</p>
