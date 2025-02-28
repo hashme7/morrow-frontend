@@ -40,8 +40,11 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
                 endContent={
                   message.senderId === localStorage.getItem("userId") && (
                     <span>
-                      {message.readBy.length ? (
-                        <CheckIcon className="h-4 w-4 text-green-500" />
+                      {message.readBy.length || message.status == "seen" ? (
+                        <>
+                          <CheckIcon className="h-4 w-4 text-green-500" />
+                          <CheckIcon className="h-4 w-4 text-green-500" />
+                        </>
                       ) : (
                         <CheckIcon className="h-4 w-4 text-gray-500" />
                       )}

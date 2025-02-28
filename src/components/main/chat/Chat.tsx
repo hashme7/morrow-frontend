@@ -53,14 +53,9 @@ const Chat: React.FC = () => {
         console.log("message seen", msg);
         dispatch(setSeenMsg(msg));
       });
+      
     }
-    return () => {
-      newSocket.disconnect();
-      setSocket(null);
-    };
-  }, [selectProject]);
 
-  useEffect(() => {
     const fetchMessages = async () => {
       setLoading(true);
       try {
@@ -77,22 +72,37 @@ const Chat: React.FC = () => {
       }
     };
     fetchMessages();
-    if (socket) {
+    const updateMessages = () => {
+      console.log("on update messages",chats)
       const unseenMessages = chats.filter(
-        (msg) =>
-          msg.senderId !== localStorage.getItem("userId") &&
-          msg.status !== "seen"
+        (msg) => {
+          console.log("msg",msg)
+          if(msg.senderId !== localStorage.getItem("userId") &&
+            msg.status !== "seen") {
+            return msg;
+          }
+        }
+          
       );
 
+      console.log("unseednmengess",unseenMessages)
+
       unseenMessages.forEach((msg) => {
-        console.log("updating the message seen..");
-        socket.emit("message_seen", {
+        console.log("updating the message seen..", msg);
+        console.log(socket);
+        newSocket.emit("message_seen", {
           messageId: msg._id,
           userId: localStorage.getItem("userId"),
         });
       });
     }
-  }, [selectProject?.id]);
+    updateMessages();
+    
+    return () => {
+      newSocket.disconnect();
+      setSocket(null);
+    };
+  }, [selectProject]);
 
   const handleSendMessage = (content: string) => {
     if (!socket || !selectProject?.teamId) return;
