@@ -43,8 +43,9 @@ const handleAxiosError = (
 // Async Thunks
 export const fetchUser = createAsyncThunk(
   "profile/fetchProfileDetails",
-  async (_: void, { rejectWithValue }) => {
+  async ({userId}: {userId:ObjectId}, { rejectWithValue }) => {
     try {
+      console.log(userId);
       const response = await axios.get(`/user/user-details`);
       return response.data;
     } catch (error) {
