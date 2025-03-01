@@ -1,19 +1,20 @@
 import { useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks";
+import {  useNavigate, useParams } from "react-router-dom";
+import { useAppDispatch } from "../../store/hooks/hooks";
 import * as Yup from "yup";
 import { resetPassword } from "../../store/slices/loginSlice";
+import { showToast } from "../../components/popup/hot-toast";
 
 export const useResetPassword = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get("token");
+  const [validationErrors, setValidationErrors] = useState<{
+    [key: string]: string;
+  }>({});
+  const { token } = useParams();
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  const { loading, error, success } = useAppSelector((state: any) => state.auth);
 
   const validationSchema = Yup.object().shape({
     password: Yup.string()
@@ -30,22 +31,38 @@ export const useResetPassword = () => {
       .required("Confirm password is required."),
   });
 
-  const handleResetPassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleResetPassword = async (token:string) => {
+    console.log("handle reset password");
+    
+    setValidationErrors({});
     try {
       await validationSchema.validate(
         { password, confirmPassword },
         { abortEarly: false }
       );
       if (token) {
-        dispatch(resetPassword({ token: token || "", newPassword: password }));
-      }
-      if (success) {
-        setTimeout(() => navigate("/login"), 3000);
+        console.log("token is there");
+        
+        const response = dispatch(
+          resetPassword({ token: token , newPassword: password })
+        );
+        if (resetPassword.fulfilled.match(response)) {
+          showToast({ message: "Password changed successfully" });
+          navigate("/login");
+        } else {
+          showToast({ message: "Something went wrong" });
+        }
+      } else {
+        showToast({message:"token is not provided"})
       }
     } catch (err: any) {
-      console.error(err.errors);
+      const errors: { [key: string]: string } = {};
+      err.inner.forEach((error: Yup.ValidationError) => {
+        if (error.path) {
+          errors[error.path] = error.message;
+        }
+      });
+      setValidationErrors(errors);
     }
   };
 
@@ -54,9 +71,8 @@ export const useResetPassword = () => {
     confirmPassword,
     setPassword,
     setConfirmPassword,
-    error,
-    success,
-    loading,
+    validationErrors,
+    token,
     handleResetPassword,
   };
 };

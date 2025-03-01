@@ -9,7 +9,7 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // Uses localStorage for persistence
+import storage from "redux-persist/lib/storage"; 
 
 import signupReducer from "./slices/signUpSlice";
 import otpReducer from "./slices/otpSlice";
@@ -42,12 +42,11 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["login", "profile", "project"], // Specify reducers you want to persist
+  whitelist: ["login", "profile", "project"], 
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// Configure store with the persisted reducer
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>

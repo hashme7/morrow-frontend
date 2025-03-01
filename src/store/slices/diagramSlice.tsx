@@ -74,7 +74,6 @@ const DiagramSlice = createSlice({
         state.edges = action.payload.edges;
         state.viewport = action.payload.viewport;
       } else {
-        console.log("dfkasjdf;kas");
         state = {
           projectId: 0,
           nodes: [],

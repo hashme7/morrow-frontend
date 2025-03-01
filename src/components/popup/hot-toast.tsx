@@ -11,6 +11,7 @@ export const showToast = ({
   type = "info",
   icon = "🔔",
 }: ToastOptions) => {
+  console.log(type);
   toast(message, {
     icon,
     style: {

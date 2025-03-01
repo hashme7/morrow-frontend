@@ -9,9 +9,8 @@ export const ResetPassword = () => {
     confirmPassword,
     setPassword,
     setConfirmPassword,
-    error,
-    success,
-    loading,
+    validationErrors,
+    token,
     handleResetPassword,
   } = useResetPassword();
 
@@ -42,7 +41,9 @@ export const ResetPassword = () => {
                 </button>
               }
             />
-
+            {validationErrors.password && (
+              <p className="text-red-500">{validationErrors.password}</p>
+            )}
             <Input
               variant="bordered"
               type={showConfirmPassword ? "text" : "password"}
@@ -60,17 +61,17 @@ export const ResetPassword = () => {
               }
             />
 
-            {error && <p className="text-red-500">{error}</p>}
-            {success && <p className="text-green-500">{success}</p>}
+            {validationErrors.confirmPassword && (
+              <p className="text-red-500">{validationErrors.confirmPassword}</p>
+            )}
+            {/* { && <p className="text-green-500">{success}</p>} */}
 
-            {/* Reset Button */}
             <Button
               radius="full"
               className="w-full bg-green-900 text-white shadow-lg font-semibold py-3 hover:bg-green-600 disabled:opacity-50"
-              onClick={handleResetPassword}
-              isDisabled={loading}
+              onPress={()=>handleResetPassword(token || "")}
             >
-              {loading ? "Resetting..." : "Reset Password"}
+              Reset Password
             </Button>
           </div>
         </div>

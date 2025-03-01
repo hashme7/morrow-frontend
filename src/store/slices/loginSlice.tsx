@@ -109,6 +109,7 @@ export const resetPassword = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
+      console.log("on login slice reset password");
       const response = await loginApi.post<{ message: string }>(
         `/auth/reset-password/${token}?password=${newPassword}`
       );
@@ -213,9 +214,11 @@ const loginSlice = createSlice({
     });
     builder.addCase(forgotPassword.fulfilled, (state, action) => {
       console.log("reject forgot password", state, action);
+      state.errorMessage = "";
     });
     builder.addCase(forgotPassword.rejected, (state, action) => {
       console.log("reject forgot password", state, action);
+      state.errorMessage = action.payload as string;
     });
   },
 });

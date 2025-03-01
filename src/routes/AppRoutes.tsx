@@ -54,7 +54,7 @@ const AppRoutes: React.FC = () => {
           }
         />
         <Route
-          path="/changePassword"
+          path="/changePassword/:token"
           element={
             <AuthRoute>
               <ResetPassword />

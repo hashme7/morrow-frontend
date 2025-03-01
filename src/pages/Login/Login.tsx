@@ -35,6 +35,7 @@ const Login: React.FC = () => {
   const [errors, setErrors] = useState<{
     email?: string;
     password?: string;
+    forgotEmail?: string;
     form?: string;
   }>({});
 
@@ -107,7 +108,9 @@ const Login: React.FC = () => {
             >
               Log In
             </Button>
-            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+            {!isOpen && errorMessage && (
+              <p className="text-red-500">{errorMessage}</p>
+            )}
 
             <div className="flex flex-col justify-center align-middle space-x-0 gap-2">
               <div className="sm:m-0 m-2 md:mb-0 bg-white flex justify-center sm:h-12 p-1 rounded-3xl">
@@ -175,6 +178,7 @@ const Login: React.FC = () => {
               fullWidth
             />
             {errors.email && <p className="text-red-500">{}</p>}
+            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
           </ModalBody>
           <ModalFooter>
             <Button variant="light" onPress={onOpenChange}>
@@ -182,7 +186,9 @@ const Login: React.FC = () => {
             </Button>
             <Button
               className="bg-green-900 text-white"
-              onPress={() => handleForgotPass(forgotEmail, dispatch, navigate)}
+              onPress={() =>
+                handleForgotPass(forgotEmail, dispatch, onOpenChange, setErrors)
+              }
             >
               Send Reset Link
             </Button>

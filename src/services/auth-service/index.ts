@@ -7,6 +7,8 @@ import {
 } from "../../store/slices/loginSlice";
 import { AppDispatch } from "../../store/store";
 import { IGoogleResponse } from "../../types/login/loginState";
+import { showToast } from "../../components/popup/hot-toast";
+import { throttle } from "../../utils/throttle/throttle";
 
 export const handleLogin = async (
   email: string,
@@ -75,9 +77,33 @@ export const handleGitHubLogin = async (
   }
 };
 
-export const handleForgotPass = async (email:string,dispatch:AppDispatch,navigate:(path:string)=>void) => {
-  const response = await dispatch(forgotPassword(email));
-  if (forgotPassword.fulfilled.match(response)) {
-    navigate("/login");
-  }
-}
+export const handleForgotPass = throttle(
+  async (
+    forgotEmail: string,
+    dispatch: AppDispatch,
+    onOpenChange: (type: boolean) => void,
+    setError: (errors: { forgotEmail?: string }) => void
+  ) => {
+    setError({});
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!forgotEmail) {
+      setError({ forgotEmail: "Email is required." });
+      return;
+    }
+
+    if (!emailPattern.test(forgotEmail)) {
+      setError({ forgotEmail: "Please enter a valid email." });
+      return;
+    }
+    const response = await dispatch(forgotPassword(forgotEmail));
+
+    if (forgotPassword.fulfilled.match(response)) {
+      onOpenChange(false);
+      showToast({ message: "Email sent successfully" });
+      setError({});
+    } else {
+      setError({ forgotEmail: "Failed to send reset email. Try again." });
+    }
+  },
+  3000
+);

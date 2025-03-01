@@ -14,7 +14,9 @@ const reusableRules = {
   email: Yup.string()
     .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please enter a valid email.")
     .required("Email is required."),
-
+  forgotEmail: Yup.string()
+    .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please enter a valid email.")
+    .required("Email is required."),
   password: Yup.string()
     .min(6, "Password must be at least 6 characters long.")
     .matches(/\d/, "Password must contain at least one number.")
