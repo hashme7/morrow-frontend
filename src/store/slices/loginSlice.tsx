@@ -220,8 +220,6 @@ const loginSlice = createSlice({
       state.errorMessage = action.payload as string;
     });
     builder.addCase(resetPassword.rejected, (state, action) => {
-      console.log("on login slice reset password");
-      
       console.log("failed in action",action);
       state.errorMessage = action.payload as string;
     });

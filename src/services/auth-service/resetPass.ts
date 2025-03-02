@@ -45,13 +45,14 @@ export const useResetPassword = () => {
       if (token) {
         console.log("token is there");
 
-        const response =await dispatch(
+        const response = await dispatch(
           resetPassword({ token: token, newPassword: password })
         );
         if (resetPassword.fulfilled.match(response)) {
           showToast({ message: "Password changed successfully" });
           navigate("/login");
         } else {
+          console.log(response);
           showToast({ message: "Something went wrong" });
         }
       } else {

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useResetPassword } from "../../services/auth-service/resetPass";
 import { Input, Button } from "@nextui-org/react";
+import { Link } from "react-router-dom";
 
 export const ResetPassword = () => {
   const {
@@ -65,7 +66,7 @@ export const ResetPassword = () => {
             {validationErrors.confirmPassword && (
               <p className="text-red-500">{validationErrors.confirmPassword}</p>
             )}
-            {errorMessage && (<p className="text-red-500">{ errorMessage}</p>)}
+            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             <Button
               radius="full"
               className="w-full bg-green-900 text-white shadow-lg font-semibold py-3 hover:bg-green-600 disabled:opacity-50"
@@ -73,6 +74,14 @@ export const ResetPassword = () => {
             >
               Reset Password
             </Button>
+            <p className="text-gray-400 mt-4">
+              Already have an account?{" "}
+              <Link to="/login">
+                <span className="text-gray-200 hover:underline">
+                  Log in here
+                </span>
+              </Link>
+            </p>
           </div>
         </div>
         <div className="animation-section hidden md:flex w-full md:w-1/2 h-full items-center justify-center">
