@@ -45,7 +45,7 @@ export const useResetPassword = () => {
       if (token) {
         console.log("token is there");
 
-        const response = dispatch(
+        const response =await dispatch(
           resetPassword({ token: token, newPassword: password })
         );
         if (resetPassword.fulfilled.match(response)) {
