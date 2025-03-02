@@ -12,6 +12,7 @@ export const ResetPassword = () => {
     validationErrors,
     token,
     handleResetPassword,
+    errorMessage,
   } = useResetPassword();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -64,12 +65,11 @@ export const ResetPassword = () => {
             {validationErrors.confirmPassword && (
               <p className="text-red-500">{validationErrors.confirmPassword}</p>
             )}
-            {/* { && <p className="text-green-500">{success}</p>} */}
-
+            {errorMessage && (<p className="text-red-500">{ errorMessage}</p>)}
             <Button
               radius="full"
               className="w-full bg-green-900 text-white shadow-lg font-semibold py-3 hover:bg-green-600 disabled:opacity-50"
-              onPress={()=>handleResetPassword(token || "")}
+              onPress={() => handleResetPassword(token || "")}
             >
               Reset Password
             </Button>

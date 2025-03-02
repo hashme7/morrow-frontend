@@ -20,6 +20,7 @@ import {
   handleGoogleSubmit,
   handleLogin,
 } from "../../services/auth-service/index.ts";
+import { clearError } from "../../store/slices/loginSlice.tsx";
 
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -44,6 +45,9 @@ const Login: React.FC = () => {
     const code = new URLSearchParams(params).get("code");
     handleGitHubLogin(code, dispatch, navigate);
   }, []);
+  useEffect(() => {
+    dispatch(clearError());
+  }, [isOpen]);
 
   return (
     <section className="login h-screen flex items-center justify-center bg-black">

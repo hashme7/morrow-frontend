@@ -220,6 +220,10 @@ const loginSlice = createSlice({
       console.log("reject forgot password", state, action);
       state.errorMessage = action.payload as string;
     });
+    builder.addCase(resetPassword.rejected, (state, action) => {
+      console.log("failed in action",state,action);
+      state.errorMessage = action.payload as string;
+    });
   },
 });
 

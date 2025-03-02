@@ -1,9 +1,10 @@
 import { useState } from "react";
-import {  useNavigate, useParams } from "react-router-dom";
-import { useAppDispatch } from "../../store/hooks/hooks";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks";
 import * as Yup from "yup";
-import { resetPassword } from "../../store/slices/loginSlice";
+import { clearError, resetPassword } from "../../store/slices/loginSlice";
 import { showToast } from "../../components/popup/hot-toast";
+import { RootState } from "../../store/store";
 
 export const useResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -11,6 +12,7 @@ export const useResetPassword = () => {
   const [validationErrors, setValidationErrors] = useState<{
     [key: string]: string;
   }>({});
+  const { errorMessage } = useAppSelector((state: RootState) => state.login);
   const { token } = useParams();
 
   const dispatch = useAppDispatch();
@@ -31,9 +33,9 @@ export const useResetPassword = () => {
       .required("Confirm password is required."),
   });
 
-  const handleResetPassword = async (token:string) => {
-    console.log("handle reset password");
-    
+  const handleResetPassword = async (token: string) => {
+    dispatch(clearError());
+
     setValidationErrors({});
     try {
       await validationSchema.validate(
@@ -42,9 +44,9 @@ export const useResetPassword = () => {
       );
       if (token) {
         console.log("token is there");
-        
+
         const response = dispatch(
-          resetPassword({ token: token , newPassword: password })
+          resetPassword({ token: token, newPassword: password })
         );
         if (resetPassword.fulfilled.match(response)) {
           showToast({ message: "Password changed successfully" });
@@ -53,7 +55,7 @@ export const useResetPassword = () => {
           showToast({ message: "Something went wrong" });
         }
       } else {
-        showToast({message:"token is not provided"})
+        showToast({ message: "token is not provided" });
       }
     } catch (err: any) {
       const errors: { [key: string]: string } = {};
@@ -74,5 +76,6 @@ export const useResetPassword = () => {
     validationErrors,
     token,
     handleResetPassword,
+    errorMessage,
   };
 };
