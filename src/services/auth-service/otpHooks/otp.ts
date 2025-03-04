@@ -1,11 +1,7 @@
 import { useState, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks.ts";
-import {
-  verifyOtp,
-  resetOtpState,
-  resendOtp,
-} from "../../store/slices/otpSlice.tsx";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks/hooks";
+import { resendOtp, resetOtpState, verifyOtp } from "../../../store/slices/otpSlice";
 
 export const useOtpLogic = () => {
   const dispatch = useAppDispatch();
