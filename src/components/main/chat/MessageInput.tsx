@@ -17,7 +17,7 @@ const MessageInput: React.FC<{
       setIsTyping(true);
     } else {
       console.log("socket is not connected");
-      
+      socket.connect();
     }
     if (!message.length && isTyping) {
       socket.emit("userStoppedTyping", { userId: extractIdFromToken(), roomId });
