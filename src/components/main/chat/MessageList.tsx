@@ -2,6 +2,7 @@ import { forwardRef, useEffect, useRef, useState } from "react";
 import { IMessagesListProps } from "../../../types/Chat";
 import { Chip } from "@nextui-org/react";
 import { CheckIcon } from "@heroicons/react/24/outline";
+import { BiCheckDouble } from "react-icons/bi";
 import { useAppSelector } from "../../../store/hooks/hooks";
 import { RootState } from "../../../store/store";
 
@@ -63,8 +64,7 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
                     <span>
                       {message.readBy.length || message.status === "seen" ? (
                         <div className="flex">
-                          <CheckIcon className="h-4 w-4 text-green-500" />
-                          <CheckIcon className="h-4 w-4 text-green-500" />
+                          <BiCheckDouble size={24} color="white" />
                         </div>
                       ) : (
                         <div>
@@ -80,7 +80,7 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
                   lineHeight: "20px",
                   height: "auto",
                 }}
-                variant="flat"
+                variant="bordered"
                 color={
                   message.senderId == localStorage.getItem("userId")
                     ? "default"

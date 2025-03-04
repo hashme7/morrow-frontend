@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
 import extractIdFromToken from "../../../utils/decodeToken";
+import { debounce } from "lodash";
 
 const MessageInput: React.FC<{
   handleSendMessage: (content: string) => void;
@@ -12,16 +13,24 @@ const MessageInput: React.FC<{
 
   useEffect(() => {
     if (message.length > 0 && !isTyping) {
-      console.log("typing.....",roomId)
+      console.log("typing.....", extractIdFromToken(), roomId);
       socket.emit("userTyping", { userId: extractIdFromToken(), roomId });
       setIsTyping(true);
     }
-    if (!message.length && isTyping) {
-      console.log("user stoped typing");
-      
-      socket.emit("userStoppedTyping", { userId: extractIdFromToken(), roomId });
-      setIsTyping(false);
-    }
+    const stopTyping = debounce(() => {
+      if (isTyping) {
+        console.log("User stopped typing:", extractIdFromToken(), roomId);
+        socket.emit("userStoppedTyping", {
+          userId: extractIdFromToken(),
+          roomId,
+        });
+        setIsTyping(false);
+      }
+    }, 1000);
+    stopTyping();
+    return () => {
+      stopTyping.cancel();
+    };
   }, [message]);
 
   return (

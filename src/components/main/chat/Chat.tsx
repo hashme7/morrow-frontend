@@ -10,7 +10,6 @@ import {
   setMessage,
   setSeenMsg,
 } from "../../../store/slices/ChatSlice";
-// import extractIdFromToken from "../../../utils/decodeToken";
 import { getTeamMembers } from "../../../store/slices/memberSlice";
 
 const Chat: React.FC = () => {
@@ -60,7 +59,7 @@ const Chat: React.FC = () => {
         ...prev,
         [userId]: isTyping,
       }));
-      console.log("log from typing", typingUsers);
+      
     });
 
     return () => {
@@ -134,10 +133,12 @@ const Chat: React.FC = () => {
       </div>
 
       <div
-        className={`block flex-grow  p-4 ${
-          chats.length > 6 ? "overflow-auto" : "overflow-y-hidden"
-        }`}
-        style={{ maxHeight: "calc(85vh - 100px)" }}
+        className={` flex-grow  p-4 ${
+          chats.length > 6 ? "overflow-auto" : "overflow-hidden"
+        } h-[70vh]
+`}
+        ref={chatRef}
+        // style={{ maxHeight: "calc(85vh - 100px)" }}
       >
         <MessagesList messages={chats} ref={chatRef} />
         <div ref={messagesEndRef} />
