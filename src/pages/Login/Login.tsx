@@ -19,7 +19,7 @@ import {
   handleGitHubSubmit,
   handleGoogleSubmit,
   handleLogin,
-} from "../../services/auth-service/index.ts";
+} from "../../services/auth-service/loginHooks/login.ts";
 import { clearError } from "../../store/slices/loginSlice.tsx";
 
 const Login: React.FC = () => {

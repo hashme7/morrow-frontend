@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useResetPassword } from "../../services/auth-service/resetPass";
+import { useResetPassword } from "../../services/auth-service/resetPasswordHooks/resetPass";
 import { Input, Button } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 

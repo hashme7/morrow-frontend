@@ -31,7 +31,7 @@ const HistoryList: React.FC<{ apis: IApi[] ,resetFields:()=>void}> = ({ apis,res
 
   const handleApiClick = (api: IApi) => {
     setSelectedApi(api);
-    onOpen(); // Open modal
+    onOpen(); 
   };
   
 
@@ -73,8 +73,6 @@ const HistoryList: React.FC<{ apis: IApi[] ,resetFields:()=>void}> = ({ apis,res
           </ul>
         </div>
       </div>
-
-      {/* Modal for API Details */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalContent>
           <ModalHeader className="text-xl font-bold">API Result</ModalHeader>

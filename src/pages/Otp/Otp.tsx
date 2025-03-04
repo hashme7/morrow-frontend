@@ -1,45 +1,24 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { Input, Button } from "@nextui-org/react";
-import { useAppSelector, useAppDispatch } from "../../store/hooks/hooks.ts";
-import {
-  verifyOtp,
-  resetOtpState,
-  resendOtp,
-} from "../../store/slices/otpSlice.tsx";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useOtpLogic } from "../../services/auth-service/otpHooks/otp";
 
 const OtpPage: React.FC = () => {
   const titleRef = useRef<HTMLHeadingElement | null>(null);
   const formRef = useRef<HTMLDivElement | null>(null);
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
-  const { otpVerified, errorMessage, loading } = useAppSelector(
-    (state) => state.otp
-  );
-  const { userId } = useAppSelector((state) => state.signup);
-  const [otp, setOtp] = useState("");
-  const [timer, setTimer] = useState(60);
-  const [canResend, setCanResend] = useState(false);
-  const [otpError, setOtpError] = useState("");
-
-  const handleVerifyOtp = () => {
-    setOtpError("");
-    if (otp.length < 6) {
-      setOtp("OTP must be exactly 6 characters long.");
-      return 
-    }
-    if (otp) {
-      dispatch(verifyOtp({ otp, userId }));
-    }
-  };
-
-  const handleResendOtp = () => {
-    setTimer(60);
-    dispatch(resendOtp({ userId }));
-    setCanResend(false);
-  };
+  const {
+    otp,
+    setOtp,
+    otpError,
+    handleVerifyOtp,
+    handleResendOtp,
+    timer,
+    canResend,
+    loading,
+    errorMessage,
+  } = useOtpLogic();
 
   useEffect(() => {
     gsap.fromTo(
@@ -53,28 +32,6 @@ const OtpPage: React.FC = () => {
       { y: 0, autoAlpha: 1, duration: 1.5, delay: 0.5, ease: "Power3.easeOut" }
     );
   }, []);
-
-  useEffect(() => {
-    if (otpVerified) {
-      navigate("/login");
-      dispatch(resetOtpState());
-    }
-  }, [otpVerified, navigate, dispatch]);
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (timer > 0) {
-      interval = setInterval(() => {
-        setTimer((prev) => prev - 1);
-      }, 1000);
-    } else {
-      setCanResend(true);
-    }
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [timer]);
 
   return (
     <section className="otp-page h-screen flex items-center justify-center bg-black">
@@ -96,10 +53,10 @@ const OtpPage: React.FC = () => {
               placeholder="Enter 6-digit code"
               onChange={(e) => setOtp(e.target.value)}
               value={otp}
-              className="bg-white bg-opacity-5 text-white border-node placeholder-gray-300"
+              className="bg-white bg-opacity-5 text-white border-none placeholder-gray-300"
               maxLength={6}
             />
-            {otpError.length && <p style={{ color: "red" }}>{otpError}</p>}
+            {otpError.length>0 && <p className="text-red-500">{otpError}</p>}
             <Button
               radius="full"
               className="w-full bg-green-900 text-white shadow-lg font-semibold py-3 hover:bg-green-600"
@@ -121,6 +78,14 @@ const OtpPage: React.FC = () => {
               ) : (
                 <span className="text-gray-400">Resend in {timer} seconds</span>
               )}
+            </p>
+            <p className="text-gray-400 mt-4">
+              Already have an account?{" "}
+              <Link to="/login">
+                <span className="text-gray-200 hover:underline">
+                  Log in here
+                </span>
+              </Link>
             </p>
           </div>
         </div>

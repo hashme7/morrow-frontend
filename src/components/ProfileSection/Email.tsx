@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks";
+import {  useAppDispatch,useAppSelector } from "../../store/hooks/hooks";
 import OtpModal from "./modal/OtpModal";
 import { changeEmail } from "../../store/slices/profileSlice";
 
 const Email: React.FC = () => {
-  const { email } = useAppSelector((state) => state.profile);
+  const { email ,errorMessage} = useAppSelector((state) => state.profile);
   const [visible, setVisible] = useState(false);
   const [newEmail, setNewEmail] = useState("");
   const dispatch = useAppDispatch();
@@ -15,7 +15,6 @@ const Email: React.FC = () => {
       setError("Please enter a valid email.");
       return;
     }
-
     setError(""); 
     const response = dispatch(changeEmail({ email: newEmail }));
     if (changeEmail.fulfilled.match(response)) {
@@ -66,6 +65,7 @@ const Email: React.FC = () => {
           >
             Save
           </button>
+          {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
         </div>
         <div className="text-sm text-gray-400 mt-4">
           <p>Email notifications</p>

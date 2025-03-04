@@ -1,4 +1,3 @@
-// useProfileSidebarLogic.ts
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks/hooks";
 import mongoose from "mongoose";

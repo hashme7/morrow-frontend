@@ -33,6 +33,7 @@ const handleAxiosError = (
     return rejectWithValue("request not found");
   } 
   if (axiosError.response?.status == 403) {
+    console.log("response.data.message")
     return rejectWithValue(axiosError.response?.data.message);
   }
   return rejectWithValue(
@@ -176,7 +177,7 @@ const profileSlice = createSlice({
         state.errorMessage = "";
       })
       .addCase(changePassword.pending, (state) => {
-        state.isLoading = "secure"
+        state.isLoading = "secure";
       })
       .addCase(changePassword.rejected, (state, action) => {
         state.error = true;
@@ -203,6 +204,13 @@ const profileSlice = createSlice({
       .addCase(updateProfileField.rejected, (state, action) => {
         console.log("from reject:", state, action);
         state.isLoading = "";
+      })
+      .addCase(changeEmail.fulfilled, (state, action) => {
+        console.log("fullfilled", state, action);
+      })
+      .addCase(changeEmail.rejected, (state, action) => {
+        console.log("fullfilled", state, action);
+        state.errorMessage = action.payload as string;
       });
   },
 });

@@ -77,6 +77,7 @@ const otpSlice = createSlice({
       .addCase(verifyOtp.pending, (state) => {
         state.loading = true;
         state.errorMessage = null;
+        state.otpVerified = false;
       })
       .addCase(verifyOtp.fulfilled, (state) => {
         state.loading = false;

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks/hooks";
 import * as Yup from "yup";
-import { clearError, resetPassword } from "../../store/slices/loginSlice";
-import { showToast } from "../../components/popup/hot-toast";
-import { RootState } from "../../store/store";
+import { clearError, resetPassword } from "../../../store/slices/loginSlice";
+import { showToast } from "../../../components/popup/hot-toast";
+import { RootState } from "../../../store/store";
 
 export const useResetPassword = () => {
   const [password, setPassword] = useState("");

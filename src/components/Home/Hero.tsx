@@ -4,7 +4,6 @@ import { Button } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 
-// Register the plugin (if not already registered)
 gsap.registerPlugin(MotionPathPlugin);
 
 const Hero: React.FC = () => {

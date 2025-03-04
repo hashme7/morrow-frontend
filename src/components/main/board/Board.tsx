@@ -1,19 +1,10 @@
-import React, {
-  FormEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React from "react";
 import { Column } from "./Column";
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { ITask } from "../../../types/board/board";
 import AddColumnModal from "./createColumnModal";
 import {
   DndContext,
-  DragEndEvent,
   DragOverlay,
-  DragStartEvent,
   PointerSensor,
   useSensor,
   useSensors,
@@ -21,56 +12,28 @@ import {
 import { Task } from "./Task";
 import { createPortal } from "react-dom";
 import { SortableContext } from "@dnd-kit/sortable";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks/hooks";
-import {
-  createColumn,
-  createTask,
-  deleteColumn,
-  editColumnName,
-  getColumn,
-  getTasks,
-  updateTaskStatus,
-} from "../../../store/slices/BoardSlice";
-import { validateColumnName } from "../../../utils/validations/yup";
-import { getTeamMembers } from "../../../store/slices/memberSlice";
-import { Types } from "mongoose";
-import extractIdFromToken from "../../../utils/decodeToken";
+import { useKanbanBoard } from "../../../services/task-service/kanbanHooks/kanban";
 
 const KanbanBoard: React.FC = () => {
-  const { columns, tasks } = useAppSelector((state) => state.tasks);
-  const { selectProject } = useAppSelector((state) => state.project);
-  const { members } = useAppSelector((state) => state.members);
-  const [taskIds, setTaskIds] = useState<string[]>([]);
-  const [activeTask, setActiveTask] = useState<ITask | null>(null);
-  const [columnModal, setColumnModal] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
-  const [showModal, setShowModal] = useState<boolean>(false);
-
-  const columnsIds = useMemo(
-    () => columns.map((column: any) => column._id.toString()),
-    [columns]
-  );
-  const dispatch = useAppDispatch();
-
-  const updateTaskIds = useCallback(
-    () => setTaskIds(tasks.map((task: ITask) => task._id.toString())),
-    [tasks]
-  );
-
-  useEffect(() => {
-    if (selectProject) {
-      dispatch(getColumn({ teamId: selectProject.teamId }));
-      dispatch(getTasks({ team_id: selectProject.teamId }));
-      updateTaskIds();
-    }
-  }, [selectProject?.teamId, selectProject, columns]);
-  useEffect(() => {
-    if (selectProject) {
-      dispatch(
-        getTeamMembers({ projectId: selectProject.id.toString(), page: 1 })
-      );
-    }
-  }, [selectProject]);
+  const {
+    columns,
+    tasks,
+    members,
+    taskIds,
+    activeTask,
+    columnModal,
+    error,
+    showModal,
+    columnsIds,
+    setColumnModal,
+    setShowModal,
+    addTask,
+    handleColumnNameUpdate,
+    handleColumnDelete,
+    addColumn,
+    onDragStart,
+    onDragEnd,
+  } = useKanbanBoard();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -79,125 +42,6 @@ const KanbanBoard: React.FC = () => {
       },
     })
   );
-
-  const addTask = async (
-    name: string,
-    id: string,
-    priority: string,
-    status: string,
-    assignee: { _id: Types.ObjectId }[]
-  ) => {
-    if (selectProject?.teamId) {
-      dispatch(
-        createTask({
-          name,
-          id,
-          priority,
-          status,
-          team_id: selectProject.teamId,
-          assignee,
-        })
-      );
-    }
-  };
-
-  const handleColumnNameUpdate = async (
-    e: React.KeyboardEvent<HTMLDivElement>,
-    name: string,
-    id: string
-  ) => {
-    const isDuplicate = columns.some(
-      (col) => col.name === name && col.id !== id
-    );
-    if (isDuplicate) {
-      setError("Can't create duplicate column!");
-      return;
-    }
-    const validateError = await validateColumnName(name);
-    if (validateError) {
-      setError(validateError);
-    }
-    if (e.key === "Enter") {
-      if (selectProject?.teamId) {
-        dispatch(editColumnName({ name, id, team_id: selectProject?.teamId }));
-      }
-    }
-  };
-
-  const handleColumnDelete = (id: string) => {
-    if (selectProject?.teamId) {
-      dispatch(deleteColumn({ id, team_id: selectProject.teamId }));
-    }
-  };
-
-  const addColumn = (
-    e: FormEvent<HTMLFormElement>,
-    statusName: string,
-    selectedColor: string
-  ) => {
-    e.preventDefault();
-    if (selectProject?.teamId) {
-      dispatch(
-        createColumn({
-          name: statusName,
-          color: selectedColor,
-          team_id: selectProject.teamId,
-          id: statusName.trim(),
-        })
-      );
-      setColumnModal(false);
-    }
-  };
-
-  const onDragStart = (event: DragStartEvent) => {
-    console.log(event.active);
-    for (let tsk of tasks) {
-      if (event.active.id == tsk._id.toString()) {
-        const userId = extractIdFromToken();
-        if (userId) {
-          if (!tsk.assignee.includes(userId)) {
-            setShowModal(true);
-            return;
-          }
-        }
-      }
-    }
-    if (event.active.data.current?.type === "Task") {
-      setActiveTask(event.active.data.current.task);
-    }
-  };
-
-  const onDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (!over) return;
-    for (let tsk of tasks) {
-      if (event.active.id == tsk._id.toString()) {
-        const userId = extractIdFromToken();
-        if (userId) {
-          if (!tsk.assignee.includes(userId)) {
-            return;
-          }
-        }
-      }
-    }
-
-    const activeId = active.id;
-    const isActiveATask = active.data.current?.type === "Task";
-    if (isActiveATask) {
-      const isOverAColumn = over.data.current?.type === "Column";
-      if (isOverAColumn) {
-        if (selectProject) {
-          dispatch(
-            updateTaskStatus({
-              team_id: selectProject.teamId.toString(),
-              id: activeId.toString(),
-              status: over.data.current?.column._id.toString(),
-            })
-          );
-        }
-      }
-    }
-  };
 
   return (
     <DndContext
@@ -209,27 +53,27 @@ const KanbanBoard: React.FC = () => {
         <div className="grid lg:grid-cols-4 grid-cols-2 gap-4 overflow-auto">
           <SortableContext items={columnsIds}>
             {columns.map((col) => (
-                <Column
-                  tasks={tasks}
-                  key={col.id}
-                  column={col}
-                  addTask={addTask}
-                  taskIds={taskIds}
-                  handleColumnNameUpdate={handleColumnNameUpdate}
-                  handleColumnDelete={handleColumnDelete}
-                  error={error}
-                  members={members}
-                />
+              <Column
+                tasks={tasks}
+                key={col.id}
+                column={col}
+                addTask={addTask}
+                taskIds={taskIds}
+                handleColumnNameUpdate={handleColumnNameUpdate}
+                handleColumnDelete={handleColumnDelete}
+                error={error}
+                members={members}
+              />
             ))}
           </SortableContext>
           <div className="flex-col">
-              <button
-                onClick={() => setColumnModal(true)}
-                className="h-[60px] w-[250px] min-[w-250px] cursor-pointer rounded-lg bg-black ring-zinc-900 p-4 hover:ring-2 flex gap-2"
-              >
-                <PlusIcon className="w-6 h-6" />
-                Add Column
-              </button>
+            <button
+              onClick={() => setColumnModal(true)}
+              className="h-[60px] w-[250px] min-[w-250px] cursor-pointer rounded-lg bg-black ring-zinc-900 p-4 hover:ring-2 flex gap-2"
+            >
+              <PlusIcon className="w-6 h-6" />
+              Add Column
+            </button>
             <div>
               {columnModal && <AddColumnModal handleSubmit={addColumn} />}
             </div>

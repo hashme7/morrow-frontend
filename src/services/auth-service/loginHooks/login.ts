@@ -1,14 +1,14 @@
-import { validateFields } from "../../utils/validations/authValidation/signup&login";
+import { validateFields } from "../../../utils/validations/authValidation/signup&login";
 import {
   forgotPassword,
   gitHubLogin,
   googleLogin,
   loginUser,
-} from "../../store/slices/loginSlice";
-import { AppDispatch } from "../../store/store";
-import { IGoogleResponse } from "../../types/login/loginState";
-import { showToast } from "../../components/popup/hot-toast";
-import { throttle } from "../../utils/throttle/throttle";
+} from "../../../store/slices/loginSlice";
+import { AppDispatch } from "../../../store/store";
+import { IGoogleResponse } from "../../../types/login/loginState";
+import { showToast } from "../../../components/popup/hot-toast";
+import { throttle } from "../../../utils/throttle/throttle";
 
 export const handleLogin = async (
   email: string,

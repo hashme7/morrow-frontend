@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { IColumnProps } from "../../../types/board/board";
 import { DeleteIcon } from "../../../constants/icons/deletIcon/deleteIcon";
 import { Task } from "./Task";
@@ -14,7 +14,7 @@ import {
   Tooltip,
 } from "@nextui-org/react";
 import { AddAssignee } from "../modals/addAssignee";
-import mongoose from "mongoose";
+import { useColumn } from "../../../services/task-service/kanbanHooks/columnHook";
 
 export const Column: React.FC<IColumnProps> = ({
   column,
@@ -26,49 +26,31 @@ export const Column: React.FC<IColumnProps> = ({
   error,
   members,
 }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [newName, setNewName] = useState(column.name);
-  const [isTaskFormOpen, setTaskFormOpen] = useState(false);
-  const [taskName, setTaskName] = useState("");
-  const [priority, setPriority] = useState("");
-  const [isAssigneeOpen, setIsAssigneeOpen] = useState(false);
-  const [Assignees, setAssignees] = useState<
-    { _id: mongoose.Types.ObjectId }[]
-  >([]);
-  useEffect(() => {
-    console.log("taskk cahnge");
-  }, [tasks]);
   const { setNodeRef, isOver } = useDroppable({
     id: column.id,
     data: { type: "Column", column },
   });
-  const columnStyle = isOver ? "border-blue-500" : "border-zinc-900";
 
-  const handleNameUpdate = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleColumnNameUpdate(e, newName, column.id);
-      setIsEditing(false);
-      setNewName(column.name);
-    }
-  };
-
-  const toggleAssigneeModal = () => setIsAssigneeOpen(!isAssigneeOpen);
-
-  const handleTaskSave = () => {
-    if (taskName.trim() && Assignees.length && priority) {
-      addTask(
-        taskName,
-        taskName.trim(),
-        priority,
-        column._id.toString(),
-        Assignees
-      );
-      setTaskFormOpen(false);
-      setTaskName("");
-      setPriority("");
-      setAssignees([]);
-    }
-  };
+  const {
+    setNewName,
+    handleNameUpdate,
+    setIsEditing,
+    isTaskFormOpen,
+    taskName,
+    toggleAssigneeModal,
+    setTaskName,
+    isAssigneeOpen,
+    setIsAssigneeOpen,
+    priority,
+    Assignees,
+    setAssignees,
+    setPriority,
+    handleTaskSave,
+    setTaskFormOpen,
+    columnStyle,
+    isEditing,
+    newName,
+  } = useColumn({ column, addTask, handleColumnNameUpdate, isOver });
   return (
     <Tooltip
       showArrow
