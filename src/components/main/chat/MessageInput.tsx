@@ -12,13 +12,13 @@ const MessageInput: React.FC<{
 
   useEffect(() => {
     if (message.length > 0 && !isTyping && socket.connected) {
+      if (!socket.connected) {
+        socket.connect();
+      }
       console.log("typing.....",extractIdFromToken(),roomId)
       socket.emit("userTyping", { userId: extractIdFromToken(), roomId });
       setIsTyping(true);
-    } else {
-      console.log("socket is not connected");
-      socket.connect();
-    }
+    } 
     if (!message.length && isTyping) {
       socket.emit("userStoppedTyping", { userId: extractIdFromToken(), roomId });
       setIsTyping(false);
