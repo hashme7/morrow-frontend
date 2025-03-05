@@ -121,17 +121,6 @@ const Chat: React.FC = () => {
   return (
     <div className="bg-zinc-950 md:h-full h-[500px] rounded-3xl mb-3 m-1 flex flex-col">
       <ChatHeader name={selectProject?.name || ""} members={members} />
-      <div className="px-4 text-sm text-gray-400">
-        {Object.keys(typingUsers)
-          .filter((id) => typingUsers[id] && id !== userId)
-          .map((id, index, arr) => (
-            <span key={id}>
-              {members.find((member) => member._id.toString() === id)
-                ?.username || "Someone"}{" "}
-              {index === arr.length - 1 ? "is typing..." : ", "}
-            </span>
-          ))}
-      </div>
 
       <div
         className={` flex-grow  p-4 ${
@@ -145,6 +134,17 @@ const Chat: React.FC = () => {
         <div ref={messagesEndRef} />
       </div>
 
+      <div className="px-4 text-sm text-gray-400">
+        {Object.keys(typingUsers)
+          .filter((id) => typingUsers[id] && id !== userId)
+          .map((id, index, arr) => (
+            <span key={id}>
+              {members.find((member) => member._id.toString() === id)
+                ?.username || "Someone"}{" "}
+              {index === arr.length - 1 ? "is typing..." : ", "}
+            </span>
+          ))}
+      </div>
       {socket && selectProject && (
         <>
           <MessageInput
