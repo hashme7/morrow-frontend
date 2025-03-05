@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { IMessage } from "../../types/Chat";
 import api from "../../utils/axios/Apis";
-import extractIdFromToken from "../../utils/decodeToken";
 interface IInitialState {
   teamName: string;
   teamId: string;
@@ -76,20 +75,18 @@ const chats = createSlice({
         
     },
     setSeenMsg(state, action) {
-      console.log("msg status changing......",action.payload.content,action.payload);
+      console.log("msg status changing......",action);
       state.chats = state.chats.map((chat) => {
-        if (chat._id == action.payload._id && action.payload.senderId == extractIdFromToken()) {
+        if (chat._id == action.payload._id) {
           return action.payload;
         } else {
           return chat;
         }
       });
+      console.log(state.chats);
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(sendMessage.fulfilled, () => {
-      console.log("fakdfk;adskfjkjdskfjaksjdl;f");
-    });
     builder.addCase(getMessage.fulfilled, (state, action) => {
       state.chats = [...action.payload];
     });

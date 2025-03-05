@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks/hooks";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
@@ -63,6 +63,23 @@ const Chat: React.FC = () => {
     dispatch(
       getTeamMembers({ projectId: selectProject.id.toString(), page: 1 })
     );
+    const updateMessages = () => {
+      console.log("on update messages");
+      if (!newSocket || !selectProject?.teamId) return;
+
+      const unseenMessages = chats.filter(
+        (msg) => msg.senderId !== userId && msg.status !== "seen"
+      );
+      console.log(unseenMessages, "unseenmessages");
+      unseenMessages.forEach((msg) => {
+        console.log("messages", msg, socket);
+        newSocket.emit("message_seen", {
+          roomId: selectProject.teamId,
+          messageId: msg._id,
+          userId,
+        });
+      });
+    };
     dispatch(getMessage({ receiverId: selectProject.teamId, page: 1 })).then(
       (response) => {
         if (getMessage.fulfilled.match(response)) {
@@ -71,35 +88,12 @@ const Chat: React.FC = () => {
         setLoading(false);
       }
     );
-
     return () => {
       newSocket.off("typing");
       newSocket.disconnect();
       setSocket(null);
     };
   }, [selectProject]);
-
-  const updateMessages = useCallback(() => {
-    console.log("on update messages");
-    if (!socket || !selectProject?.teamId) return;
-
-    const unseenMessages = chats.filter(
-      (msg) => msg.senderId !== userId && msg.status !== "seen"
-    );
-    console.log(unseenMessages, "unseenmessages");
-    if (!socket.connected) {
-      socket.connect();
-    }
-    unseenMessages.forEach((msg) => {
-      console.log("messages", msg, socket);
-      socket.emit("message_seen", {
-        roomId: selectProject.teamId,
-        messageId: msg._id,
-        userId,
-      });
-    });
-  }, [chats, selectProject, socket, userId]);
-
 
   const handleSendMessage = (content: string) => {
     if (!socket || !selectProject?.teamId || !userId) return;
@@ -109,7 +103,6 @@ const Chat: React.FC = () => {
       content,
     };
     dispatch(sendMessage(message));
-    updateMessages();
   };
 
   return (
