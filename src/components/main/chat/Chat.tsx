@@ -85,18 +85,17 @@ const Chat: React.FC = () => {
     });
   }, [chats, selectProject, socket, userId]);
   useEffect(() => {
-    if (!selectProject || !socket) return;
-    socket.emit("joinRoom",selectProject.teamId,userId);
+    if (!selectProject) return;
     dispatch(
       getTeamMembers({ projectId: selectProject.id.toString(), page: 1 })
     );
   }, [selectProject]);
 
   useEffect(() => {
-    if (!selectProject) return;
+    if (!selectProject || !socket) return;
 
     setLoading(true);
-
+    socket.emit("joinRoom", selectProject.teamId, userId);
     dispatch(getMessage({ receiverId: selectProject.teamId, page: 1 })).then(
       (response) => {
         if (getMessage.fulfilled.match(response)) {
