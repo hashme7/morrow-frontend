@@ -43,6 +43,7 @@ const Chat: React.FC = () => {
 
     newSocket.on("connect", () => console.log("Connected to server"));
     newSocket.on("connect_error", (err) => console.error("Socket Error:", err));
+    newSocket.emit("joinRoom", selectProject.teamId, userId);
 
     newSocket.on("new_message", (msg) => {
       dispatch(setMessage(msg));
@@ -92,10 +93,10 @@ const Chat: React.FC = () => {
   }, [selectProject]);
 
   useEffect(() => {
-    if (!selectProject || !socket) return;
+    if (!selectProject) return;
 
     setLoading(true);
-    socket.emit("joinRoom", selectProject.teamId, userId);
+    
     dispatch(getMessage({ receiverId: selectProject.teamId, page: 1 })).then(
       (response) => {
         if (getMessage.fulfilled.match(response)) {
