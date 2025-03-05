@@ -85,7 +85,8 @@ const Chat: React.FC = () => {
     });
   }, [chats, selectProject, socket, userId]);
   useEffect(() => {
-    if (!selectProject) return;
+    if (!selectProject || !socket) return;
+    socket.emit("joinRoom",selectProject.teamId,userId);
     dispatch(
       getTeamMembers({ projectId: selectProject.id.toString(), page: 1 })
     );
