@@ -55,12 +55,10 @@ const Chat: React.FC = () => {
       dispatch(setSeenMsg(msg));
     });
     newSocket.on("typing", ({ userId, isTyping }) => {
-      console.log("typing... from ", userId, isTyping);
       setTypingUsers((prev) => ({
         ...prev,
         [userId]: isTyping,
       }));
-      
     });
 
     return () => {
@@ -71,13 +69,18 @@ const Chat: React.FC = () => {
   }, [selectProject]);
 
   const updateMessages = useCallback(() => {
+    console.log("on update messages");
     if (!socket || !selectProject?.teamId) return;
 
     const unseenMessages = chats.filter(
       (msg) => msg.senderId !== userId && msg.status !== "seen"
     );
-
+    console.log(unseenMessages, "unseenmessages");
+    if (!socket.connected) {
+      socket.connect();
+    }
     unseenMessages.forEach((msg) => {
+      console.log("messages", msg, socket);
       socket.emit("message_seen", {
         roomId: selectProject.teamId,
         messageId: msg._id,
@@ -85,6 +88,7 @@ const Chat: React.FC = () => {
       });
     });
   }, [chats, selectProject, socket, userId]);
+
   useEffect(() => {
     if (!selectProject) return;
     dispatch(
@@ -94,9 +98,7 @@ const Chat: React.FC = () => {
 
   useEffect(() => {
     if (!selectProject) return;
-
     setLoading(true);
-    
     dispatch(getMessage({ receiverId: selectProject.teamId, page: 1 })).then(
       (response) => {
         if (getMessage.fulfilled.match(response)) {
@@ -109,13 +111,13 @@ const Chat: React.FC = () => {
 
   const handleSendMessage = (content: string) => {
     if (!socket || !selectProject?.teamId || !userId) return;
-
     const message = {
       senderId: userId,
       receiverId: selectProject.teamId,
       content,
     };
     dispatch(sendMessage(message));
+    updateMessages();
   };
 
   return (
@@ -125,15 +127,12 @@ const Chat: React.FC = () => {
       <div
         className={` flex-grow  p-4 ${
           chats.length > 6 ? "overflow-auto" : "overflow-hidden"
-        } h-[70vh]
-`}
+        } h-[70vh]`}
         ref={chatRef}
-        // style={{ maxHeight: "calc(85vh - 100px)" }}
       >
         <MessagesList messages={chats} ref={chatRef} />
         <div ref={messagesEndRef} />
       </div>
-
       <div className="px-4 text-sm text-gray-400">
         {Object.keys(typingUsers)
           .filter((id) => typingUsers[id] && id !== userId)
