@@ -60,6 +60,17 @@ const Chat: React.FC = () => {
         [userId]: isTyping,
       }));
     });
+    dispatch(
+      getTeamMembers({ projectId: selectProject.id.toString(), page: 1 })
+    );
+    dispatch(getMessage({ receiverId: selectProject.teamId, page: 1 })).then(
+      (response) => {
+        if (getMessage.fulfilled.match(response)) {
+          updateMessages();
+        }
+        setLoading(false);
+      }
+    );
 
     return () => {
       newSocket.off("typing");
@@ -89,25 +100,6 @@ const Chat: React.FC = () => {
     });
   }, [chats, selectProject, socket, userId]);
 
-  useEffect(() => {
-    if (!selectProject) return;
-    dispatch(
-      getTeamMembers({ projectId: selectProject.id.toString(), page: 1 })
-    );
-  }, [selectProject]);
-
-  useEffect(() => {
-    if (!selectProject) return;
-    setLoading(true);
-    dispatch(getMessage({ receiverId: selectProject.teamId, page: 1 })).then(
-      (response) => {
-        if (getMessage.fulfilled.match(response)) {
-          updateMessages();
-        }
-        setLoading(false);
-      }
-    );
-  }, [selectProject]);
 
   const handleSendMessage = (content: string) => {
     if (!socket || !selectProject?.teamId || !userId) return;
