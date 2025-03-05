@@ -63,8 +63,8 @@ const Chat: React.FC = () => {
     });
 
     return () => {
-      newSocket.disconnect();
       newSocket.off("typing");
+      newSocket.disconnect();
       setSocket(null);
     };
   }, [selectProject]);
@@ -104,7 +104,7 @@ const Chat: React.FC = () => {
         setLoading(false);
       }
     );
-  }, [selectProject, dispatch, updateMessages]);
+  }, [selectProject]);
 
   const handleSendMessage = (content: string) => {
     if (!socket || !selectProject?.teamId || !userId) return;
