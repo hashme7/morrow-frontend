@@ -62,7 +62,7 @@ const Chat: React.FC = () => {
     });
     dispatch(
       getTeamMembers({ projectId: selectProject.id.toString(), page: 1 })
-    );
+    ); 
     const updateMessages = () => {
       console.log("on update messages");
       if (!newSocket || !selectProject?.teamId) return;
