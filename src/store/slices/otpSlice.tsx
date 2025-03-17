@@ -2,8 +2,8 @@ import {
   createSlice,
   createAsyncThunk,
 } from "@reduxjs/toolkit";
-import axios from "axios";
 import { ObjectId } from "mongodb";
+import axios from 'axios'
 
 interface OtpState {
   loading: boolean;
@@ -25,7 +25,7 @@ export const verifyOtp = createAsyncThunk(
   ) => {
     try {
       const response = await axios.post(
-        "https://morrow.hashim-dev007.online/auth/verify-otp",
+        "https://morrow-backend.hashim-dev007.online/auth/verify-otp",
         {
           otp,
           userId,
