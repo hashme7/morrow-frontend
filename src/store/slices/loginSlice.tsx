@@ -9,6 +9,7 @@ import {
 import loginApi from "../../utils/axios/Apis";
 import { AxiosError } from "axios";
 import Cookies from "js-cookie";
+import { persistor } from '../store';
 
 const initialState: LoginState = {
   email: "",
@@ -133,6 +134,7 @@ export const logout = createAsyncThunk(
       const response = await loginApi.post<LogoutResponse>("/auth/logout");
       Cookies.remove("accessToken");
       Cookies.remove("refreshToken");
+      await persistor.purge();
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;
