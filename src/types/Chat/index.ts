@@ -18,4 +18,5 @@ export interface IMessage {
 
 export interface IMessagesListProps {
   messages: Array<IMessage>;
+  updateMessages: () => void;
 }

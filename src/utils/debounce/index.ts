@@ -6,7 +6,6 @@ function debounce<T extends (...args: any[]) => void>(
 
   return (...args: Parameters<T>) => {
     if (timer) clearTimeout(timer);
-    console.log("on timer...")
     timer = setTimeout(() => {
       func(...args);
     }, delay);

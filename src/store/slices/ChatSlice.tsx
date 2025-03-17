@@ -75,7 +75,6 @@ const chats = createSlice({
         
     },
     setSeenMsg(state, action) {
-      console.log("msg status changing......",action);
       state.chats = state.chats.map((chat) => {
         if (chat._id == action.payload._id) {
           return action.payload;
@@ -83,7 +82,7 @@ const chats = createSlice({
           return chat;
         }
       });
-      console.log(state.chats);
+      console.log("onmessage setSeenMesg",state.chats);
     },
   },
   extraReducers: (builder) => {

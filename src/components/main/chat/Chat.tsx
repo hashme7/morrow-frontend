@@ -1,99 +1,22 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks/hooks";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
 import MessagesList from "./MessageList";
-import { io, Socket } from "socket.io-client";
-import {
-  getMessage,
-  sendMessage,
-  setMessage,
-  setSeenMsg,
-} from "../../../store/slices/ChatSlice";
-import { getTeamMembers } from "../../../store/slices/memberSlice";
+import useChatSocket from "../../../services/chat-service/chat";
+import { sendMessage } from "../../../store/slices/ChatSlice";
 
 const Chat: React.FC = () => {
   const { chats } = useAppSelector((state) => state.chats);
   const { selectProject } = useAppSelector((state) => state.project);
   const { members } = useAppSelector((state) => state.members);
-  const [typingUsers, setTypingUsers] = useState<{ [key: string]: boolean }>(
-    {}
-  );
   const dispatch = useAppDispatch();
-
-  const [socket, setSocket] = useState<Socket | null>(null);
-  const [loading, setLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const chatRef = useRef<HTMLDivElement | null>(null);
   const userId = localStorage.getItem("userId");
 
-  useEffect(() => {
-    if (!selectProject?.teamId) return;
-    console.log(loading);
-
-    const newSocket = io("wss://morrow.hashim-dev007.online", {
-      path: "/communicate/message-socket",
-      transports: ["websocket"],
-      reconnection: true,
-      reconnectionAttempts: 5,
-      reconnectionDelay: 2000,
-    });
-
-    setSocket(newSocket);
-
-    newSocket.on("connect", () => console.log("Connected to server"));
-    newSocket.on("connect_error", (err) => console.error("Socket Error:", err));
-    newSocket.emit("joinRoom", selectProject.teamId, userId);
-
-    newSocket.on("new_message", (msg) => {
-      dispatch(setMessage(msg));
-      dispatch(setSeenMsg(msg));
-    });
-
-    newSocket.on("message_status", (msg) => {
-      console.log("Message seen:", msg);
-      dispatch(setSeenMsg(msg));
-    });
-    newSocket.on("typing", ({ userId, isTyping }) => {
-      setTypingUsers((prev) => ({
-        ...prev,
-        [userId]: isTyping,
-      }));
-    });
-    dispatch(
-      getTeamMembers({ projectId: selectProject.id.toString(), page: 1 })
-    ); 
-    const updateMessages = () => {
-      console.log("on update messages");
-      if (!newSocket || !selectProject?.teamId) return;
-
-      const unseenMessages = chats.filter(
-        (msg) => msg.senderId !== userId && msg.status !== "seen"
-      );
-      console.log(unseenMessages, "unseenmessages");
-      unseenMessages.forEach((msg) => {
-        console.log("messages", msg, socket);
-        newSocket.emit("message_seen", {
-          roomId: selectProject.teamId,
-          messageId: msg._id,
-          userId,
-        });
-      });
-    };
-    dispatch(getMessage({ receiverId: selectProject.teamId, page: 1 })).then(
-      (response) => {
-        if (getMessage.fulfilled.match(response)) {
-          updateMessages();
-        }
-        setLoading(false);
-      }
-    );
-    return () => {
-      newSocket.off("typing");
-      newSocket.disconnect();
-      setSocket(null);
-    };
-  }, [selectProject]);
+  const { socket, typingUsers,updateMessages } = useChatSocket(
+    selectProject,
+    userId
+  );
 
   const handleSendMessage = (content: string) => {
     if (!socket || !selectProject?.teamId || !userId) return;
@@ -110,13 +33,12 @@ const Chat: React.FC = () => {
       <ChatHeader name={selectProject?.name || ""} members={members} />
 
       <div
-        className={` flex-grow  p-4 ${
+        className={`flex-grow p-4 ${
           chats.length > 6 ? "overflow-auto" : "overflow-hidden"
         } h-[70vh]`}
-        ref={chatRef}
       >
-        <MessagesList messages={chats} ref={chatRef} />
-        <div ref={messagesEndRef} />
+        <MessagesList messages={chats} updateMessages={updateMessages} />
+        <div />
       </div>
       <div className="px-4 text-sm text-gray-400">
         {Object.keys(typingUsers)
@@ -130,13 +52,11 @@ const Chat: React.FC = () => {
           ))}
       </div>
       {socket && selectProject && (
-        <>
-          <MessageInput
-            socket={socket}
-            roomId={selectProject.teamId}
-            handleSendMessage={handleSendMessage}
-          />
-        </>
+        <MessageInput
+          socket={socket}
+          roomId={selectProject.teamId}
+          handleSendMessage={handleSendMessage}
+        />
       )}
     </div>
   );

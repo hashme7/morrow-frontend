@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { ObjectId } from "mongodb";
+import axios from '../../utils/axios/Apis';
 
 interface SignupState {
   userName: string;
@@ -41,7 +42,7 @@ export const signupUser = createAsyncThunk(
   ) => {
     try {
       const response = await axios.post<SignupResponse>(
-        "https://morrow.hashim-dev007.online/auth/sign-up",
+        "/auth/sign-up",
         userData
       );
       return response.data;

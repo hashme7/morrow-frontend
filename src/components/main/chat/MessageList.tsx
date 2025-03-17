@@ -7,13 +7,12 @@ import { useAppSelector } from "../../../store/hooks/hooks";
 import { RootState } from "../../../store/store";
 
 const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
-  ({ messages }) => {
+  ({ messages, updateMessages }) => {
     const { members } = useAppSelector((state: RootState) => state.members);
     const users = new Map();
     for (let member of members) {
       users.set(member._id.toString(), member.username);
     }
-
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
     const messageContainerRef = useRef<HTMLDivElement | null>(null);
     const [isUserScrollingUp, setIsUserScrollingUp] = useState(false);
@@ -36,10 +35,25 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
       };
     }, []);
 
+    console.log(updateMessages);
     useEffect(() => {
       if (!isUserScrollingUp && messagesEndRef.current) {
         messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
       }
+      // if (!messagesEndRef.current) return;
+
+      // const observer = new IntersectionObserver(
+      //   (entries) => {
+      //     if (entries[0]?.isIntersecting) {
+      //       updateMessages();
+      //     }
+      //   },
+      //   { threshold: 1.0 }
+      // );
+
+      // observer.observe(messagesEndRef.current);
+
+      // return () => observer.disconnect();
     }, [messages]);
 
     return (

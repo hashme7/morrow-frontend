@@ -1,8 +1,8 @@
 import axios from "axios";
-const loginApi = axios.create({
-  baseURL: "https://morrow.hashim-dev007.online",
+const api = axios.create({
+  baseURL: "https://morrow-backend.hashim-dev007.online",
   withCredentials: true,
 });
 
 
-export default loginApi;
+export default api;
