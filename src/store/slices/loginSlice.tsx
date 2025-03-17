@@ -134,6 +134,7 @@ export const logout = createAsyncThunk(
       const response = await loginApi.post<LogoutResponse>("/auth/logout");
       Cookies.remove("accessToken");
       Cookies.remove("refreshToken");
+      console.log("removing all datas from the redux")
       await persistor.purge();
       return response.data;
     } catch (error) {
