@@ -5,6 +5,7 @@ import MessageInput from "./MessageInput";
 import MessagesList from "./MessageList";
 import useChatSocket from "../../../services/chat-service/chat";
 import { sendMessage } from "../../../store/slices/ChatSlice";
+import { IUser } from "../../../types/member";
 
 const Chat: React.FC = () => {
   const { chats } = useAppSelector((state) => state.chats);
@@ -45,7 +46,7 @@ const Chat: React.FC = () => {
           .filter((id) => typingUsers[id] && id !== userId)
           .map((id, index, arr) => (
             <span key={id}>
-              {members.find((member) => member._id.toString() === id)
+              {members.find((member:IUser) => member._id.toString() === id)
                 ?.username || "Someone"}{" "}
               {index === arr.length - 1 ? "is typing..." : ", "}
             </span>

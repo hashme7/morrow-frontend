@@ -57,7 +57,7 @@ const useChatSocket = (
   useEffect(() => {
     if (!selectProject?.teamId || !userId) return;
 
-    const newSocket = io("wss://morrow.hashim-dev007.online", {
+    const newSocket = io("wss://morrow-backend.hashim-dev007.online", {
       path: "/communicate/message-socket",
       transports: ["websocket"],
       reconnection: true,
