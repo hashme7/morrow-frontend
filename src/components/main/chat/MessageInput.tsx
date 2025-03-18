@@ -1,29 +1,65 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { Socket } from "socket.io-client";
 import extractIdFromToken from "../../../utils/decodeToken";
+import { debounce } from "lodash";
 
-const MessageInput: React.FC<{
+interface MessageInputProps {
   handleSendMessage: (content: string) => void;
   socket: Socket;
   roomId: string;
-}> = ({ handleSendMessage, socket, roomId }) => {
+}
+
+const MessageInput: React.FC<MessageInputProps> = ({
+  handleSendMessage,
+  socket,
+  roomId,
+}) => {
   const [message, setMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const userId = useRef(extractIdFromToken());
 
-  useEffect(() => {
-    if (message.length > 0 && !isTyping && socket.connected) {
-      if (!socket.connected) {
-        socket.connect();
+  // Debounce the typing event emissions to prevent flooding the server
+  const emitStoppedTyping = useCallback(
+    debounce(() => {
+      if (socket.connected) {
+        socket.emit("userStoppedTyping", { userId: userId.current, roomId });
+        setIsTyping(false);
       }
-      console.log("typing.....",extractIdFromToken(),roomId)
-      socket.emit("userTyping", { userId: extractIdFromToken(), roomId });
+    }, 1000),
+    [socket, roomId]
+  );
+
+  // Handle typing status
+  useEffect(() => {
+    if (!socket.connected) return;
+
+    if (message.length > 0 && !isTyping) {
+      socket.emit("userTyping", { userId: userId.current, roomId });
       setIsTyping(true);
-    } 
-    if (!message.length && isTyping) {
-      socket.emit("userStoppedTyping", { userId: extractIdFromToken(), roomId });
+    } else if (message.length === 0 && isTyping) {
+      socket.emit("userStoppedTyping", { userId: userId.current, roomId });
+      setIsTyping(false);
+    } else if (message.length > 0) {
+      // Reset the debounce timer when user is still typing
+      emitStoppedTyping();
+    }
+
+    return () => {
+      emitStoppedTyping.cancel();
+    };
+  }, [message, isTyping, socket, roomId, emitStoppedTyping]);
+
+  const handleSubmit = useCallback(() => {
+    if (!message.trim()) return;
+
+    handleSendMessage(message);
+    setMessage("");
+
+    if (isTyping) {
+      socket.emit("userStoppedTyping", { userId: userId.current, roomId });
       setIsTyping(false);
     }
-  }, [message]);
+  }, [message, handleSendMessage, socket, roomId, isTyping]);
 
   return (
     <div className="p-4 flex items-center gap-3 rounded-b-xl w-full">
@@ -33,19 +69,23 @@ const MessageInput: React.FC<{
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key == "Enter") {
-            setMessage("");
-            handleSendMessage(message);
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            handleSubmit();
           }
         }}
         className="flex-grow text-white px-4 py-2 rounded-full outline-none placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
       />
       <button
-        onClick={() => {
-          setMessage("");
-          handleSendMessage(message);
-        }}
-        className="bg-zinc-950 text-white  rounded-full font-medium hover:bg-white hover:text-black transition duration-200 ease-in-out"
+        onClick={handleSubmit}
+        disabled={!message.trim()}
+        className={`bg-zinc-950 text-white rounded-full font-medium px-4 py-2 
+          ${
+            message.trim()
+              ? "hover:bg-white hover:text-black"
+              : "opacity-50 cursor-not-allowed"
+          }
+          transition duration-200 ease-in-out`}
       >
         Send
       </button>
@@ -53,4 +93,4 @@ const MessageInput: React.FC<{
   );
 };
 
-export default MessageInput;
+export default React.memo(MessageInput);

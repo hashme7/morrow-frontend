@@ -9,13 +9,21 @@ import { RootState } from "../../../store/store";
 const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
   ({ messages, updateMessages }) => {
     const { members } = useAppSelector((state: RootState) => state.members);
-    const users = new Map();
-    for (let member of members) {
-      users.set(member._id.toString(), member.username);
-    }
+    // Create users map once, using useMemo for performance
+    const users = useRef(new Map());
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
     const messageContainerRef = useRef<HTMLDivElement | null>(null);
     const [isUserScrollingUp, setIsUserScrollingUp] = useState(false);
+    const userId = localStorage.getItem("userId");
+
+    // Update users map when members change
+    useEffect(() => {
+      const newUsersMap = new Map();
+      for (const member of members) {
+        newUsersMap.set(member._id.toString(), member.username);
+      }
+      users.current = newUsersMap;
+    }, [members]);
 
     useEffect(() => {
       const container = messageContainerRef.current;
@@ -29,52 +37,36 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
       };
 
       container.addEventListener("scroll", handleScroll);
-
-      return () => {
-        container.removeEventListener("scroll", handleScroll);
-      };
+      return () => container.removeEventListener("scroll", handleScroll);
     }, []);
 
-    console.log(updateMessages);
+    // Scroll to bottom when messages change
     useEffect(() => {
       if (!isUserScrollingUp && messagesEndRef.current) {
         messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
       }
-      // if (!messagesEndRef.current) return;
 
-      // const observer = new IntersectionObserver(
-      //   (entries) => {
-      //     if (entries[0]?.isIntersecting) {
-      //       updateMessages();
-      //     }
-      //   },
-      //   { threshold: 1.0 }
-      // );
-
-      // observer.observe(messagesEndRef.current);
-
-      // return () => observer.disconnect();
-    }, [messages]);
+      // Call updateMessages when messages change to mark as seen
+      updateMessages();
+    }, [messages, isUserScrollingUp, updateMessages]);
 
     return (
       <div
         ref={messageContainerRef}
-        className={`messageList space-y-4  min-h-[700px] overflow-y-auto max-h-[700px] p-4`}
+        className="messageList space-y-4 min-h-[700px] overflow-y-auto max-h-[700px] p-4"
       >
         {messages.length ? (
           messages.map((message, index) => (
             <div
-              key={index}
+              key={message._id?.toString() || index}
               className={`flex ${
-                message.senderId == localStorage.getItem("userId")
-                  ? "justify-end"
-                  : "justify-start"
+                message.senderId == userId ? "justify-end" : "justify-start"
               } message`}
               data-message-id={message._id}
             >
               <Chip
                 endContent={
-                  message.senderId === localStorage.getItem("userId") && (
+                  message.senderId === userId && (
                     <span>
                       {message.readBy.length || message.status === "seen" ? (
                         <div className="flex">
@@ -95,19 +87,15 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
                   height: "auto",
                 }}
                 variant="bordered"
-                color={
-                  message.senderId == localStorage.getItem("userId")
-                    ? "default"
-                    : "secondary"
-                }
+                color={message.senderId == userId ? "default" : "secondary"}
                 className="max-w-xs text-sm flex items-center gap-2"
               >
                 <div className="flex flex-col">
                   <span className="font-medium">{message.content}</span>
                   <div className="text-xs text-gray-400 mt-1">
-                    {message.senderId == localStorage.getItem("userId")
+                    {message.senderId == userId
                       ? "You"
-                      : users.get(message.senderId)}
+                      : users.current.get(message.senderId) || "Unknown User"}
                   </div>
                 </div>
               </Chip>
@@ -115,7 +103,7 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
           ))
         ) : (
           <div className="relative h-screen w-full">
-            <div className="absolute inset-0 bg-opacity-50 flex items-center justify-center "></div>
+            <div className="absolute inset-0 bg-opacity-50 flex items-center justify-center"></div>
             <div className="text-center text-pretty text-white">
               <p className="text-3xl font-bold mb-4">No messages</p>
             </div>
@@ -126,5 +114,8 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
     );
   }
 );
+
+// Add display name for better debugging
+MessagesList.displayName = "MessagesList";
 
 export default MessagesList;
