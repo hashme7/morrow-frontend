@@ -20,6 +20,7 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
     useEffect(() => {
       const newUsersMap = new Map();
       for (const member of members) {
+        console.log(member.username,"user",member._id.toString())
         newUsersMap.set(member._id.toString(), member.username);
       }
       users.current = newUsersMap;
@@ -63,6 +64,7 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
                 message.senderId == userId ? "justify-end" : "justify-start"
               } message`}
               data-message-id={message._id}
+              data-sender-id={message.senderId}
             >
               <Chip
                 endContent={
@@ -95,7 +97,8 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
                   <div className="text-xs text-gray-400 mt-1">
                     {message.senderId == userId
                       ? "You"
-                      : users.current.get(message.senderId) || "Unknown User"}
+                      : users.current.get(message.senderId) ||
+                        `Unknown User ${message.senderId},userId`}
                   </div>
                 </div>
               </Chip>

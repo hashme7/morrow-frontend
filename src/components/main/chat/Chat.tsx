@@ -12,12 +12,6 @@ const Chat: React.FC = () => {
   const { members } = useAppSelector((state) => state.members);
   const dispatch = useAppDispatch();
   const userId = localStorage.getItem("userId");
-
-  // Memoize project ID and team ID to prevent unnecessary re-renders
-  // const projectId = useMemo(
-  //   () => selectProject?.id?.toString(),
-  //   [selectProject?.id]
-  // );
   const teamId = useMemo(() => selectProject?.teamId, [selectProject?.teamId]);
 
   // Use custom hook for socket management

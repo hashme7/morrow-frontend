@@ -82,7 +82,6 @@ const chats = createSlice({
           return chat;
         }
       });
-      console.log("onmessage setSeenMesg",state.chats);
     },
   },
   extraReducers: (builder) => {

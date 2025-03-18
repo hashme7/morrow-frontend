@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { io, Socket } from "socket.io-client";
-import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks";
+import { useAppDispatch } from "../../store/hooks/hooks";
 import {
   getMessage,
   setMessage,
@@ -8,7 +8,7 @@ import {
   clearChat,
 } from "../../store/slices/ChatSlice";
 import { getTeamMembers } from "../../store/slices/memberSlice";
-import { RootState } from "../../store/store";
+// import { RootState } from "../../store/store";
 import { IMessage } from "../../types/Chat";
 
 const SOCKET_URL = "wss://morrow-backend.hashim-dev007.online";
@@ -16,34 +16,79 @@ const SOCKET_PATH = "/communicate/message-socket";
 
 const useChatSocket = (selectProject: any, userId: string | null) => {
   const dispatch = useAppDispatch();
-  const { chats } = useAppSelector((state: RootState) => state.chats);
+  // const { chats } = useAppSelector((state: RootState) => state.chats);
   const [socket, setSocket] = useState<Socket | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
   const [typingUsers, setTypingUsers] = useState<{ [key: string]: boolean }>(
     {}
   );
   const prevProjectRef = useRef<string | null>(null);
 
   // Memoize updateMessages to prevent unnecessary re-renders
+  // const updateMessages = useCallback(() => {
+  //   if (!socket || !selectProject?.teamId || !userId) return;
+
+  //   const unseenMessages = chats.filter(
+  //     (msg: IMessage) =>
+  //       msg.senderId !== userId &&
+  //       msg.status !== "seen" &&
+  //       msg.status !== "pending"
+  //   );
+
+  //   if (!unseenMessages.length) return;
+
+  //   unseenMessages.forEach((msg: IMessage) => {
+  //     socket.emit("message_seen", {
+  //       roomId: selectProject.teamId,
+  //       messageId: msg._id,
+  //       userId,
+  //     });
+  //   });
+  // }, [chats, socket, selectProject?.teamId, userId]);
+
   const updateMessages = useCallback(() => {
-    if (!socket || !selectProject?.teamId || !userId) return;
-
-    const unseenMessages = chats.filter(
-      (msg: IMessage) =>
-        msg.senderId !== userId &&
-        msg.status !== "seen" &&
-        msg.status !== "pending"
+    if (!socket || !selectProject || !userId) return;
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const messageElement = entry.target;
+            const messageId = messageElement.getAttribute("data-message-id");
+            const senderIdAttr = messageElement.getAttribute("data-sender-id");
+            if (messageId && senderIdAttr && senderIdAttr !== userId) {
+              socket.emit("message_seen", {
+                messageId,
+                roomId: selectProject.teamId,
+                userId,
+              });
+              observerRef.current?.unobserve(messageElement);
+            }
+          }
+        });
+      },
+      {
+        root: document.querySelector(".messageList"),
+        rootMargin: "0px",
+        threshold: 0.6,
+      }
     );
-
-    if (!unseenMessages.length) return;
-
-    unseenMessages.forEach((msg: IMessage) => {
-      socket.emit("message_seen", {
-        roomId: selectProject.teamId,
-        messageId: msg._id,
-        userId,
+    setTimeout(() => {
+      const messageElements = document.querySelectorAll(".message");
+      messageElements.forEach((messageEl) => {
+        const senderIdAttr = messageEl.getAttribute("data-sender-id");
+        // Only observe messages from other users
+        if (senderIdAttr && senderIdAttr !== userId) {
+          observerRef.current?.observe(messageEl);
+        }
       });
-    });
-  }, [chats, socket, selectProject?.teamId, userId]);
+    }, 300);
+    return () => {
+      observerRef.current?.disconnect();
+    };
+  }, [socket, selectProject, userId]);
 
   // Handle socket connection and message events
   useEffect(() => {
@@ -75,16 +120,6 @@ const useChatSocket = (selectProject: any, userId: string | null) => {
 
     const onNewMessage = (msg: IMessage) => {
       dispatch(setMessage(msg));
-
-      // Mark message as seen if from another user
-      if (msg.senderId !== userId) {
-        dispatch(setSeenMsg(msg));
-        newSocket.emit("message_seen", {
-          roomId: selectProject.teamId,
-          messageId: msg._id,
-          userId,
-        });
-      }
     };
 
     const onMessageStatus = (msg: IMessage) => {
@@ -104,17 +139,14 @@ const useChatSocket = (selectProject: any, userId: string | null) => {
       }));
     };
 
-    // Register event listeners
     newSocket.on("connect", onConnect);
     newSocket.on("connect_error", onConnectError);
     newSocket.on("new_message", onNewMessage);
     newSocket.on("message_status", onMessageStatus);
     newSocket.on("typing", onTyping);
 
-    // Join room
     newSocket.emit("joinRoom", selectProject.teamId, userId);
 
-    // Load team members and messages
     dispatch(
       getTeamMembers({
         projectId: selectProject.id.toString(),
@@ -132,7 +164,7 @@ const useChatSocket = (selectProject: any, userId: string | null) => {
         updateMessages();
       }
     });
-
+    
     // Clean up
     return () => {
       newSocket.off("connect", onConnect);
@@ -144,11 +176,8 @@ const useChatSocket = (selectProject: any, userId: string | null) => {
       setSocket(null);
       setTypingUsers({});
     };
-  }, [
-    selectProject?.teamId,
-    selectProject?.id,
-    userId,
-  ]);
+    
+  }, [selectProject?.teamId, selectProject?.id, userId]);
 
   return { socket, typingUsers, updateMessages };
 };
