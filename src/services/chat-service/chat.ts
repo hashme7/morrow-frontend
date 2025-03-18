@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { io, Socket } from "socket.io-client";
-import { useAppDispatch } from "../../store/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks";
 import {
   getMessage,
   setMessage,
@@ -10,41 +10,21 @@ import {
 import { getTeamMembers } from "../../store/slices/memberSlice";
 // import { RootState } from "../../store/store";
 import { IMessage } from "../../types/Chat";
+import { RootState } from "../../store/store";
 
 const SOCKET_URL = "wss://morrow-backend.hashim-dev007.online";
 const SOCKET_PATH = "/communicate/message-socket";
 
 const useChatSocket = (selectProject: any, userId: string | null) => {
   const dispatch = useAppDispatch();
-  // const { chats } = useAppSelector((state: RootState) => state.chats);
+  const { chats } = useAppSelector((state: RootState) => state.chats);
   const [socket, setSocket] = useState<Socket | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const processedMessagesRef = useRef<Set<string>>(new Set());
   const [typingUsers, setTypingUsers] = useState<{ [key: string]: boolean }>(
     {}
   );
   const prevProjectRef = useRef<string | null>(null);
-
-  // Memoize updateMessages to prevent unnecessary re-renders
-  // const updateMessages = useCallback(() => {
-  //   if (!socket || !selectProject?.teamId || !userId) return;
-
-  //   const unseenMessages = chats.filter(
-  //     (msg: IMessage) =>
-  //       msg.senderId !== userId &&
-  //       msg.status !== "seen" &&
-  //       msg.status !== "pending"
-  //   );
-
-  //   if (!unseenMessages.length) return;
-
-  //   unseenMessages.forEach((msg: IMessage) => {
-  //     socket.emit("message_seen", {
-  //       roomId: selectProject.teamId,
-  //       messageId: msg._id,
-  //       userId,
-  //     });
-  //   });
-  // }, [chats, socket, selectProject?.teamId, userId]);
 
   const updateMessages = useCallback(() => {
     if (!socket || !selectProject || !userId) return;
@@ -58,7 +38,16 @@ const useChatSocket = (selectProject: any, userId: string | null) => {
             const messageElement = entry.target;
             const messageId = messageElement.getAttribute("data-message-id");
             const senderIdAttr = messageElement.getAttribute("data-sender-id");
-            if (messageId && senderIdAttr && senderIdAttr !== userId) {
+            const message = chats.find(
+              (msg: IMessage) => msg._id?.toString() == messageId
+            );
+            if (
+              message &&
+              senderIdAttr &&
+              senderIdAttr !== userId &&
+              message.status !== "seen" && (!message.readBy || !message.readBy.includes(userId))
+            ) {
+              console.log("message_seeninggg.........")
               socket.emit("message_seen", {
                 messageId,
                 roomId: selectProject.teamId,
@@ -124,6 +113,10 @@ const useChatSocket = (selectProject: any, userId: string | null) => {
 
     const onMessageStatus = (msg: IMessage) => {
       dispatch(setSeenMsg(msg));
+      if (msg.status === "seen" && msg.readBy && msg.readBy.includes(userId) && msg._id) {
+        console.log("msg......")
+        processedMessagesRef.current.add(msg._id.toString());
+      }
     };
 
     const onTyping = ({

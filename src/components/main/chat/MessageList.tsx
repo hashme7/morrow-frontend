@@ -46,7 +46,6 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
       if (!isUserScrollingUp && messagesEndRef.current) {
         messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
       }
-
       // Call updateMessages when messages change to mark as seen
       updateMessages();
     }, [messages, isUserScrollingUp, updateMessages]);
