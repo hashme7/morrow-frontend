@@ -49,9 +49,9 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
 
     console.log(img, "image");
     data.append("avatar", img, img.name);
+    console.log("data after appending image", data);
     if (userId) {
-      const userOjbectId = userId;
-      dispatch(changeProfilImg({ data, userId: userOjbectId }));
+      dispatch(changeProfilImg({ data, userId: userId }));
     }
   };
 
