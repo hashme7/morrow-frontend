@@ -30,9 +30,9 @@ const handleAxiosError = (
   const axiosError = error as AxiosError<{ message: string }>;
   if (axiosError.response?.status == 404) {
     return rejectWithValue("request not found");
-  }
+  } 
   if (axiosError.response?.status == 403) {
-    console.log("response.data.message");
+    console.log("response.data.message")
     return rejectWithValue(axiosError.response?.data.message);
   }
   return rejectWithValue(
@@ -64,6 +64,7 @@ export const changeProfilImg = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
+      console.log(userId,"userId");
       const response = await axios.put(`/user/profileImg`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -82,12 +83,15 @@ export const changeProfilImg = createAsyncThunk(
 
 export const changeEmail = createAsyncThunk(
   "profile/changeEmail",
-  async ({ email }: { email: string }, { rejectWithValue }) => {
+  async (
+    { email }: { email: string; },
+    { rejectWithValue }
+  ) => {
     try {
       const response = await axios.put(`/user/changeEmail`, { email });
       return response.data;
     } catch (error) {
-      console.log(error, "error");
+      console.log(error,"error")
       return handleAxiosError(
         error,
         rejectWithValue,
@@ -103,7 +107,7 @@ export const changePassword = createAsyncThunk(
     {
       currentPassword,
       newPassword,
-    }: { currentPassword: string; newPassword: string },
+    }: { currentPassword: string; newPassword: string;},
     { rejectWithValue }
   ) => {
     try {
