@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "../../utils/axios/Apis";
 import { AxiosError } from "axios";
-import { ObjectId } from "mongodb";
 
 const initialState = {
   image: "",
@@ -61,11 +60,11 @@ export const fetchUser = createAsyncThunk(
 export const changeProfilImg = createAsyncThunk(
   "profile/uploadImage",
   async (
-    { data, userId }: { data: FormData; userId: ObjectId },
+    { data, userId }: { data: FormData; userId: string },
     { rejectWithValue }
   ) => {
     try {
-      console.log(userId);
+      console.log(userId,"userId",data);
       const response = await axios.put(`/user/profileImg`, data);
       return response.data;
     } catch (error) {

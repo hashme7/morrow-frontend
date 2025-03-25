@@ -7,7 +7,6 @@ import {
   updateProfileField,
 } from "../../store/slices/profileSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks";
-import mongoose from "mongoose";
 
 const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
   const dispatch = useAppDispatch();
@@ -49,7 +48,7 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
     const data = new FormData();
     data.append("avatar", img, img.name);
     if (userId) {
-      const userOjbectId = new mongoose.Types.ObjectId(userId);
+      const userOjbectId = userId;
       dispatch(changeProfilImg({ data, userId: userOjbectId }));
     }
   };

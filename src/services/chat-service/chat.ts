@@ -8,7 +8,6 @@ import {
   clearChat,
 } from "../../store/slices/ChatSlice";
 import { getTeamMembers } from "../../store/slices/memberSlice";
-// import { RootState } from "../../store/store";
 import { IMessage } from "../../types/Chat";
 import { RootState } from "../../store/store";
 
@@ -47,7 +46,6 @@ const useChatSocket = (selectProject: any, userId: string | null) => {
               senderIdAttr !== userId &&
               message.status !== "seen" && (!message.readBy || !message.readBy.includes(userId))
             ) {
-              console.log("message_seeninggg.........")
               socket.emit("message_seen", {
                 messageId,
                 roomId: selectProject.teamId,

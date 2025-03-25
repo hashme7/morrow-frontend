@@ -1,8 +1,6 @@
 import { forwardRef, useEffect, useRef, useState } from "react";
 import { IMessagesListProps } from "../../../types/Chat";
 import { Chip } from "@nextui-org/react";
-import { CheckIcon } from "@heroicons/react/24/outline";
-import { BiCheckDouble } from "react-icons/bi";
 import { useAppSelector } from "../../../store/hooks/hooks";
 import { RootState } from "../../../store/store";
 
@@ -20,7 +18,7 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
     useEffect(() => {
       const newUsersMap = new Map();
       for (const member of members) {
-        console.log(member.username,"user",member._id.toString())
+        console.log(member.username, "user", member._id.toString());
         newUsersMap.set(member._id.toString(), member.username);
       }
       users.current = newUsersMap;
@@ -46,14 +44,13 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
       if (!isUserScrollingUp && messagesEndRef.current) {
         messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
       }
-      // Call updateMessages when messages change to mark as seen
       updateMessages();
     }, [messages, isUserScrollingUp, updateMessages]);
 
     return (
       <div
         ref={messageContainerRef}
-        className="messageList space-y-4 min-h-[700px] overflow-y-auto max-h-[700px] p-4"
+        className="messageList space-y-4 min-h-[700px] overflow-y-auto max-h-[700px] p-4 hide-scrollbar"
       >
         {messages.length ? (
           messages.map((message, index) => (
@@ -66,30 +63,24 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
               data-sender-id={message.senderId}
             >
               <Chip
-                endContent={
-                  message.senderId === userId && (
-                    <span>
-                      {message.readBy.length || message.status === "seen" ? (
-                        <div className="flex">
-                          <BiCheckDouble size={24} color="white" />
-                        </div>
-                      ) : (
-                        <div>
-                          <CheckIcon className="h-4 w-4 text-gray-500" />
-                        </div>
-                      )}
-                    </span>
-                  )
-                }
                 style={{
-                  padding: "8px 16px",
+                  padding: "10px 16px",
                   fontSize: "14px",
                   lineHeight: "20px",
                   height: "auto",
+                  borderRadius: "12px 12px 4px 12px", // Custom shape
+                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // Soft shadow
+                  border: "1px solid rgba(255, 255, 255, 0.2)", // Light border
                 }}
                 variant="bordered"
                 color={message.senderId == userId ? "default" : "secondary"}
-                className="max-w-xs text-sm flex items-center gap-2"
+                className={`max-w-xs text-sm flex items-center gap-2 
+    px-4 py-2  text-white 
+    ${
+      message.senderId === userId
+        ? "rounded-tr-2xl rounded-bl-md rounded-br-2xl"
+        : "rounded-tl-2xl rounded-br-md rounded-bl-2xl"
+    }`}
               >
                 <div className="flex flex-col">
                   <span className="font-medium">{message.content}</span>
