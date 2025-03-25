@@ -46,6 +46,8 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
   const uploadImg = (img: File) => {
     const userId = localStorage.getItem("userId");
     const data = new FormData();
+
+    console.log(img, "image");
     data.append("avatar", img, img.name);
     if (userId) {
       const userOjbectId = userId;
