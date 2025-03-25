@@ -4,10 +4,10 @@ import moment from "moment";
 export const projectCreateSchema = Yup.object({
   name: Yup.string().trim().required("Project name is required"),
   plannedStartDate: Yup.date()
-    .required("Start date is required")
+    .required("Please select a planned start date.")
     .test(
       "data-test-startdate",
-      "Please select a date after today. ",
+      "Start date must be a future date ",
       (value) => {
         const todaysDate = new Date();
         const startDate = moment(value, "MM/DD/YYYY").toDate();
@@ -15,10 +15,10 @@ export const projectCreateSchema = Yup.object({
       }
     ),
   plannedEndDate: Yup.date()
-    .required("Complete date is required")
+    .required("Please select a planned end date.")
     .test(
       "date-test",
-      "Complete date must be after start date",
+      "End date must be after the planned start date.",
       (value, context) => {
         if (!value || !context.parent.startDate) {
           return true;
@@ -32,5 +32,7 @@ export const projectCreateSchema = Yup.object({
         return endDate > startDate;
       }
     ),
-  description: Yup.string().trim().required("Description is required"),
+  description: Yup.string()
+    .trim()
+    .required("Please provide a project description"),
 });
