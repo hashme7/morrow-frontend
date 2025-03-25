@@ -42,6 +42,7 @@ export const useProfileSidebarLogic = (profile: any) => {
   const uploadImg = (img: File) => {
     const userId = localStorage.getItem("userId");
     const data = new FormData();
+    console.log(img,"image")
     data.append("avatar", img, img.name);
     if (userId) {
       dispatch(changeProfilImg({ data, userId }));
