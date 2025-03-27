@@ -9,6 +9,7 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
     const { members } = useAppSelector((state: RootState) => state.members);
     const users = useRef(new Map());
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
+    const messageContainerRef = useRef<HTMLDivElement | null>(null); // Add ref to container
     const userId = localStorage.getItem("userId");
 
     // Update users map when members change
@@ -20,16 +21,22 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
       users.current = newUsersMap;
     }, [members]);
 
-    // Auto-scroll to bottom when new messages arrive
+    // Scroll to bottom when messages change
     useEffect(() => {
-      if (messagesEndRef.current) {
-        messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+      const container = messageContainerRef.current;
+      if (container) {
+        // Scroll to the bottom of the container
+        container.scrollTop = container.scrollHeight;
       }
-      updateMessages(); // Call this if it’s still needed elsewhere
+      updateMessages(); // Call this if still needed elsewhere
     }, [messages, updateMessages]);
 
     return (
-      <div className="messageList space-y-4 min-h-[700px] overflow-y-auto max-h-[700px] p-4 hide-scrollbar">
+      <div
+        ref={messageContainerRef}
+        className="messageList space-y-4 overflow-y-auto p-4"
+        style={{ maxHeight: "70vh", minHeight: "70vh" }} // Explicit height control
+      >
         {messages.length ? (
           messages.map((message, index) => (
             <div
@@ -70,11 +77,8 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
             </div>
           ))
         ) : (
-          <div className="relative h-screen w-full">
-            <div className="absolute inset-0 bg-opacity-50 flex items-center justify-center"></div>
-            <div className="text-center text-pretty text-white">
-              <p className="text-3xl font-bold mb-4">No messages</p>
-            </div>
+          <div className="flex items-center justify-center h-full text-white">
+            <p className="text-3xl font-bold">No messages</p>
           </div>
         )}
         <div ref={messagesEndRef} />
