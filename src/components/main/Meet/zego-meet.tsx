@@ -23,8 +23,8 @@ const ZegoMeet: React.FC = () => {
   const initializeMeeting = async (element: HTMLDivElement | null) => {
     if (!element || !roomID || !email) return;
 
-    const appID = 52309948;
-    const serverSecret = "549e06166499ceb244b6e004a1c20b64";
+    const appID = 597668320;
+    const serverSecret = "b2b3327e294b3b0d1fbf79820f264b56";
 
     // Generate the kit token with userName and userID
     const user = userName || email; // Prefer user's name; fallback to email

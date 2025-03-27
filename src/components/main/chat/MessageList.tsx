@@ -9,7 +9,7 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
     const { members } = useAppSelector((state: RootState) => state.members);
     const users = useRef(new Map());
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
-    const messageContainerRef = useRef<HTMLDivElement | null>(null); // Add ref to container
+    const messageContainerRef = useRef<HTMLDivElement | null>(null); 
     const userId = localStorage.getItem("userId");
 
     // Update users map when members change
@@ -34,8 +34,8 @@ const MessagesList = forwardRef<HTMLDivElement, IMessagesListProps>(
     return (
       <div
         ref={messageContainerRef}
-        className="messageList space-y-4 overflow-y-auto p-4"
-        style={{ maxHeight: "70vh", minHeight: "70vh" }} // Explicit height control
+        className="messageList space-y-4 overflow-y-auto p-4 "
+        style={{ maxHeight: "70vh", minHeight: "70vh" }} 
       >
         {messages.length ? (
           messages.map((message, index) => (
