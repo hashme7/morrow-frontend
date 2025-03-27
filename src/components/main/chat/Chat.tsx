@@ -14,13 +14,11 @@ const Chat: React.FC = () => {
   const userId = localStorage.getItem("userId");
   const teamId = useMemo(() => selectProject?.teamId, [selectProject?.teamId]);
 
-  // Use custom hook for socket management
   const { socket, typingUsers, updateMessages } = useChatSocket(
     selectProject,
     userId
   );
 
-  // Memoize handleSendMessage to prevent unnecessary re-renders
   const handleSendMessage = useCallback(
     (content: string) => {
       if (!socket || !teamId || !userId || !content.trim()) return;
@@ -36,7 +34,6 @@ const Chat: React.FC = () => {
     [socket, teamId, userId, dispatch]
   );
 
-  // Handle empty or loading state
   if (!selectProject) {
     return (
       <div className="bg-zinc-950 md:h-full h-[500px] rounded-3xl mb-3 m-1 flex items-center justify-center">
@@ -48,12 +45,9 @@ const Chat: React.FC = () => {
   return (
     <div className="bg-zinc-950 md:h-full h-[500px] rounded-3xl mb-3 m-1 flex flex-col">
       <ChatHeader name={selectProject?.name || ""} members={members} />
-
       <div className="flex-grow p-4 overflow-hidden h-[70vh]">
         <MessagesList messages={chats} updateMessages={updateMessages} />
       </div>
-
-      {/* Typing indicator */}
       <div className="px-4 text-sm text-gray-400 h-6">
         {Object.keys(typingUsers)
           .filter((id) => typingUsers[id] && id !== userId)
@@ -65,7 +59,6 @@ const Chat: React.FC = () => {
             </span>
           ))}
       </div>
-
       {socket && teamId && (
         <MessageInput
           socket={socket}
