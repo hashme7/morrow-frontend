@@ -27,7 +27,7 @@ export const Column: React.FC<IColumnProps> = ({
   members,
 }) => {
   const { setNodeRef, isOver } = useDroppable({
-    id: column.id,
+    id: column._id.toString(),
     data: { type: "Column", column },
   });
 
@@ -102,7 +102,6 @@ export const Column: React.FC<IColumnProps> = ({
                 <Task
                   key={task._id.toString()}
                   task={task}
-                  columnId={task.status}
                 />
               ))}
           </SortableContext>

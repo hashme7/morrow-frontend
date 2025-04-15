@@ -14,6 +14,7 @@ import { Types } from "mongoose";
 import extractIdFromToken from "../../../utils/decodeToken";
 import { validateColumnName } from "../../../utils/validations/yup";
 import { ITask } from "../../../types/board/board";
+
 export const useKanbanBoard = () => {
   const { columns, tasks } = useAppSelector((state) => state.tasks);
   const { selectProject } = useAppSelector((state) => state.project);
@@ -42,7 +43,7 @@ export const useKanbanBoard = () => {
       dispatch(getTasks({ team_id: selectProject.teamId }));
       updateTaskIds();
     }
-  }, [selectProject?.teamId, selectProject, columns, dispatch, updateTaskIds]);
+  }, [selectProject?.teamId, selectProject]);
 
   useEffect(() => {
     if (selectProject) {
@@ -135,7 +136,16 @@ export const useKanbanBoard = () => {
     }
     if (event.active.data.current?.type === "Task") {
       setActiveTask(event.active.data.current.task);
+    } else {
+      setActiveTask(null);
     }
+  };
+  const onDragOver = () => {
+    // if (selectProject) {
+    //   dispatch(getColumn({ teamId: selectProject.teamId }));
+    //   dispatch(getTasks({ team_id: selectProject.teamId }));
+    //   updateTaskIds();
+    // }
   };
 
   const onDragEnd = (event: any) => {
@@ -158,13 +168,16 @@ export const useKanbanBoard = () => {
       const isOverAColumn = over.data.current?.type === "Column";
       if (isOverAColumn) {
         if (selectProject) {
+          console.log("onDragEnd", over.id.toString());
+
           dispatch(
             updateTaskStatus({
               team_id: selectProject.teamId.toString(),
               id: activeId.toString(),
-              status: over.data.current?.column._id.toString(),
+              status: over.id.toString(),
             })
           );
+          setActiveTask(null);
         }
       }
     }
@@ -188,5 +201,6 @@ export const useKanbanBoard = () => {
     addColumn,
     onDragStart,
     onDragEnd,
+    onDragOver,
   };
 };

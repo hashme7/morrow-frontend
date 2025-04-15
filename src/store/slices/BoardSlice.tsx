@@ -29,7 +29,6 @@ export const createColumn = createAsyncThunk<
   { rejectValue: string }
 >("/createColumn", async (statusData, { rejectWithValue }) => {
   try {
-    console.log(statusData, "statusData");
     const response = await Api.post<createStatusResponse>(
       "/task/create-status",
       statusData
@@ -185,7 +184,6 @@ const BoardSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(createColumn.fulfilled, (state, action) => {
       state.columns = [...state.columns, action.payload.data];
-      console.log("state,column", state.columns);
     });
     builder.addCase(getColumn.fulfilled, (state, action) => {
       const data = action.payload.data;
@@ -214,9 +212,9 @@ const BoardSlice = createSlice({
       state.columns = [...filteredColumns];
     });
     builder.addCase(createTask.fulfilled, (state, action) => {
-      console.log("createTask", action.payload);
+      console.log("created task", ...state.tasks,action.payload);
       state.tasks = [...state.tasks, action.payload];
-      console.log(state.tasks);
+      console.log("tasks",state.tasks)
     });
     builder.addCase(getTasks.fulfilled, (state, action) => {
       const transformedTasks = action.payload.map((task) => ({
@@ -228,13 +226,18 @@ const BoardSlice = createSlice({
       );
     });
     builder.addCase(updateTaskStatus.fulfilled, (state, action) => {
-      state.tasks = state.tasks.map((task: ITask) => {
-        if (task._id == action.payload._id) return action.payload;
-        return task;
-      });
+      const column = state.columns.find(
+        (column) => column._id.toString() == action.payload.status
+      );
+      const taskIndex = state.tasks.findIndex(
+        (task) => task._id.toString() === action.payload._id.toString()
+      );
+      if (taskIndex !== -1 && column) {
+        state.tasks[taskIndex].status = column?.id;
+      }
     });
   },
 });
 
-export const { setTask , clearBoard} = BoardSlice.actions;
+export const { setTask, clearBoard } = BoardSlice.actions;
 export default BoardSlice.reducer;

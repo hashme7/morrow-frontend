@@ -20,8 +20,7 @@ import {
   DropdownTrigger,
 } from "@nextui-org/react";
 
-export const Task: React.FC<ITaskProps> = ({ task, columnId }) => {
-  console.log(columnId);
+export const Task: React.FC<ITaskProps> = ({ task }) => {
   const {
     setNodeRef,
     attributes,
@@ -47,7 +46,7 @@ export const Task: React.FC<ITaskProps> = ({ task, columnId }) => {
 
   useEffect(() => {
     setAssignedUsers(
-      members.filter((member) => task.assignee.includes(member._id.toString()))
+      members.filter((member: { _id: { toString: () => string; }; }) => task.assignee.includes(member._id.toString()))
     );
   }, [members]);
   if (isDragging) {

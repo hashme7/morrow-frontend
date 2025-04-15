@@ -13,6 +13,7 @@ import { Task } from "./Task";
 import { createPortal } from "react-dom";
 import { SortableContext } from "@dnd-kit/sortable";
 import { useKanbanBoard } from "../../../services/task-service/kanbanHooks/kanban";
+import { IColumn } from "../../../types/board/board";
 
 const KanbanBoard: React.FC = () => {
   const {
@@ -33,6 +34,7 @@ const KanbanBoard: React.FC = () => {
     addColumn,
     onDragStart,
     onDragEnd,
+    onDragOver,
   } = useKanbanBoard();
 
   const sensors = useSensors(
@@ -48,11 +50,12 @@ const KanbanBoard: React.FC = () => {
       sensors={sensors}
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
+      onDragOver={onDragOver}
     >
       <div className="m-auto flex min-h-screen w-full overflow-x-auto overflow-y-auto px-[40px]">
         <div className="grid lg:grid-cols-4 grid-cols-2 gap-4 overflow-auto">
           <SortableContext items={columnsIds}>
-            {columns.map((col) => (
+            {columns.map((col: Omit<IColumn, "team_id">) => (
               <Column
                 tasks={tasks}
                 key={col.id}
@@ -131,7 +134,7 @@ const KanbanBoard: React.FC = () => {
       {createPortal(
         <DragOverlay>
           {activeTask ? (
-            <Task task={activeTask} columnId={activeTask.status} />
+            <Task task={activeTask}  />
           ) : null}
         </DragOverlay>,
         document.body

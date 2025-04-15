@@ -52,7 +52,6 @@ export interface getStatusResponse{
 
 export interface ITaskProps {
   task: ITask;
-  columnId: Id;
 }
 
 
