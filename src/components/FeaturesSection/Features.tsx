@@ -31,7 +31,7 @@ const Features: React.FC<FeaturesProps> = ({ features }) => {
       if (section) {
         let animationConfig: gsap.TweenVars = {
           opacity: 0,
-          y: 100, 
+          y: 100,
         };
 
         if (animation === "slide-down") {
@@ -42,11 +42,11 @@ const Features: React.FC<FeaturesProps> = ({ features }) => {
         gsap.fromTo(section, animationConfig, {
           opacity: 1,
           y: 0,
-          duration: 0.8, 
+          duration: 0.8,
           ease: "power2.out",
           scrollTrigger: {
             trigger: section,
-            start: "top 75%", 
+            start: "top 75%",
             end: "bottom center",
             toggleActions: "play none none reset",
           },
@@ -60,8 +60,8 @@ const Features: React.FC<FeaturesProps> = ({ features }) => {
   }, [features]);
 
   return (
-    <div className="flex flex-col h-full w-full bg-fixed bg-cover px-4 lg:px-8 lg:mt-24 lg:mb-24 ">
-      <div className="text-center">
+    <div className="flex flex-col h-full w-full bg-fixed bg-cover px-4 lg:px-8  lg:mt-20 lg:mb-24 ">
+      <div className="text-center m-10">
         <h1 className="text-4xl lg:text-5xl font-bold text-gray-200">
           Discover the features that make Morrow so easy to use
         </h1>
@@ -70,7 +70,7 @@ const Features: React.FC<FeaturesProps> = ({ features }) => {
         </p>
       </div>
 
-      <div className="flex flex-col gap-12 lg:gap-16">
+      <div className="flex flex-col lg:gap-16">
         {features.map((feature, index) => (
           <FeatureSection
             key={feature.id}

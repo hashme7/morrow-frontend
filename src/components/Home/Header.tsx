@@ -5,7 +5,7 @@ const Header: React.FC = () => {
   return (
     <div className="w-full h-screen absolute top-0">
       <div className="absolute top-2">
-       <Logo />
+        <Logo />
       </div>
     </div>
   );

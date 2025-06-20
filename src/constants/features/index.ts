@@ -1,16 +1,16 @@
 export const features = [
-  {
-    id: 1,
-    title: "Freelancing",
-    description:
-      "Tap into endless possibilities with our freelancing platform. Whether you’re seeking to collaborate with world-class professionals or offer your expertise, we connect innovators with trailblazers. Empower your projects, amplify your impact, and discover the synergy of innovation and talent.",
-    icon: "/assets/images/homeBg.jpeg",
-    animation: "slide-down",
-    color: "#FFD700",
-    isFeatured: true,
-    layout: "left",
-    backgroundImage: "/assets/images/backgroundImageFreelance",
-  },
+  // {
+  //   id: 1,
+  //   title: "Freelancing",
+  //   description:
+  //     "Tap into endless possibilities with our freelancing platform. Whether you’re seeking to collaborate with world-class professionals or offer your expertise, we connect innovators with trailblazers. Empower your projects, amplify your impact, and discover the synergy of innovation and talent.",
+  //   icon: "/assets/images/homeBg.jpeg",
+  //   animation: "slide-down",
+  //   color: "#FFD700",
+  //   isFeatured: true,
+  //   layout: "left",
+  //   backgroundImage: "/assets/images/backgroundImageFreelance",
+  // },
   {
     id: 2,
     title: "API Testing",
