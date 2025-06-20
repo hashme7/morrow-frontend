@@ -20,7 +20,7 @@ export const features = [
     animation: "fade-in",
     color: "#4A90E2",
     layout: "right",
-    backgroundImage: "/assets/images/backgroundImageFreelance",
+    backgroundImage: "/assets/images/ApiDocumentation.png",
   },
   {
     id: 3,
@@ -31,7 +31,7 @@ export const features = [
     animation: "zoom-in",
     color: "#7ED321",
     layout: "center",
-    backgroundImage: "/assets/images/backgroundImageFreelance",
+    backgroundImage: "/assets/images/KanbanBoard.png",
   },
   {
     id: 4,
@@ -42,7 +42,7 @@ export const features = [
     animation: "flip",
     color: "#F8E71C",
     layout: "left",
-    backgroundImage: "/assets/images/backgroundImageFreelance",
+    backgroundImage: "/assets/images/Videocall.jpeg",
   },
   {
     id: 5,
@@ -53,7 +53,7 @@ export const features = [
     animation: "fade-out",
     color: "#D0021B",
     layout: "right",
-    backgroundImage: "/assets/images/backgroundImageFreelance",
+    backgroundImage: "/assets/images/1_nw1lHol7X0EEH74Mq7l7RQ.png",
   },
   {
     id: 6,
@@ -64,6 +64,7 @@ export const features = [
     animation: "slide-up",
     color: "#F5A623",
     layout: "center",
-    backgroundImage: "/assets/images/backgroundImageFreelance",
+    backgroundImage:
+      "/assets/images/dbdiagram.png",
   },
 ];
