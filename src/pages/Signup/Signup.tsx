@@ -187,20 +187,10 @@ const Signup: React.FC = () => {
             ref={animationRef}
             className="project-management-animation w-full h-full flex-co justify-end  relative"
           >
-            <div className="task-card w-50 h-50 bg-black bg-opacity-10 rounded-lg shadow-lg p-4 absolute top-0 left-10 text-center">
-              <p className="text-white font-semibold">DB Diagram (stuart)</p>
-              <p className="text-gray-800 text-sm">In Progress</p>
-            </div>
-            <div className="task-card w-50 h-50 bg-black bg-opacity-10 rounded-lg shadow-lg p-4 absolute top-20 left-32 text-center">
-              <p className="text-white font-semibold">
-                Api integration (fedrick)
-              </p>
-              <p className="text-gray-800 text-sm">Completed</p>
-            </div>
-            <div className="task-card w-40 h-24 bg-black bg-opacity-10 rounded-lg shadow-lg p-4 absolute top-40 left-56 text-center">
-              <p className="text-white font-semibold">Deployment (agustin)</p>
-              <p className="text-gray-800 text-sm">Not Started</p>
-            </div>
+            <img
+              src="/assets/animationMp4/projectmangement.png"
+              className="w-full h-full "
+            />
           </div>
         </div>
       </div>
