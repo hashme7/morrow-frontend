@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
 import {
   Input,
   Button,
@@ -32,6 +33,7 @@ const Login: React.FC = () => {
   const [forgotEmail, setForgotEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const { errorMessage } = useAppSelector((state) => state.login);
+  const animationRef = useRef<HTMLDivElement | null>(null);
 
   const [errors, setErrors] = useState<{
     email?: string;
@@ -48,7 +50,21 @@ const Login: React.FC = () => {
   useEffect(() => {
     dispatch(clearError());
   }, [isOpen]);
-
+   useEffect(() => {
+      gsap.fromTo(
+        animationRef.current,
+        { x: 50, opacity: 0 },
+        {
+          x: -10,
+          opacity: 1,
+          duration: 2,
+          ease: "Power3.easeInOut",
+          repeat: -1,
+          yoyo: true,
+        }
+      );
+    }, []);
+  
   return (
     <section className="login h-screen flex items-center justify-center bg-black">
       <div className="container flex flex-col md:flex-row items-center justify-between w-11/12 max-w-6xl h-4/5 bg-transparent">
@@ -145,10 +161,15 @@ const Login: React.FC = () => {
         </div>
 
         <div className="animation-section sm:block hidden w-full md:w-1/2 h-full justify-center items-center">
-          <img
-            src="/assets/animationMp4/projectmangement.png"
-            className="w-full h-full "
-          />
+          <div
+            ref={animationRef}
+            className="project-management-animation w-full h-full flex-co justify-end  relative"
+          >
+            <img
+              src="/assets/animationMp4/projectmangement.png"
+              className="w-full h-full "
+            />
+          </div>
         </div>
       </div>
 
