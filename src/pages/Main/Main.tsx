@@ -19,20 +19,12 @@ const Dashboard: React.FC = () => {
   const [isRequests, setIsRequests] = useState<boolean>(
     location.pathname == "/dashboard/requests"
   );
-  const [xsMenu, setXsMenu] = useState<Boolean>(false); 
+  const [xsMenu, setXsMenu] = useState<Boolean>(false);
 
   const handleLogout = async () => {
     dispatch(logout());
     dispatch(clearSelectProject());
   };
-
-  useEffect(() => {
-    setIsRequests(location.pathname == "/dashboard/requests");
-    setIsOverview(
-      location.pathname == "/dashboard/overview" ||
-        location.pathname == "/dashboard"
-    );
-  }, [location.pathname]);
 
   const showNotification = (message: string) => {
     setNotificationMessage(message);
@@ -42,16 +34,41 @@ const Dashboard: React.FC = () => {
     }, 3000);
   };
 
+  useEffect(() => {
+    setIsRequests(location.pathname == "/dashboard/requests");
+    setIsOverview(
+      location.pathname == "/dashboard/overview" ||
+        location.pathname == "/dashboard"
+    );
+  }, [location.pathname]);
+  useEffect(() => {
+    dispatch(clearSelectProject());
+  });
   return (
     <>
       <div className="flex">
-        {!xsMenu && <SideBar showNotification={showNotification} xsMenu={xsMenu} />}
+        {!xsMenu && (
+          <SideBar showNotification={showNotification} xsMenu={xsMenu} />
+        )}
         <div className="h-full w-full bg-black">
           <div className="flex-1 p-4 ">
-            {isOverview && <div>
-            <img src="/assets/images/project.jpeg" alt=""  className="w-full"/></div>}
-            <Header logout={handleLogout} xsMenu={xsMenu} setXsMenu={setXsMenu} />
-            {xsMenu && <SideBar showNotification={showNotification} xsMenu={xsMenu}/>}
+            {isOverview && (
+              <div>
+                <img
+                  src="/assets/images/project.jpeg"
+                  alt=""
+                  className="w-full"
+                />
+              </div>
+            )}
+            <Header
+              logout={handleLogout}
+              xsMenu={xsMenu}
+              setXsMenu={setXsMenu}
+            />
+            {xsMenu && (
+              <SideBar showNotification={showNotification} xsMenu={xsMenu} />
+            )}
             <Notification
               message={notificationMessage}
               visible={notificationVisible}

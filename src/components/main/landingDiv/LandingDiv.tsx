@@ -2,7 +2,7 @@ import React from "react";
 
 const LandingDiv: React.FC = () => {
   return (
-    <div className="relative h-screen w-full">
+    <div className="relative h-1/4 w-full">
       {/* Background video */}
       <video
         className="absolute top-0 left-0 w-full h-full object-cover"

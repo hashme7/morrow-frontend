@@ -89,14 +89,14 @@ const Header: React.FC<{logout:()=>void,xsMenu:Boolean,setXsMenu:(xsMenu:Boolean
       </div>
       <div className="flex sm:gap-1 md:space-x-4 gap-2">
         <button
-          className="flex gap-1 material-icons text-sm sm:text-sm md:text-sm"
+          className="flex gap-1 text-sm sm:text-sm "
           onClick={logout}
         >
           <HiOutlineLogout />
           <span className="hidden sm:block">logout</span>
         </button>
         <button
-          className="flex gap-1 material-icons text-sm sm:text-sm md:text-sm"
+          className="flex gap-1 text-sm sm:text-sm md:text-sm"
           onClick={() => navigate("/profile")}
         >
           <CgProfile />

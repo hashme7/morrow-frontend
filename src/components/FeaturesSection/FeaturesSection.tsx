@@ -68,7 +68,7 @@ const FeatureSection = forwardRef<HTMLDivElement, FeatureSectionProps>(
               <Image
                 removeWrapper
                 alt="Card background"
-                className="z-0 w-full h-full object-fill opacity-80"
+                className="z-0 w-full h-full object-cover opacity-80"
                 src={feature.icon}
               />
             </Card>
