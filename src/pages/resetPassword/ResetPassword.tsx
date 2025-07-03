@@ -4,7 +4,7 @@ import { useResetPassword } from "../../services/auth-service/resetPasswordHooks
 import { Input, Button } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 
-export const ResetPassword = () => {
+const ResetPassword = () => {
   const {
     password,
     confirmPassword,
@@ -106,3 +106,4 @@ export const ResetPassword = () => {
     </section>
   );
 };
+export default ResetPassword;
