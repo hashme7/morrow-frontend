@@ -7,12 +7,12 @@ import path from "path";
 export default defineConfig({
   plugins: [
     react(),
-    compression({ algorithm: "brotliCompress" }),
+    compression({ algorithm: "gzip" }),
     visualizer({ open: false }),
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(__dirname, "./src"), 
     },
   },
   server: {
@@ -20,7 +20,7 @@ export default defineConfig({
   },
   build: {
     target: "esnext",
-    minify: "esbuild",
+    minify: "esbuild", 
     sourcemap: false,
     cssCodeSplit: true,
     rollupOptions: {
