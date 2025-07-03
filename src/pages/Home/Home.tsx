@@ -28,7 +28,7 @@ const Home: React.FC = () => {
           ref={animatedImg}
           className="animated-image"
           src="/assets/images/project-mangement.webp"
-          alt=""
+          loading="lazy"
         />
         <div>
           <Features features={features} />
