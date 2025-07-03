@@ -6,6 +6,7 @@ const Features = React.lazy(
 );
 
 import { features } from "../../constants/features";
+import LoadingScreen from "../../components/loading/Loading";
 
 const Home: React.FC = () => {
   const animatedImg = useRef<HTMLImageElement | null>(null);
@@ -22,7 +23,7 @@ const Home: React.FC = () => {
     });
   }, []);
   return (
-    <Suspense fallback={<div className="text-white">Loading...</div>}>
+    <Suspense fallback={<LoadingScreen />}>
       <Header />
       <Hero />
       <img

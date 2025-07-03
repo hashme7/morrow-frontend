@@ -14,14 +14,11 @@ const ResetPassword = lazy(
   () => import("../pages/resetPassword/ResetPassword")
 );
 
-// ✨ Profile & Standalone Protected Pages
 const Profile = lazy(() => import("../pages/profile/Profile"));
 const ZegoMeet = lazy(() => import("../components/main/Meet/zego-meet"));
 
-// ✨ Main Dashboard Layout
 const Dashboard = lazy(() => import("../pages/Main/Main"));
 
-// ✨ Dashboard Nested Pages
 const Overview = lazy(() => import("../components/main/overview/overviewCom"));
 const KanbanBoard = lazy(() => import("../components/main/board/Board"));
 const Member = lazy(() => import("../components/main/members/Members"));
