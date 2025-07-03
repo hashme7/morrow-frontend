@@ -7,35 +7,32 @@ import path from "path";
 export default defineConfig({
   plugins: [
     react(),
-    compression({ algorithm: "gzip" }), // Compress .js, .css, etc.
-    visualizer({ open: false }), // Open bundle report in browser
+    compression({ algorithm: "brotliCompress" }),
+    visualizer({ open: false }),
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"), // Optional: Use @/components/...
+      "@": path.resolve(__dirname, "./src"),
     },
   },
   server: {
     port: 5173,
-    // Enable this when you connect to backend
-    // proxy: {
-    //   "/api": {
-    //     target: "http://localhost:8000",
-    //     changeOrigin: true,
-    //     secure: false,
-    //     rewrite: (path) => path.replace(/^\/api/, ''),
-    //   },
-    // },
   },
   build: {
     target: "esnext",
-    minify: "esbuild", // Fastest (can switch to 'terser' for better compression)
+    minify: "esbuild",
     sourcemap: false,
     cssCodeSplit: true,
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes("node_modules")) return "vendor"; // Code split vendors
+          if (id.includes("node_modules")) {
+            if (id.includes("react")) return "react";
+            if (id.includes("gsap")) return "gsap";
+            if (id.includes("lodash")) return "lodash";
+            if (id.includes("zego")) return "zego";
+            return "vendor";
+          }
         },
       },
     },

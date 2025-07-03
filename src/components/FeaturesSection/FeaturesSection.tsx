@@ -70,6 +70,7 @@ const FeatureSection = forwardRef<HTMLDivElement, FeatureSectionProps>(
                 alt="Card background"
                 className="z-0 w-full h-full object-cover opacity-80"
                 src={feature.icon}
+                loading="lazy"
               />
             </Card>
           </div>
