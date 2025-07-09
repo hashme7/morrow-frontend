@@ -34,3 +34,33 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
+.star {
+  display: block;
+  background-color: #ffffff;
+  position: absolute;
+  border-radius: 100%;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  z-index: 0;
+}
+
+@keyframes move_right {
+  from {
+    transform: rotate(0deg) translateX(8px) rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg) translateX(8px) rotate(-360deg);
+  }
+}
+
+@keyframes move_left {
+  from {
+    transform: rotate(0deg) translateX(8px) rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-360deg) translateX(8px) rotate(360deg);
+  }
+}

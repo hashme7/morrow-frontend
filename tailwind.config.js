@@ -9,14 +9,18 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        inter: ['Inter', 'sans-serif'],
-        poppins: ['Poppins', 'sans-serif'],
-        roboto: ['Roboto', 'sans-serif'],
-        helvetica: ['Helvetica', 'Arial', 'sans-serif'], 
+        sans: ["InterVariable", "sans-serif"],
+        inter: ["Inter", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
+        roboto: ["Roboto", "sans-serif"],
+        helvetica: ["Helvetica", "Arial", "sans-serif"],
+      },
+      colors: {
+        darkBg: "#161616",
       },
     },
   },
   darkMode: "class",
   plugins: [nextui()],
-}
+};
 

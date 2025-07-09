@@ -50,21 +50,21 @@ const Login: React.FC = () => {
   useEffect(() => {
     dispatch(clearError());
   }, [isOpen]);
-   useEffect(() => {
-      gsap.fromTo(
-        animationRef.current,
-        { x: 50, opacity: 0 },
-        {
-          x: -10,
-          opacity: 1,
-          duration: 2,
-          ease: "Power3.easeInOut",
-          repeat: -1,
-          yoyo: true,
-        }
-      );
-    }, []);
-  
+  useEffect(() => {
+    gsap.fromTo(
+      animationRef.current,
+      { x: 50, opacity: 0 },
+      {
+        x: -10,
+        opacity: 1,
+        duration: 2,
+        ease: "Power3.easeInOut",
+        repeat: -1,
+        yoyo: true,
+      }
+    );
+  }, []);
+
   return (
     <section className="login h-screen flex items-center justify-center bg-black">
       <div className="container flex flex-col md:flex-row items-center justify-between w-11/12 max-w-6xl h-4/5 bg-transparent">
@@ -166,7 +166,7 @@ const Login: React.FC = () => {
             className="project-management-animation w-full h-full flex-co justify-end  relative"
           >
             <img
-              src="/assets/animationMp4/projectmangement.png"
+              src="/assets/images/projectMangementPicture_black_cleaned.png"
               className="w-full h-full "
             />
           </div>

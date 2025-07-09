@@ -188,7 +188,7 @@ const Signup: React.FC = () => {
             className="project-management-animation w-full h-full flex-co justify-end  relative"
           >
             <img
-              src="/assets/animationMp4/projectmangement.png"
+              src="/assets/images/projectMangementPicture_black_cleaned.png"
               className="w-full h-full "
             />
           </div>
