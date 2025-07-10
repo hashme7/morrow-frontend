@@ -40,6 +40,7 @@ const SideBar: React.FC<SideBarProps> = ({ showNotification, xsMenu }) => {
     dispatch(clearBoard());
     dispatch(clearApis());
     dispatch(selectProject(id));
+    console.log(`project selected {${id}}`);
   };
 
   return (
@@ -134,7 +135,7 @@ const SideBar: React.FC<SideBarProps> = ({ showNotification, xsMenu }) => {
               <li
                 className={` ${
                   project.id == selectProjectId ? "text-white" : "text-zinc-600"
-                }  hover:cursor-pointer mt-2`}
+                }  hover:cursor-pointer hover:text-white mt-2`}
                 key={project.id}
                 onClick={() => handleSelectProject(project.id)}
               >

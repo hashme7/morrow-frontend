@@ -14,7 +14,9 @@ const Dashboard: React.FC = () => {
     useState<boolean>(false);
   const [isOverview, setIsOverview] = useState<boolean>(false);
   const [notificationMessage, setNotificationMessage] = useState<string>("");
-  const { selectProject } = useAppSelector((state) => state.project);
+  const { selectProject, selectProjectId } = useAppSelector(
+    (state) => state.project
+  );
   const location = useLocation();
   const [isRequests, setIsRequests] = useState<boolean>(
     location.pathname == "/dashboard/requests"
@@ -41,9 +43,14 @@ const Dashboard: React.FC = () => {
         location.pathname == "/dashboard"
     );
   }, [location.pathname]);
+  // useEffect(() => {
+  //   dispatch(clearSelectProject());
+  //   console.log("clearing")
+  // });
   useEffect(() => {
-    dispatch(clearSelectProject());
-  });
+    console.log("select Project", selectProject);
+    console.log("selct id", selectProjectId);
+  }, [selectProject]);
   return (
     <>
       <div className="flex">

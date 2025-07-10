@@ -67,6 +67,7 @@ const projects = createSlice({
       state.selectProject = state.projects.filter(
         (project) => action.payload === project.id
       )[0];
+       console.log(JSON.stringify(state.selectProject))
     },
     clearSelectProject(state) {
       state.selectProject = null;
