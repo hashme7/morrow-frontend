@@ -44,6 +44,10 @@ export const useKanbanBoard = () => {
       updateTaskIds();
     }
   }, [selectProject?.teamId, selectProject]);
+  // useEffect(() => {
+  //   updateTaskIds();
+  //   console.log("task changingin....")
+  // },[tasks])
 
   useEffect(() => {
     if (selectProject) {
@@ -70,7 +74,9 @@ export const useKanbanBoard = () => {
           team_id: selectProject.teamId,
           assignee,
         })
-      );
+      ).then(() => {
+        updateTaskIds();
+      });
     }
   };
 

@@ -212,8 +212,11 @@ const BoardSlice = createSlice({
       state.columns = [...filteredColumns];
     });
     builder.addCase(createTask.fulfilled, (state, action) => {
-      console.log("created task", ...state.tasks,action.payload);
-      state.tasks = [...state.tasks, action.payload];
+      console.log("created task", ...state.tasks, action.payload);
+      const status = state.columns.find((column) => column._id.toString() == action.payload.status);
+      if (status?.id) {
+        state.tasks = [...state.tasks, { ...action.payload, status:status.id }];
+      }
       console.log("tasks",state.tasks)
     });
     builder.addCase(getTasks.fulfilled, (state, action) => {
